@@ -1,4 +1,4 @@
-package com.humine.level.util;
+package com.humine.levels.util;
 
 public class Level {
 
