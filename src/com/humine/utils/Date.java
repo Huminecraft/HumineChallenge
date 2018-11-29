@@ -11,15 +11,6 @@ public abstract class Date {
 		return format.format(new java.util.Date());
 	}
 	
-	public static java.util.Date getDateToday() {
-		try {
-			return format.parse(format.format(new java.util.Date()));
-		} catch (ParseException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
 	public boolean isTheSameDate(java.util.Date date1, java.util.Date date2) {
 		try {
 			date1 = format.parse(format.format(date1));
