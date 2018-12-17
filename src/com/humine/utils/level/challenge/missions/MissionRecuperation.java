@@ -5,6 +5,8 @@ import org.bukkit.inventory.ItemStack;
 public class MissionRecuperation extends Mission
 {
 
+	private static final long serialVersionUID = 6493928351118849368L;
+
 	public MissionRecuperation(String missionName, ItemStack item)
 	{
 		this.setMissionName(missionName);

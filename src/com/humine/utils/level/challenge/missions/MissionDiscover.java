@@ -5,6 +5,8 @@ import org.bukkit.block.Biome;
 public class MissionDiscover extends Mission
 {
 
+	private static final long serialVersionUID = -4540946071251949504L;
+
 	public MissionDiscover(String missionName, Biome biome)
 	{
 		this.setMissionName(missionName);

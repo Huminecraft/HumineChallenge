@@ -1,11 +1,13 @@
 package com.humine.utils.level.challenge.missions;
 
-import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 
 public class MissionAdoption extends Mission
 {
 	
-	public MissionAdoption(String missionName, Entity entityToAdopt)
+	private static final long serialVersionUID = 4081519091688111744L;
+
+	public MissionAdoption(String missionName, EntityType entityToAdopt)
 	{
 		this.setMissionName(missionName);
 		this.setDescription("");
@@ -16,7 +18,7 @@ public class MissionAdoption extends Mission
 		this.setMissionType(MissionType.ADOPTION);
 	}
 
-	public MissionAdoption(String missionName, String description, Entity entityToAdopt)
+	public MissionAdoption(String missionName, String description, EntityType entityToAdopt)
 	{
 		this.setMissionName(missionName);
 		this.setDescription(description);
@@ -27,7 +29,7 @@ public class MissionAdoption extends Mission
 		this.setMissionType(MissionType.ADOPTION);
 	}
 
-	public MissionAdoption(String missionName, String description, Entity entityToAdopt, int numberToAdopt)
+	public MissionAdoption(String missionName, String description, EntityType entityToAdopt, int numberToAdopt)
 	{
 		this.setMissionName(missionName);
 		this.setDescription(description);
@@ -38,7 +40,7 @@ public class MissionAdoption extends Mission
 		this.setMissionType(MissionType.ADOPTION);
 	}
 
-	public MissionAdoption(String missionName, String description, Entity entityToAdopt, int numberToAdopt, boolean premium)
+	public MissionAdoption(String missionName, String description, EntityType entityToAdopt, int numberToAdopt, boolean premium)
 	{
 		this.setMissionName(missionName);
 		this.setDescription(description);

@@ -18,17 +18,17 @@ public enum MissionType
 		else if(value.equalsIgnoreCase("craft"))
 			return CRAFT;
 		else if(value.equalsIgnoreCase("deplacement"))
-			return CRAFT;
+			return DEPLACEMENT;
 		else if(value.equalsIgnoreCase("discover"))
-			return CRAFT;
+			return DISCOVER;
 		else if(value.equalsIgnoreCase("eat"))
-			return CRAFT;
+			return EAT;
 		else if(value.equalsIgnoreCase("kill"))
-			return CRAFT;
+			return KILL;
 		else if(value.equalsIgnoreCase("pose"))
-			return CRAFT;
+			return POSE;
 		else if(value.equalsIgnoreCase("recuperation"))
-			return CRAFT;
+			return RECUPERATION;
 		else
 			return null;
 	}

@@ -7,6 +7,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/allan/Desktop/jeux/Minecraft/Serveur 1.13.2/plugins/AYPI.V1.4.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/allan/Desktop/jeux/Minecraft/Serveur 1.13.2/spigot-1.13.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/allan/Desktop/jeux/Minecraft/Serveur 1.13.2/spigot-1.13.2.jar" sourcepath="C:/Users/allan/Desktop/jeux/Minecraft/spigot-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

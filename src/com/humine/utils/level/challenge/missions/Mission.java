@@ -1,21 +1,29 @@
 package com.humine.utils.level.challenge.missions;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
-public abstract class Mission
+public class Mission implements Serializable
 {
 
+	private static final long serialVersionUID = 1502724615290483346L;
+	
 	private String		missionName		= "",
 								description = "";
-	private Entity		entity			= null;
+	private EntityType		entity			= null;
 	private ItemStack	item			= null;
 	private int			number			= 1;
 	private boolean		done			= false;
 	private boolean		missionPremium	= false;
 	private MissionType	missionType;
+	private Recompense	recompense = null;
+
+	public Mission()
+	{
+	}
 
 	public String getMissionName()
 	{
@@ -37,12 +45,12 @@ public abstract class Mission
 		this.description = description;
 	}
 
-	public Entity getEntity()
+	public EntityType getEntity()
 	{
 		return entity;
 	}
 
-	public void setEntity(Entity entity)
+	public void setEntity(EntityType entity)
 	{
 		this.entity = entity;
 	}
@@ -96,20 +104,39 @@ public abstract class Mission
 	{
 		this.missionType = missionType;
 	}
-
-	public HashMap<String, Object> serialize()
+	
+	public Recompense getRecompense()
 	{
-		HashMap<String, Object> list = new HashMap<String, Object>();
+		return recompense;
+	}
 
-		list.put("MissionName", this.missionName);
+	public void setRecompense(Recompense recompense)
+	{
+		this.recompense = recompense;
+	}
+	
+	public HashMap<String, Object> serialize() {
+		HashMap<String, Object> list = new HashMap<String, Object>();
+		
+		list.put("Name", this.missionName);
 		list.put("Description", this.description);
-		list.put("Entity", this.entity);
+		list.put("Entity", this.entity.toString());
 		list.put("Item", this.item);
 		list.put("Number", this.number);
-		list.put("Type", this.missionType);
-		list.put("Done", this.done);
-		list.put("premium", this.missionPremium);
+		list.put("Premium", this.missionPremium);
+		list.put("Type", this.missionType.toString());
+		if(this.recompense != null)
+		{
+			list.put("Recompense.Experience", this.recompense.getExperience());
+			list.put("Recompense.Token", this.recompense.getToken());
+		}
+		else {
+			list.put("Recompense.Experience", 0);
+			list.put("Recompense.Token", 0);
+		}
+		
 
 		return list;
 	}
+
 }

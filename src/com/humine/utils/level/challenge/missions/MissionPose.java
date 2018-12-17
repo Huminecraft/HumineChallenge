@@ -5,6 +5,8 @@ import org.bukkit.inventory.ItemStack;
 public class MissionPose extends Mission
 {
 
+	private static final long serialVersionUID = 3029874517659968191L;
+
 	public MissionPose(String missionName, ItemStack item)
 	{
 		this.setMissionName(missionName);

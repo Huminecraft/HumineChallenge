@@ -1,11 +1,13 @@
 package com.humine.utils.level.challenge.missions;
 
-import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 
 public class MissionKill extends Mission
 {
 
-	public MissionKill(String missionName, Entity entityToKill)
+	private static final long serialVersionUID = 2507963977235734153L;
+
+	public MissionKill(String missionName, EntityType entityToKill)
 	{
 		this.setMissionName(missionName);
 		this.setDescription("");
@@ -16,7 +18,7 @@ public class MissionKill extends Mission
 		this.setMissionType(MissionType.KILL);
 	}
 
-	public MissionKill(String missionName, String description, Entity entityToKill)
+	public MissionKill(String missionName, String description, EntityType entityToKill)
 	{
 		this.setMissionName(missionName);
 		this.setDescription(description);
@@ -27,7 +29,7 @@ public class MissionKill extends Mission
 		this.setMissionType(MissionType.KILL);
 	}
 
-	public MissionKill(String missionName, String description, Entity entityToKill, int numberToKill)
+	public MissionKill(String missionName, String description, EntityType entityToKill, int numberToKill)
 	{
 		this.setMissionName(missionName);
 		this.setDescription(description);
@@ -38,7 +40,7 @@ public class MissionKill extends Mission
 		this.setMissionType(MissionType.KILL);
 	}
 
-	public MissionKill(String missionName, String description, Entity entityToKill, int numberToKill, boolean premium)
+	public MissionKill(String missionName, String description, EntityType entityToKill, int numberToKill, boolean premium)
 	{
 		this.setMissionName(missionName);
 		this.setDescription(description);

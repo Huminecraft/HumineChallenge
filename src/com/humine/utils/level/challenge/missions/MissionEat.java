@@ -4,6 +4,8 @@ import org.bukkit.inventory.ItemStack;
 
 public class MissionEat extends Mission
 {
+	private static final long serialVersionUID = -840544108838401650L;
+
 	public MissionEat(String missionName, ItemStack item)
 	{
 		this.setMissionName(missionName);
