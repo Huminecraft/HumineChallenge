@@ -1,18 +1,21 @@
-package humine.utils.token;
+package fr.humine.utils.token;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import fr.humine.utils.exceptions.SettingMissingException;
+
 /**
  * Classe permettant de gerer les tokens
  * @author miza
  *
  */
-public class TokenBank {
+public class TokenBank{
 
 	private String moneyNameValue;
 	private HashMap<String, TokenAccount> accounts;
@@ -215,26 +218,31 @@ public class TokenBank {
 		
 	}
 	
-	public static TokenBank load(File folder) {
+	public static TokenBank loads(File folder) throws FileNotFoundException, SettingMissingException {
 		if(!folder.exists())
-			return null;
+			throw new FileNotFoundException("Dossier TokenBank introuvable");
 		
 		File index = new File(folder, "index.yml");
 		if(!index.exists())
-			return null;
+			throw new FileNotFoundException("index.yml de TokenBank introuvable");
 		
 		FileConfiguration config = YamlConfiguration.loadConfiguration(index);
 		
 		if(!config.contains("moneyNameValue")) {
-			return null;
+			throw new SettingMissingException();
 		}
 		
 		TokenBank bank = new TokenBank(config.getString("moneyNameValue"));
-		index.delete();
 
 		for(File f : folder.listFiles()) {
+			if(f.getName().startsWith("index"))
+				continue;
+			
 			TokenAccount account = TokenAccount.load(f);
-			bank.cr
+			bank.addAccount(account);
 		}
+		
+		return bank;
 	}
+
 }

@@ -1,4 +1,4 @@
-package humine.utils.token;
+package fr.humine.utils.token;
 
 import java.io.File;
 import java.io.IOException;
