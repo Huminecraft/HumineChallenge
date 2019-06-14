@@ -1,10 +1,6 @@
 package fr.humine.utils.token;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
+import java.io.Serializable;
 
 /**
  * Classe reprensentant un compte bancaire de token
@@ -12,8 +8,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
  * @author miza
  *
  */
-public class TokenAccount {
+public class TokenAccount implements Serializable{
 
+	private static final long serialVersionUID = 4968151659799426878L;
 	private String owner;
 	private int token;
 
@@ -42,43 +39,37 @@ public class TokenAccount {
 		this.token = token;
 	}
 
-	public static boolean save(TokenAccount account, File file) {
-		if (!file.exists()) {
-			try {
-				file.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-				return false;
-			}
-		}
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((owner == null) ? 0 : owner.hashCode());
+		result = prime * result + token;
+		return result;
+	}
 
-		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-
-		config.set("Owner", account.getOwner());
-		config.set("Token", account.getToken());
-		
-		try {
-			config.save(file);
-		} catch (IOException e) {
-			e.printStackTrace();
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (obj == null)
 			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TokenAccount other = (TokenAccount) obj;
+		if (owner == null)
+		{
+			if (other.owner != null)
+				return false;
 		}
-
+		else if (!owner.equals(other.owner))
+			return false;
+		if (token != other.token)
+			return false;
 		return true;
-
 	}
 	
-	public static TokenAccount load(File file) {
-		if(!file.exists())
-			return null;
-		
-		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-		
-		if(!config.contains("Owner") || !config.contains("Token")) {
-			return null;
-		}
-		
-		TokenAccount account = new TokenAccount(config.getString("Owner"), config.getInt("Token"));
-		return account;
-	}
+	
 }

@@ -1,45 +1,41 @@
 package fr.humine.utils.levels;
 
-public class Level {
+import java.io.Serializable;
 
+public class Level implements Serializable{
+
+	private static final long serialVersionUID = 4934168850287003757L;
+	
 	private int level;
 	private int experience;
 	private int experienceToReach;
 
+	private static final int PALIER = 100;
+	
 	public Level() {
 		this.level = 1;
 		this.experience = 0;
 		this.experienceToReach = 150;
-	}
-
-	public Level(int startLevel) {
-		this.level = startLevel;
-		this.experience = 0;
-		this.experienceToReach = (int) ((startLevel == 1) ? 150 : 150.0 * Math.pow(1.5, startLevel));
 	}
 	
 	public boolean canPassNextLevel() {
 		return (this.experience >= this.experienceToReach);
 	}
 
-	public void addLevel(int l) {
-		this.level += l;
-		this.experience = this.experience % this.experienceToReach;
-		this.experienceToReach *= Math.pow(1.5, l);
-	}
-
-	public void removeLevel(int l) {
-		this.level -= l;
+	public void addOneLevel() {
+		this.level++;
 		this.experience = 0;
-		this.experienceToReach /= Math.pow(1.5, l);
+		this.experienceToReach += PALIER;
+	}
+	
+	public void removeOneLevel() {
+		this.level--;
+		this.experience = 0;
+		this.experienceToReach -= PALIER;
 	}
 
 	public int getLevel() {
 		return this.level;
-	}
-	
-	public void setLevel(int l) {
-		this.level = l;
 	}
 
 	public int getExperience()
@@ -47,18 +43,18 @@ public class Level {
 		return experience;
 	}
 
-	public void setExperience(int experience)
+	public void addExperience(int experience)
 	{
-		this.experience = experience;
+		this.experience += experience;
+	}
+	
+	public void removeExperience(int experience)
+	{
+		this.experience = ((this.experience - experience) < 0) ? 0 : this.experience - experience;
 	}
 
 	public int getExperienceToReach()
 	{
 		return experienceToReach;
-	}
-
-	public void setExperienceToReach(int experienceToReach)
-	{
-		this.experienceToReach = experienceToReach;
 	}
 }

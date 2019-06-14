@@ -1,31 +1,34 @@
 package fr.humine.utils.challenge;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.Serializable;
 
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-import fr.humine.utils.exceptions.SaveFileException;
-import fr.humine.utils.exceptions.SettingMissingException;
-import fr.humine.utils.shop.ChallengeAchivement;
-import fr.humine.utils.shop.Savable;
+import fr.humine.utils.shop.ChallengeAchievement;
 import humine.utils.cosmetiques.Cosmetique;
 
-public class Recompense implements ChallengeAchivement, Savable{
+public class Recompense implements ChallengeAchievement, Serializable{
 
+	private static final long serialVersionUID = 1423553186939777658L;
 	private int humis;
 	private int pixel;
 	private int exp;
-	private Cosmetique cosmetique;
+	private String cosmetiqueID;
 	
-	public Recompense(int humis, int pixel, int exp, Cosmetique cosmetique) {
+	public Recompense(int humis, int pixel, int exp, String cosmetiqueID) {
 		this.humis = humis;
 		this.pixel = pixel;
 		this.exp = exp;
-		this.cosmetique = cosmetique;
+		this.cosmetiqueID = cosmetiqueID;
+	}
+	
+	public Recompense(int humis, int pixel, int exp) {
+		this(humis, pixel, exp, "");
+	}
+	
+	public Recompense()
+	{
+		this(0, 0, 0, "");
 	}
 	
 	@Override
@@ -35,7 +38,8 @@ public class Recompense implements ChallengeAchivement, Savable{
 
 	@Override
 	public Cosmetique getCosmetique() {
-		return this.cosmetique;
+		return null;
+		//TODO
 	}
 
 	@Override
@@ -65,36 +69,60 @@ public class Recompense implements ChallengeAchivement, Savable{
 		this.exp = exp;
 	}
 
-	public void setCosmetique(Cosmetique cosmetique) {
-		this.cosmetique = cosmetique;
+	public void setCosmetiqueID(String cosmetiqueID) {
+		this.cosmetiqueID = cosmetiqueID;
+	}
+	
+	public String getCosmetiqueID()
+	{
+		return cosmetiqueID;
 	}
 
 	@Override
-	public void save(File file) throws SaveFileException {
-		if(!file.exists()) {
-			try {
-				file.createNewFile();
-			} catch (IOException e) {
-				throw new SaveFileException();
-			}
-		}
-		
-		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-		config.set("Recompense.Humis", this.humis);
-		config.set("Recompense.Pixel", this.pixel);
-		config.set("Recompense.Exp", this.exp);
-		config.set("Recompense.Cosmetique", (this.cosmetique != null) ? this.cosmetique.getId() : null);
-		try {
-			config.save(file);
-		} catch (IOException e) {
-			throw new SaveFileException();
-		}
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((cosmetiqueID == null) ? 0 : cosmetiqueID.hashCode());
+		result = prime * result + exp;
+		result = prime * result + humis;
+		result = prime * result + pixel;
+		return result;
 	}
 
 	@Override
-	public void load(File file) throws FileNotFoundException, SettingMissingException {
-		// TODO Auto-generated method stub
-		
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Recompense other = (Recompense) obj;
+		if (cosmetiqueID == null)
+		{
+			if (other.cosmetiqueID != null)
+				return false;
+		}
+		else if (!cosmetiqueID.equals(other.cosmetiqueID))
+			return false;
+		if (exp != other.exp)
+			return false;
+		if (humis != other.humis)
+			return false;
+		if (pixel != other.pixel)
+			return false;
+		return true;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "Recompense [humis=" + humis + ", pixel=" + pixel + ", exp=" + exp + ", cosmetiqueID=" + cosmetiqueID
+				+ "]";
+	}
+	
+	
 
 }

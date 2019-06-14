@@ -1,22 +1,17 @@
 package fr.humine.utils.token;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.Serializable;
 import java.util.HashMap;
 
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-
-import fr.humine.utils.exceptions.SettingMissingException;
 
 /**
  * Classe permettant de gerer les tokens
  * @author miza
  *
  */
-public class TokenBank{
+public class TokenBank implements Serializable{
 
+	private static final long serialVersionUID = -8878858346782253585L;
 	private String moneyNameValue;
 	private HashMap<String, TokenAccount> accounts;
 	
@@ -183,66 +178,43 @@ public class TokenBank{
 	public void setMoneyNameValue(String moneyNameValue) {
 		this.moneyNameValue = moneyNameValue;
 	}
-	
-	public static boolean save(TokenBank bank, File folder) {
-		if(folder.exists()) {
-			for(File f : folder.listFiles())
-				f.delete();
-			folder.delete();
-		}
-		
-		if(!folder.mkdirs())
+
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((accounts == null) ? 0 : accounts.hashCode());
+		result = prime * result + ((moneyNameValue == null) ? 0 : moneyNameValue.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (obj == null)
 			return false;
-		
-		File index = new File(folder, "index.yml");
-		if(!index.exists()) {
-			try {
-				index.createNewFile();
-				FileConfiguration config = YamlConfiguration.loadConfiguration(index);
-				config.set("moneyNameValue", bank.getMoneyNameValue());
-				config.save(index);
-			} catch (IOException e) {
-				e.printStackTrace();
-				return false;
-			}
-		}
-		
-		for(TokenAccount a : bank.getAccounts().values()) {
-			File file = new File(folder, a.getOwner() + ".yml");
-			
-			if(!TokenAccount.save(a, file))
+		if (getClass() != obj.getClass())
+			return false;
+		TokenBank other = (TokenBank) obj;
+		if (accounts == null)
+		{
+			if (other.accounts != null)
 				return false;
 		}
-		
+		else if (!accounts.equals(other.accounts))
+			return false;
+		if (moneyNameValue == null)
+		{
+			if (other.moneyNameValue != null)
+				return false;
+		}
+		else if (!moneyNameValue.equals(other.moneyNameValue))
+			return false;
 		return true;
-		
 	}
 	
-	public static TokenBank loads(File folder) throws FileNotFoundException, SettingMissingException {
-		if(!folder.exists())
-			throw new FileNotFoundException("Dossier TokenBank introuvable");
-		
-		File index = new File(folder, "index.yml");
-		if(!index.exists())
-			throw new FileNotFoundException("index.yml de TokenBank introuvable");
-		
-		FileConfiguration config = YamlConfiguration.loadConfiguration(index);
-		
-		if(!config.contains("moneyNameValue")) {
-			throw new SettingMissingException();
-		}
-		
-		TokenBank bank = new TokenBank(config.getString("moneyNameValue"));
-
-		for(File f : folder.listFiles()) {
-			if(f.getName().startsWith("index"))
-				continue;
-			
-			TokenAccount account = TokenAccount.load(f);
-			bank.addAccount(account);
-		}
-		
-		return bank;
-	}
-
+	
 }

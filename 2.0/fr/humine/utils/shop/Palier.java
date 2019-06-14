@@ -1,259 +1,252 @@
 package fr.humine.utils.shop;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import fr.humine.utils.exceptions.SaveFileException;
-import fr.humine.utils.exceptions.SettingMissingException;
 import humine.utils.cosmetiques.Cosmetique;
 
-public class Palier implements Achievement, Savable, Comparable<Palier>, Comparator<Palier>{
+public class Palier implements Achievement, Comparable<Palier>, Comparator<Palier>, Serializable
+{
 
-	private int numeroPalier;
-	private ItemStack itemRepresentation;
-	private Cosmetique cosmetique;
-	
-	private boolean unlock;
-	private boolean premium;
-	
-	private int tokenPass;
-	
-	private int humis;
-	private int pixel;
-	
-	public Palier(int numPalier, ItemStack itemRepresentation, int humis, int pixel, int tokenPass, Cosmetique c, boolean unlock, boolean premium) {
+	private static final long	serialVersionUID	= -7069299696895711227L;
+	private int					numeroPalier;
+	private String				itemRepresentationID;
+	private String				cosmetiqueID;
+
+	private boolean				unlock;
+
+	private int					tokenPass;
+
+	private int					humis;
+	private int					pixel;
+
+	private TypePalier			type;
+
+	public Palier(int numPalier, String itemRepresentationID, int humis, int pixel, int tokenPass, String cosmetiqueID,
+			boolean unlock, boolean premium)
+	{
 		this.numeroPalier = numPalier;
-		this.itemRepresentation = itemRepresentation;
-		this.cosmetique = c;
+		this.itemRepresentationID = itemRepresentationID;
+		this.cosmetiqueID = cosmetiqueID;
 		this.unlock = unlock;
-		this.premium = premium;
-		
+
+		if (premium)
+			this.type = TypePalier.PREMIUM;
+		else
+			this.type = TypePalier.FREE;
+
 		this.humis = humis;
 		this.pixel = pixel;
+
 	}
-	
-	public Palier(int numPalier, ItemStack itemRepresentation, int humis, int pixel, int tokenPass, Cosmetique c, boolean unlock) {
-		this(numPalier, itemRepresentation, humis, pixel, tokenPass, c, unlock, false);
+
+	public Palier(int numPalier, String itemRepresentationID, int humis, int pixel, int tokenPass, String cosmetiqueID,
+			boolean unlock)
+	{
+		this(numPalier, itemRepresentationID, humis, pixel, tokenPass, cosmetiqueID, unlock, false);
 	}
-	
-	public Palier(int numPalier, ItemStack itemRepresentation, int humis, int pixel, int tokenPass, Cosmetique c) {
-		this(numPalier, itemRepresentation, humis, pixel, tokenPass, c, false, false);
+
+	public Palier(int numPalier, String itemRepresentationID, int humis, int pixel, int tokenPass, String cosmetiqueID)
+	{
+		this(numPalier, itemRepresentationID, humis, pixel, tokenPass, cosmetiqueID, false, false);
 	}
-	
-	public Palier(int numPalier, ItemStack itemRepresentation, int humis, int pixel, int tokenPass) {
-		this(numPalier, itemRepresentation, humis, pixel, tokenPass, null, false, false);
+
+	public Palier(int numPalier, String itemRepresentationID, int humis, int pixel, int tokenPass)
+	{
+		this(numPalier, itemRepresentationID, humis, pixel, tokenPass, null, false, false);
 	}
 
 	@Override
-	public void giveRecompense(Player player) {
-		//TODO donner les recompenses
+	public void giveRecompense(Player player)
+	{
+		// TODO donner les recompenses
 	}
 
-	@Override
-	public Cosmetique getCosmetique() {
-		return this.cosmetique;
+	public ItemStack getItemRepresentation()
+	{
+		// TODO
+		return null;
+	}
+	
+	public String getItemRepresentationID()
+	{
+		return this.itemRepresentationID;
 	}
 
-	public ItemStack getItemRepresentation() {
-		return itemRepresentation;
+	public void setItemRepresentationID(String itemRepresentationID)
+	{
+		this.itemRepresentationID = itemRepresentationID;
 	}
 
-	public void setItemRepresentation(ItemStack itemRepresentation) {
-		this.itemRepresentation = itemRepresentation;
-	}
-
-	public boolean isUnlock() {
+	public boolean isUnlock()
+	{
 		return unlock;
 	}
 
-	public void setUnlock(boolean unlock) {
+	public void setUnlock(boolean unlock)
+	{
 		this.unlock = unlock;
 	}
 
-	public boolean isPremium() {
-		return premium;
-	}
-
-	public void setPremium(boolean premium) {
-		this.premium = premium;
-	}
-
-	public int getTokenPass() {
+	public int getTokenPass()
+	{
 		return tokenPass;
 	}
 
-	public void setTokenPass(int tokenPass) {
+	public void setTokenPass(int tokenPass)
+	{
 		this.tokenPass = tokenPass;
 	}
 
-	public int getNumeroPalier() {
+	public int getNumeroPalier()
+	{
 		return numeroPalier;
 	}
 
-	public void setCosmetique(Cosmetique cosmetique) {
-		this.cosmetique = cosmetique;
-	}
-
-	public void setHumis(int humis) {
+	public void setHumis(int humis)
+	{
 		this.humis = humis;
 	}
 
-	public void setPixel(int pixel) {
+	public void setPixel(int pixel)
+	{
 		this.pixel = pixel;
 	}
 
+	public TypePalier getType()
+	{
+		return type;
+	}
+
+	public void setType(TypePalier type)
+	{
+		this.type = type;
+	}
+
+	public String getCosmetiqueID()
+	{
+		return cosmetiqueID;
+	}
+
+	public void setCosmetiqueID(String cosmetiqueID)
+	{
+		this.cosmetiqueID = cosmetiqueID;
+	}
+
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((cosmetique == null) ? 0 : cosmetique.hashCode());
+		result = prime * result + ((cosmetiqueID == null) ? 0 : cosmetiqueID.hashCode());
 		result = prime * result + humis;
-		result = prime * result + ((itemRepresentation == null) ? 0 : itemRepresentation.hashCode());
+		result = prime * result + ((itemRepresentationID == null) ? 0 : itemRepresentationID.hashCode());
 		result = prime * result + numeroPalier;
 		result = prime * result + pixel;
-		result = prime * result + (premium ? 1231 : 1237);
 		result = prime * result + tokenPass;
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		result = prime * result + (unlock ? 1231 : 1237);
 		return result;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(Object obj)
+	{
 		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof Palier))
+		if (getClass() != obj.getClass())
 			return false;
 		Palier other = (Palier) obj;
-		if (cosmetique == null) {
-			if (other.cosmetique != null)
+		if (cosmetiqueID == null)
+		{
+			if (other.cosmetiqueID != null)
 				return false;
-		} else if (!cosmetique.equals(other.cosmetique))
+		}
+		else if (!cosmetiqueID.equals(other.cosmetiqueID))
 			return false;
 		if (humis != other.humis)
 			return false;
-		if (itemRepresentation == null) {
-			if (other.itemRepresentation != null)
+		if (itemRepresentationID == null)
+		{
+			if (other.itemRepresentationID != null)
 				return false;
-		} else if (!itemRepresentation.equals(other.itemRepresentation))
+		}
+		else if (!itemRepresentationID.equals(other.itemRepresentationID))
 			return false;
 		if (numeroPalier != other.numeroPalier)
 			return false;
 		if (pixel != other.pixel)
 			return false;
-		if (premium != other.premium)
-			return false;
 		if (tokenPass != other.tokenPass)
+			return false;
+		if (type != other.type)
 			return false;
 		if (unlock != other.unlock)
 			return false;
 		return true;
 	}
 
-
-	@Override
-	public void save(File file) throws SaveFileException {
-		try {
-			file.createNewFile();
-			
-			FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-
-			config.set("NumeroPalier", this.numeroPalier);
-			config.set("ItemRepresentation", this.itemRepresentation);
-			config.set("Cosmetique", (this.cosmetique != null) ? this.cosmetique.getId() : null);
-			config.set("Unlock", this.unlock);
-			config.set("Premium", this.premium);
-			config.set("TokenPass", this.tokenPass);
-			config.set("Humis", this.humis);
-			config.set("Pixel", this.pixel);
-			config.save(file);
-			file.setWritable(false);
-			
-		} catch (IOException e) {
-			throw new SaveFileException("Impossible de sauvegarder le palier");
-		}
-	}
-
-	@Override
-	public void load(File file) throws FileNotFoundException, SettingMissingException {
-		if(!file.exists())
-			throw new FileNotFoundException();
-		
-		file.setWritable(true);
-		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-		
-		if(!config.contains("NumeroPalier") || !config.contains("ItemRepresentation")|| 
-				!config.contains("Cosmetique") || !config.contains("Unlock") ||
-				!config.contains("Premium") || !config.contains("TokenPass") ||
-				!config.contains("Humis") || !config.contains("Pixel") ||
-				!config.contains("Exp")) {
-			throw new SettingMissingException();
-		}
-		
-		this.numeroPalier = config.getInt("NumeroPalier");
-		this.itemRepresentation = config.getItemStack("ItemRepresentation");
-		this.unlock = config.getBoolean("Unlock");
-		this.premium = config.getBoolean("Premium");
-		this.tokenPass = config.getInt("TokenPass");
-		this.humis = config.getInt("Humis");
-		this.pixel = config.getInt("Pixel");
-		
-		//TODO load le cosmetique
-	}
-	
-	public static ItemStack PalierToItemStack(Palier palier) {
+	public static ItemStack PalierToItemStack(Palier palier)
+	{
 		ItemStack item = palier.getItemRepresentation();
 		ChatColor color;
-		
-		if(palier.isUnlock())
+
+		if (palier.isUnlock())
 			color = ChatColor.GREEN;
 		else
 			color = ChatColor.YELLOW;
-		
+
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(color + "Palier " + palier.getNumeroPalier());
-		
+
 		List<String> lores = new ArrayList<>();
 
 		lores.add(color + "Nombre de token pour le debloquer: " + palier.getTokenPass());
 		lores.add(" ");
-		
-		if(palier.getCosmetique() != null) {
+
+		if (palier.getCosmetique() != null)
+		{
 			lores.add("Cosmetique: " + palier.getCosmetique().getName());
 		}
-		
+
 		meta.setLore(lores);
 		item.setItemMeta(meta);
 		item.setAmount(palier.getNumeroPalier());
-		
+
 		return item;
 	}
 
 	@Override
-	public int compareTo(Palier palier) {
-		if(this.numeroPalier < palier.getNumeroPalier())
+	public int compareTo(Palier palier)
+	{
+		if (this.numeroPalier < palier.getNumeroPalier())
 			return 1;
-		else if(this.numeroPalier > palier.getNumeroPalier())
+		else if (this.numeroPalier > palier.getNumeroPalier())
 			return -1;
 		else
 			return 0;
 	}
 
 	@Override
-	public int compare(Palier p1, Palier p2) {
+	public int compare(Palier p1, Palier p2)
+	{
 		return p1.compareTo(p2);
 	}
-	
+
+	@Override
+	public Cosmetique getCosmetique()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

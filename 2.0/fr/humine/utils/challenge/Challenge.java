@@ -1,14 +1,17 @@
 package fr.humine.utils.challenge;
 
+import java.io.Serializable;
 
-public abstract class Challenge {
+public abstract class Challenge implements Serializable{
 
+	private static final long serialVersionUID = 2034865242612946223L;
 	private String name;
 	private String description;
 	private ChallengeType type;
 	private Recompense recompense;
 	private boolean premium;
-	private boolean finish;
+	
+	private boolean validated;
 	
 	public Challenge(String name, String description, ChallengeType type, Recompense recompense, boolean premium) {
 		this.name = name;
@@ -16,7 +19,7 @@ public abstract class Challenge {
 		this.type = type;
 		this.recompense = recompense;
 		this.premium = premium;
-		this.finish = false;
+		this.validated = false;
 	}
 	
 	public Challenge(String name, ChallengeType type, Recompense recompense, boolean premium) {
@@ -71,13 +74,15 @@ public abstract class Challenge {
 		this.premium = premium;
 	}
 
-	public boolean isFinish() {
-		return finish;
+	public void valideChallenge() {
+		this.validated = true;
 	}
-
-	public void setFinish(boolean finish) {
-		this.finish = finish;
+	
+	public boolean isValidated() {
+		return this.validated;
 	}
+	
+	public abstract boolean isFinish();
 	
 	public abstract void updateChallenge();
 }

@@ -1,6 +1,6 @@
 package fr.humine.utils.shop;
 
-public interface ChallengeAchivement extends Achievement{
+public interface ChallengeAchievement extends Achievement{
 
 	public int getHumis();
 	

@@ -1,219 +1,250 @@
 package fr.humine.utils.shop;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
-import fr.humine.utils.exceptions.SaveFileException;
-import fr.humine.utils.exceptions.SettingMissingException;
+public class ChallengeShop implements Serializable
+{
 
-public class ChallengeShop implements Savable{
+	private static final long		serialVersionUID	= 5572482398621190603L;
+	private String					name;
+	private List<Page>				pages;
+	private Map<String, Integer>	playersInShop;
 
-	private String name;
-	private List<Page> pages;
-	private Map<Player, Integer> playersInShop;
-	
-	public ChallengeShop(String name, List<Page> pages) {
+	public ChallengeShop(String name, List<Page> pages)
+	{
 		this.name = name;
 		this.pages = pages;
-		
-		this.playersInShop = new HashMap<Player, Integer>();
+
+		this.playersInShop = new HashMap<String, Integer>();
 	}
-	
-	public ChallengeShop(String name) {
+
+	public ChallengeShop(String name)
+	{
 		this(name, new ArrayList<Page>());
 	}
-	
-	public boolean addPage(Page page) {
+
+	public boolean addPage(Page page)
+	{
 		return this.pages.add(page);
 	}
-	
-	public boolean removePage(Page page) {
+
+	public boolean removePage(Page page)
+	{
 		return this.pages.remove(page);
 	}
-	
-	public boolean contains(Page page) {
+
+	public boolean contains(Page page)
+	{
 		return this.pages.contains(page);
 	}
-	
-	public List<Page> getPages() {
+
+	public List<Page> getPages()
+	{
 		return pages;
 	}
-	
-	public boolean isEmpty() {
+
+	public boolean isEmpty()
+	{
 		return this.pages.isEmpty();
 	}
-	
-	public Page getFirstPage() {
-		if(!isEmpty())
+
+	public Page getFirstPage()
+	{
+		if (!isEmpty())
 			return this.pages.get(0);
 		return null;
 	}
-	
-	public Page getLastPage() {
-		if(!isEmpty())
+
+	public Page getLastPage()
+	{
+		if (!isEmpty())
 			return this.pages.get(this.pages.size() - 1);
 		return null;
 	}
-	
-	public Page getPage(int n) {
-		if(n >= 0 && n < this.pages.size())
+
+	public Page getPage(int n)
+	{
+		if (n >= 0 && n < this.pages.size())
 			return this.pages.get(n);
 		return null;
 	}
-	
-	public Palier getPalier(int numPalier) {
-		for(Page p : this.pages) {
-			for(Palier palier : p.getFreePalier()) {
-				if(palier.getNumeroPalier() == numPalier)
-					return palier;
-			}
-			for(Palier palier : p.getPremiumPalier()) {
-				if(palier.getNumeroPalier() == numPalier)
-					return palier;
+
+	public Palier getPalier(TypePalier type, int numPalier)
+	{
+		if (type == TypePalier.FREE)
+		{
+			for (Page p : this.pages)
+			{
+				for (Palier palier : p.getFreePalier())
+				{
+					if (palier.getNumeroPalier() == numPalier)
+						return palier;
+				}
 			}
 		}
+		else if (type == TypePalier.PREMIUM)
+		{
+			for (Page p : this.pages)
+			{
+				for (Palier palier : p.getPremiumPalier())
+				{
+					if (palier.getNumeroPalier() == numPalier)
+						return palier;
+				}
+			}
+		}
+
 		return null;
 	}
-	
-	public boolean containsPalier(int numPalier) {
-		return getPalier(numPalier) != null;
+
+	public boolean containsPalier(TypePalier type, int numPalier)
+	{
+		if (type == TypePalier.FREE)
+			return getPalier(TypePalier.FREE, numPalier) != null;
+		else if (type == TypePalier.PREMIUM)
+			return getPalier(TypePalier.PREMIUM, numPalier) != null;
+		else
+			return false;
 	}
-	
-	public Map<Player, Integer> getPlayersInShop() {
+
+	public Map<String, Integer> getPlayersInShop()
+	{
 		return playersInShop;
 	}
-	
-	public void addPlayerInShop(Player player) {
-		this.playersInShop.put(player, 0);
+
+	public void addPlayerInShop(Player player)
+	{
+		this.playersInShop.put(player.getName(), 0);
 	}
-	
-	public void removePlayerInShop(Player player) {
-		this.playersInShop.remove(player);
+
+	public void removePlayerInShop(Player player)
+	{
+		this.playersInShop.remove(player.getName());
 	}
-	
-	public String getName() {
+
+	public String getName()
+	{
 		return name;
 	}
-	
-	public void setName(String name) {
+
+	public void setName(String name)
+	{
 		this.name = name;
 	}
-	
-	public void openShop(Player player) {
+
+	public void openShop(Player player)
+	{
 		Inventory inv = Page.PageToInventory(getFirstPage(), getName());
 		addPlayerInShop(player);
 		player.openInventory(inv);
 	}
-	
-	public void nextPage(Player player) {
-		if(!this.playersInShop.containsKey(player))
+
+	public void nextPage(Player player)
+	{
+		if (!this.playersInShop.containsKey(player.getName()))
 			return;
-		
-		int n = this.playersInShop.get(player) + 1;
+
+		int n = this.playersInShop.get(player.getName()) + 1;
 		Page p = getPage(n);
-		
-		if(p == null)
+
+		if (p == null)
 			return;
-		
-		this.playersInShop.replace(player, n);
-		
+
+		this.playersInShop.replace(player.getName(), n);
+
 		Inventory inv = Page.PageToInventory(p, getName());
 		player.openInventory(inv);
 	}
-	
-	public void previousPage(Player player) {
-		if(!this.playersInShop.containsKey(player))
+
+	public void previousPage(Player player)
+	{
+		if (!this.playersInShop.containsKey(player.getName()))
 			return;
-		
-		int n = this.playersInShop.get(player) - 1;
+
+		int n = this.playersInShop.get(player.getName()) - 1;
 		Page p = getPage(n);
-		
-		if(p == null)
+
+		if (p == null)
 			return;
-		
-		this.playersInShop.replace(player, n);
-		
+
+		this.playersInShop.replace(player.getName(), n);
+
 		Inventory inv = Page.PageToInventory(p, getName());
 		player.openInventory(inv);
 	}
-	
-	public void goToPage(Player player, int n) {
-		if(!this.playersInShop.containsKey(player))
+
+	public void goToPage(Player player, int n)
+	{
+		if (!this.playersInShop.containsKey(player.getName()))
 			return;
-		
+
 		Page p = getPage(n);
-		
-		if(p == null)
+
+		if (p == null)
 			return;
-		
-		this.playersInShop.replace(player, n);
-		
+
+		this.playersInShop.replace(player.getName(), n);
+
 		Inventory inv = Page.PageToInventory(p, getName());
 		player.openInventory(inv);
 	}
-	
-	public void closeShop(Player player) {
+
+	public void closeShop(Player player)
+	{
 		this.playersInShop.remove(player);
 		player.closeInventory();
 	}
 
 	@Override
-	public void save(File folder) throws SaveFileException {
-		if(!folder.exists())
-			folder.mkdirs();
-		
-		File index = new File(folder, "index.yml");
-		
-		try {
-			index.createNewFile();
-			
-			FileConfiguration config = YamlConfiguration.loadConfiguration(index);
-			config.set("Name", this.name);
-			config.save(index);
-			
-		} catch (IOException e) {
-			throw new SaveFileException();
-		}
-		
-		for(int i = 0; i < this.pages.size(); i++) {
-			File f = new File(folder, "Page " + i);
-			this.pages.get(i).save(f);
-		}
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((pages == null) ? 0 : pages.hashCode());
+		result = prime * result + ((playersInShop == null) ? 0 : playersInShop.hashCode());
+		return result;
 	}
 
 	@Override
-	public void load(File folder) throws FileNotFoundException, SettingMissingException {
-		if(!folder.exists())
-			throw new FileNotFoundException("Dossier du ChallengeShop introuvable");
-		
-		File index = new File(folder, "index.yml");
-		if(!index.exists())
-			throw new FileNotFoundException("index.yml du ChallengeShop introuvable");
-		
-		FileConfiguration config = YamlConfiguration.loadConfiguration(index);
-		if(!config.contains("Name"))
-			throw new SettingMissingException();
-		
-		this.name = config.getString("Name");
-		
-		for(File file : folder.listFiles()) {
-			if(file.getName().startsWith("index"))
-				continue;
-			
-			Page page = new Page();
-			page.load(file);
-			
-			this.pages.add(page);
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ChallengeShop other = (ChallengeShop) obj;
+		if (name == null)
+		{
+			if (other.name != null)
+				return false;
 		}
+		else if (!name.equals(other.name))
+			return false;
+		if (pages == null)
+		{
+			if (other.pages != null)
+				return false;
+		}
+		else if (!pages.equals(other.pages))
+			return false;
+		if (playersInShop == null)
+		{
+			if (other.playersInShop != null)
+				return false;
+		}
+		else if (!playersInShop.equals(other.playersInShop))
+			return false;
+		return true;
 	}
+
 }
