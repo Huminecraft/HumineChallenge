@@ -168,6 +168,14 @@ public class ChallengeMain extends JavaPlugin{
 		this.bankCosmetique = c;
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
 
 	@Override
 	public void onDisable() {
@@ -231,25 +239,10 @@ public class ChallengeMain extends JavaPlugin{
 		out.flush();
 	}
 
-	private void saveChallengeShop(File file) throws FileNotFoundException, IOException {
-		if(!file.exists())
-			file.createNewFile();
-		
-		out = new ObjectOutputStream(new FileOutputStream(file));
-		if(this.bankChallengeShop == null)
-			this.bankChallengeShop = new BankChallengeShop(new ChallengeShop("ChallengeShop", new Challenger()));
-		
-		ChallengeShop shop = this.bankChallengeShop.getDefaultChallengeShop();
-		if(shop == null) {
-			shop = new ChallengeShop("ChallengeShop", new Challenger("null"));
-			Bukkit.broadcastMessage("DEBUG SAVE NULL");
-			out.writeObject(shop);
-		} else {
-			Bukkit.broadcastMessage("DEBUG SAVE NOT NULL");
-			out.writeObject(shop);
+	private void saveChallengeShop(File folder) throws IOException, SaveFileException {
+		if(this.bankChallengeShop.getDefaultChallengeShop() != null) {
+			this.bankChallengeShop.getDefaultChallengeShop().save(folder);
 		}
-		
-		out.flush();
 	}
 
 	private void saveBankToken(File folder) throws IOException, SaveFileException {
