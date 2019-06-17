@@ -93,6 +93,10 @@ public class TokenBank implements Serializable{
 		return this.accounts.get(playerName);
 	}
 	
+	public boolean contains(String playerName) {
+		return getAccount(playerName) != null;
+	}
+	
 	/**
 	 * Ajouter des tokens a un compte
 	 * @param playerName le compte du joueur

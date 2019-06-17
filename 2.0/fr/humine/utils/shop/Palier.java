@@ -6,10 +6,12 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import fr.humine.ChallengeMain;
 import humine.utils.cosmetiques.Cosmetique;
 
 public class Palier implements Achievement, Comparable<Palier>, Comparator<Palier>, Serializable
@@ -71,8 +73,10 @@ public class Palier implements Achievement, Comparable<Palier>, Comparator<Palie
 
 	public ItemStack getItemRepresentation()
 	{
-		// TODO
-		return null;
+		if(!this.itemRepresentationID.equals("") && this.itemRepresentationID != null)
+			return ChallengeMain.getInstance().getBankItemStack().getItemStack(Integer.parseInt(this.itemRepresentationID));
+		else
+			return null;
 	}
 	
 	public String getItemRepresentationID()
@@ -130,12 +134,7 @@ public class Palier implements Achievement, Comparable<Palier>, Comparator<Palie
 		this.type = type;
 	}
 
-	public String getCosmetiqueID()
-	{
-		return cosmetiqueID;
-	}
-
-	public void setCosmetiqueID(String cosmetiqueID)
+	public void setCosmetique(String cosmetiqueID)
 	{
 		this.cosmetiqueID = cosmetiqueID;
 	}
@@ -195,7 +194,7 @@ public class Palier implements Achievement, Comparable<Palier>, Comparator<Palie
 		return true;
 	}
 
-	public static ItemStack PalierToItemStack(Palier palier)
+	public static ItemStack PalierToItemStack(Palier palier, boolean isPremium)
 	{
 		ItemStack item = palier.getItemRepresentation();
 		ChatColor color;
@@ -204,6 +203,9 @@ public class Palier implements Achievement, Comparable<Palier>, Comparator<Palie
 			color = ChatColor.GREEN;
 		else
 			color = ChatColor.YELLOW;
+		
+		if(palier.getType() == TypePalier.PREMIUM && !isPremium)
+			color = ChatColor.RED;
 
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(color + "Palier " + palier.getNumeroPalier());
@@ -215,14 +217,33 @@ public class Palier implements Achievement, Comparable<Palier>, Comparator<Palie
 
 		if (palier.getCosmetique() != null)
 		{
-			lores.add("Cosmetique: " + palier.getCosmetique().getName());
+			lores.add(color + "Cosmetique: " + palier.getCosmetique().getName());
 		}
 
+		if(palier.getType() == TypePalier.PREMIUM && !isPremium) {
+			lores.add(" ");
+			lores.add(color + "Blocked");
+		}
+		
 		meta.setLore(lores);
 		item.setItemMeta(meta);
 		item.setAmount(palier.getNumeroPalier());
 
 		return item;
+	}
+	
+	public static void descriptionPalier(CommandSender sender, Palier palier) {
+		sender.sendMessage(ChatColor.GOLD + "===Description Palier===");
+		
+		sender.sendMessage("Numero Palier: " + ChatColor.AQUA + palier.getNumeroPalier());
+		sender.sendMessage("Type de palier: " + ChatColor.AQUA + palier.getType());
+		sender.sendMessage("Item Representation: " + ChatColor.AQUA + palier.getItemRepresentation().getType());
+		sender.sendMessage("Prix Humis : " + ChatColor.AQUA + palier.getHumis());
+		sender.sendMessage("Prix Pixel : " + ChatColor.AQUA + palier.getPixel());
+		sender.sendMessage("Nombre de token necessaire : " + ChatColor.AQUA + palier.getTokenPass());
+		sender.sendMessage("Cosmetique : " + ChatColor.AQUA + palier.getCosmetiqueID());
+		
+		sender.sendMessage(ChatColor.GOLD + "===Description Palier===");
 	}
 
 	@Override
@@ -245,8 +266,22 @@ public class Palier implements Achievement, Comparable<Palier>, Comparator<Palie
 	@Override
 	public Cosmetique getCosmetique()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		if(!this.cosmetiqueID.equals("") && this.cosmetiqueID != null)
+			return ChallengeMain.getInstance().getBankCosmetique().getCosmetique(this.cosmetiqueID);
+		else
+			return null;
+	}
+	
+	public String getCosmetiqueID() {
+		return cosmetiqueID;
 	}
 
+	public int getHumis() {
+		return humis;
+	}
+
+	public int getPixel() {
+		return pixel;
+	}
+	
 }

@@ -1,0 +1,17 @@
+name: HumineChallenge
+author: MizakiGaming
+version: 2.0b
+main: fr.humine.ChallengeMain
+commands:
+  challengeshop:
+    usage:
+    description:
+    permission:
+  createpalier:
+    usage:
+    description:
+    permission:
+  bankcosmetique:
+    usage:
+    description:
+    permission:

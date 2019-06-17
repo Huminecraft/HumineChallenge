@@ -25,6 +25,10 @@ public class LevelBank implements Serializable {
 		return this.players.put(player.getName(), new Level());
 	}
 	
+	public Level addPlayer(Player player, Level level) {
+		return this.players.put(player.getName(), level);
+	}
+	
 	public Level removePlayer(Player player) {
 		return this.players.remove(player.getName());
 	}

@@ -250,7 +250,7 @@ public class Page implements Serializable
 		return premiumPalier;
 	}
 
-	public static Inventory PageToInventory(Page page, String name)
+	public static Inventory PageToInventory(Page page, String name, boolean isPremium)
 	{
 		Inventory inv = Bukkit.createInventory(null, (9 * 5), name);
 
@@ -264,7 +264,7 @@ public class Page implements Serializable
 		{
 			if (page.getFreePalier()[i] != null)
 			{
-				inv.setItem((9 + i), Palier.PalierToItemStack(page.getFreePalier()[i]));
+				inv.setItem((9 + i), Palier.PalierToItemStack(page.getFreePalier()[i], isPremium));
 			}
 		}
 
@@ -272,7 +272,7 @@ public class Page implements Serializable
 		{
 			if (page.getPremiumPalier()[i] != null)
 			{
-				inv.setItem(((9 * 3) + i), Palier.PalierToItemStack(page.getPremiumPalier()[i]));
+				inv.setItem(((9 * 3) + i), Palier.PalierToItemStack(page.getPremiumPalier()[i], isPremium));
 			}
 		}
 

@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import org.bukkit.entity.Player;
 
+import fr.humine.ChallengeMain;
 import fr.humine.utils.shop.ChallengeAchievement;
 import humine.utils.cosmetiques.Cosmetique;
 
@@ -38,8 +39,7 @@ public class Recompense implements ChallengeAchievement, Serializable{
 
 	@Override
 	public Cosmetique getCosmetique() {
-		return null;
-		//TODO
+		return ChallengeMain.getInstance().getBankCosmetique().getCosmetique(this.cosmetiqueID);
 	}
 
 	@Override
