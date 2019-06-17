@@ -1,23 +1,28 @@
 package fr.humine.utils.shop;
 
-import java.io.Serializable;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import fr.humine.ChallengeMain;
+import fr.humine.utils.exceptions.SaveFileException;
+import fr.humine.utils.exceptions.SettingMissingException;
 import humine.utils.cosmetiques.Cosmetique;
 
-public class Palier implements Achievement, Comparable<Palier>, Comparator<Palier>, Serializable
+public class Palier implements Achievement, Comparable<Palier>, Comparator<Palier>, Savable
 {
 
-	private static final long	serialVersionUID	= -7069299696895711227L;
 	private int					numeroPalier;
 	private String				itemRepresentationID;
 	private String				cosmetiqueID;
@@ -282,6 +287,42 @@ public class Palier implements Achievement, Comparable<Palier>, Comparator<Palie
 
 	public int getPixel() {
 		return pixel;
+	}
+
+	@Override
+	public void save(File file) throws SaveFileException, IOException {
+		if(!file.exists())
+			file.createNewFile();
+		
+		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+		config.set("Palier.NumeroPalier", this.numeroPalier);
+		config.set("Palier.ItemRepresentationID", this.itemRepresentationID);
+		config.set("Palier.CosmetiqueID", this.cosmetiqueID);
+		config.set("Palier.Unlock", this.unlock);
+		config.set("Palier.TokenPass", this.tokenPass);
+		config.set("Palier.Humis", this.humis);
+		config.set("Palier.Pixel", this.pixel);
+		config.set("Palier.Type", this.type.toString());
+		config.save(file);
+	}
+
+	@Override
+	public void load(File file) throws FileNotFoundException, SettingMissingException {
+		if(!file.exists())
+			throw new FileNotFoundException();
+		
+		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+		if(!config.contains("Palier"))
+			throw new SettingMissingException();
+		
+		this.numeroPalier = config.getInt("Palier.NumeroPalier");
+		this.itemRepresentationID = config.getString("Palier.ItemRepresentationID");
+		this.cosmetiqueID = config.getString("Palier.CosmetiqueID");
+		this.unlock = config.getBoolean("Palier.Unlock");
+		this.tokenPass = config.getInt("Palier.TokenPass");
+		this.humis = config.getInt("Palier.Humis");
+		this.pixel = config.getInt("Palier.Pixel");
+		this.type = TypePalier.valueOf(config.getString("Palier.Type"));
 	}
 	
 }

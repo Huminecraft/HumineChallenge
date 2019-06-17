@@ -1,28 +1,34 @@
 package fr.humine.utils.shop;
 
-import java.io.Serializable;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
+import fr.humine.ChallengeMain;
+import fr.humine.utils.exceptions.SaveFileException;
+import fr.humine.utils.exceptions.SettingMissingException;
 import fr.humine.utils.players.Challenger;
 
-public class ChallengeShop implements Serializable {
+public class ChallengeShop implements Savable {
 
-	private static final long serialVersionUID = 5572482398621190603L;
 	private String name;
 	private List<Page> pages;
 
-	private Challenger challenger;
+	private String challenger;
 	private int currentPage;
 
 	public ChallengeShop(String name, List<Page> pages, Challenger challenger) {
 		this.name = name;
 		this.pages = pages;
-		this.challenger = challenger;
+		this.challenger = challenger.getChallengerName();
 		this.currentPage = 0;
 		
 		if(challenger != null) {
@@ -35,14 +41,15 @@ public class ChallengeShop implements Serializable {
 	}
 	
 	private void updateData() {
+		Challenger challenger = ChallengeMain.getInstance().getBankChallenger().getChallenger(this.challenger);
 		for(Page page : this.pages) {
 			for(Palier palier : page.getFreePalier()) {
-				if(this.challenger.getData().getPalierUnlock().contains(palier)) {
+				if(challenger.getData().getPalierUnlock().contains(palier)) {
 					palier.setUnlock(true);
 				}
 			}
 			for(Palier palier : page.getPremiumPalier()) {
-				if(this.challenger.getData().getPalierUnlock().contains(palier)) {
+				if(challenger.getData().getPalierUnlock().contains(palier)) {
 					palier.setUnlock(true);
 				}
 			}
@@ -134,7 +141,7 @@ public class ChallengeShop implements Serializable {
 	}
 
 	public Challenger getChallenger() {
-		return challenger;
+		return ChallengeMain.getInstance().getBankChallenger().getChallenger(this.challenger);
 	}
 
 	public String getName() {
@@ -146,16 +153,17 @@ public class ChallengeShop implements Serializable {
 	}
 
 	public void openShop() {
-		Player player = Bukkit.getPlayer(this.challenger.getChallengerName());
+		Player player = Bukkit.getPlayer(this.challenger);
 		if (player == null)
 			return;
-
+		
+		Challenger challenger = ChallengeMain.getInstance().getBankChallenger().getChallenger(this.challenger);
 		Inventory inv = Page.PageToInventory(getFirstPage(), getName(), challenger.isPremium());
 		player.openInventory(inv);
 	}
 
 	public void nextPage() {
-		Player player = Bukkit.getPlayer(this.challenger.getChallengerName());
+		Player player = Bukkit.getPlayer(this.challenger);
 		if (player == null)
 			return;
 
@@ -166,12 +174,14 @@ public class ChallengeShop implements Serializable {
 
 		this.currentPage++;
 		updateData();
+		
+		Challenger challenger = ChallengeMain.getInstance().getBankChallenger().getChallenger(this.challenger);
 		Inventory inv = Page.PageToInventory(p, getName(), challenger.isPremium());
 		player.openInventory(inv);
 	}
 
 	public void previousPage() {
-		Player player = Bukkit.getPlayer(this.challenger.getChallengerName());
+		Player player = Bukkit.getPlayer(this.challenger);
 		if (player == null)
 			return;
 
@@ -182,12 +192,14 @@ public class ChallengeShop implements Serializable {
 
 		this.currentPage--;
 		updateData();
+		
+		Challenger challenger = ChallengeMain.getInstance().getBankChallenger().getChallenger(this.challenger);
 		Inventory inv = Page.PageToInventory(p, getName(), challenger.isPremium());
 		player.openInventory(inv);
 	}
 
 	public void goToPage(int n) {
-		Player player = Bukkit.getPlayer(this.challenger.getChallengerName());
+		Player player = Bukkit.getPlayer(this.challenger);
 		if (player == null)
 			return;
 
@@ -198,12 +210,14 @@ public class ChallengeShop implements Serializable {
 
 		this.currentPage = n;
 		updateData();
+		
+		Challenger challenger = ChallengeMain.getInstance().getBankChallenger().getChallenger(this.challenger);
 		Inventory inv = Page.PageToInventory(p, getName(), challenger.isPremium());
 		player.openInventory(inv);
 	}
 
 	public void closeShop() {
-		Player player = Bukkit.getPlayer(this.challenger.getChallengerName());
+		Player player = Bukkit.getPlayer(this.challenger);
 		if (player == null)
 			return;
 
@@ -248,6 +262,51 @@ public class ChallengeShop implements Serializable {
 		} else if (!pages.equals(other.pages))
 			return false;
 		return true;
+	}
+
+	@Override
+	public void save(File folder) throws SaveFileException, IOException {
+		if(!folder.exists()) {
+			folder.mkdirs();
+		}
+		
+		File index = new File(folder, "index.yml");
+		FileConfiguration config = YamlConfiguration.loadConfiguration(index);
+		config.set("ChallengeShop.Challenger", this.challenger);
+		config.set("ChallengeShop.Name", this.name);
+		config.save(index);
+		
+		int i = 0;
+		for(Page page : this.pages) {
+			File file = new File(folder, ""+i);
+			page.save(file);
+		}
+	}
+
+	@Override
+	public void load(File folder) throws FileNotFoundException, SettingMissingException {
+		if(!folder.exists())
+			throw new FileNotFoundException();
+		
+		File index = new File(folder, "index.yml");
+		if(index.exists())
+			throw new FileNotFoundException("index.yml non existant");
+		
+		FileConfiguration config = YamlConfiguration.loadConfiguration(index);
+		if(!config.contains("ChallengeShop.Challenger") || !config.contains("ChallengeShop.Name"))
+			throw new SettingMissingException();
+		
+		this.challenger = config.getString("ChallengeShop.Challenger");
+		this.name = config.getString("ChallengeShop.Name");
+		
+		for(File file : folder.listFiles()) {
+			if(file.getName().startsWith("index"))
+				continue;
+			
+			Page page = new Page();
+			page.load(file);
+			addPage(page);
+		}
 	}
 	
 	

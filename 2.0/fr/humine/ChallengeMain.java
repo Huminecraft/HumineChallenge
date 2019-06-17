@@ -143,25 +143,19 @@ public class ChallengeMain extends JavaPlugin{
 	}
 
 
-	private void loadBankChallengeShop(File file) throws FileNotFoundException, IOException, ClassNotFoundException {
-		if(!file.exists()) {
-			ChallengeShop defaultShop = new ChallengeShop("ChallengeShop", new Challenger());
-			BankChallengeShop bank = new BankChallengeShop(defaultShop);
-			this.bankChallengeShop = bank;
-		}
+	private void loadBankChallengeShop(File folder) throws IOException, SettingMissingException {
+		ChallengeShop shop = new ChallengeShop("ChallengeShop", new Challenger("null"));
+		if(folder.exists())
+			shop.load(folder);
 		
-		in = new ObjectInputStream(new FileInputStream(file));
-		ChallengeShop shop = (ChallengeShop) in.readObject();
 		this.bankChallengeShop = new BankChallengeShop(shop);
 	}
 
 
-	private void loadBankToken(File file) throws ClassNotFoundException, IOException {
-		if(!file.exists())
-			this.bankToken = new TokenBank("Token");
-		
-		in = new ObjectInputStream(new FileInputStream(file));
-		this.bankToken = (TokenBank) in.readObject();
+	private void loadBankToken(File folder) throws IOException, SettingMissingException {
+		this.bankToken = new TokenBank("Token");
+		if(folder.exists())
+			this.bankToken.load(folder);
 	}
 
 
@@ -258,13 +252,10 @@ public class ChallengeMain extends JavaPlugin{
 		out.flush();
 	}
 
-	private void saveBankToken(File file) throws IOException {
-		if(!file.exists())
-			file.createNewFile();
-		
-		out = new ObjectOutputStream(new FileOutputStream(file));
-		out.writeObject(this.bankToken);
-		out.flush();
+	private void saveBankToken(File folder) throws IOException, SaveFileException {
+		if(this.bankToken != null) {
+			this.bankToken.save(folder);
+		}
 	}
 
 	private void saveBankCosmetique(File folder) throws SaveFileException {

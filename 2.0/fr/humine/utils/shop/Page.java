@@ -1,15 +1,18 @@
 package fr.humine.utils.shop;
 
-import java.io.Serializable;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Arrays;
 
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 
-public class Page implements Serializable
-{
+import fr.humine.utils.exceptions.SaveFileException;
+import fr.humine.utils.exceptions.SettingMissingException;
 
-	private static final long serialVersionUID = 9072389256378500539L;
+public class Page implements Savable
+{
 
 	private static final byte	lineLimit	= 9;
 
@@ -310,6 +313,38 @@ public class Page implements Serializable
 		if (!Arrays.equals(premiumPalier, other.premiumPalier))
 			return false;
 		return true;
+	}
+	
+	@Override
+	public void save(File folder) throws SaveFileException, IOException {
+		if(!folder.exists()) {
+			folder.mkdirs();
+		}
+		
+		int i = 0;
+		for(Palier palier : this.freePalier) {
+			File file = new File(folder, i+".yml");
+			i++;
+			palier.save(file);
+		}
+		
+		for(Palier palier : this.premiumPalier) {
+			File file = new File(folder, i+".yml");
+			i++;
+			palier.save(file);
+		}
+	}
+	
+	@Override
+	public void load(File folder) throws FileNotFoundException, SettingMissingException {
+		if(!folder.exists())
+			throw new FileNotFoundException();
+		
+		for(File file : folder.listFiles()) {
+			Palier palier = new Palier(0, "", 0, 0, 0);
+			palier.load(file);
+			addPalier(palier);
+		}
 	}
 
 }

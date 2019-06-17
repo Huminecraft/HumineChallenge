@@ -3,7 +3,9 @@ package fr.humine.utils.token;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.Serializable;
+
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import fr.humine.utils.exceptions.SaveFileException;
 import fr.humine.utils.exceptions.SettingMissingException;
@@ -83,13 +85,25 @@ public class TokenAccount implements Savable{
 		if(!file.exists()) {
 			file.createNewFile();
 		}
+		
+		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+		config.set("TokenAccount.Owner", this.owner);
+		config.set("TokenAccount.Token", this.token);
+		config.save(file);
 	}
 
 	@Override
 	public void load(File file) throws FileNotFoundException, SettingMissingException
 	{
-		// TODO Auto-generated method stub
+		if(!file.exists())
+			throw new FileNotFoundException();
 		
+		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+		if(!config.contains("TokenAccount.Owner") || !config.contains("TokenAccount.Token"))
+			throw new SettingMissingException();
+		
+		this.owner = config.getString("TokenAccount.Owner");
+		this.token = config.getInt("TokenAccount.Token");
 	}
 	
 	

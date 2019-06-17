@@ -2,8 +2,11 @@ package fr.humine.utils.token;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.Serializable;
+import java.io.IOException;
 import java.util.HashMap;
+
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import fr.humine.utils.exceptions.SaveFileException;
 import fr.humine.utils.exceptions.SettingMissingException;
@@ -226,16 +229,47 @@ public class TokenBank implements Savable{
 	}
 
 	@Override
-	public void save(File file) throws SaveFileException
+	public void save(File folder) throws SaveFileException, IOException
 	{
+		if(!folder.exists()) {
+			folder.mkdirs();
+		}
 		
+		File index = new File(folder, "index.yml");
+		FileConfiguration config = YamlConfiguration.loadConfiguration(index);
+		config.set("TokenBank.MoneyNameValue", this.moneyNameValue);
+		config.save(index);
+		
+		for(TokenAccount account : this.accounts.values()) {
+			File file = new File(folder, account.getOwner()+".yml");
+			account.save(file);
+		}
 	}
 
 	@Override
-	public void load(File file) throws FileNotFoundException, SettingMissingException
+	public void load(File folder) throws FileNotFoundException, SettingMissingException
 	{
-		// TODO Auto-generated method stub
+		if(!folder.exists())
+			throw new FileNotFoundException();
 		
+		File index = new File(folder, "index.yml");
+		if(index.exists())
+			throw new FileNotFoundException("index.yml non existant");
+		
+		FileConfiguration config = YamlConfiguration.loadConfiguration(index);
+		if(!config.contains("TokenBank.MoneyNameValue"))
+			throw new SettingMissingException();
+		
+		this.moneyNameValue = config.getString("TokenBank.MoneyNameValue");
+		
+		for(File file : folder.listFiles()) {
+			if(file.getName().startsWith("index"))
+				continue;
+			
+			TokenAccount account = new TokenAccount("");
+			account.load(file);
+			addAccount(account);
+		}
 	}
 	
 	
