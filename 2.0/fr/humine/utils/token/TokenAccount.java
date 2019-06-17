@@ -1,6 +1,13 @@
 package fr.humine.utils.token;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable;
+
+import fr.humine.utils.exceptions.SaveFileException;
+import fr.humine.utils.exceptions.SettingMissingException;
+import fr.humine.utils.shop.Savable;
 
 /**
  * Classe reprensentant un compte bancaire de token
@@ -8,9 +15,8 @@ import java.io.Serializable;
  * @author miza
  *
  */
-public class TokenAccount implements Serializable{
+public class TokenAccount implements Savable{
 
-	private static final long serialVersionUID = 4968151659799426878L;
 	private String owner;
 	private int token;
 
@@ -69,6 +75,21 @@ public class TokenAccount implements Serializable{
 		if (token != other.token)
 			return false;
 		return true;
+	}
+
+	@Override
+	public void save(File file) throws SaveFileException, IOException
+	{
+		if(!file.exists()) {
+			file.createNewFile();
+		}
+	}
+
+	@Override
+	public void load(File file) throws FileNotFoundException, SettingMissingException
+	{
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

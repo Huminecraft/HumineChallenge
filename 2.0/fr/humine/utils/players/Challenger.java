@@ -29,12 +29,19 @@ public class Challenger implements Serializable {
 	private ChallengerData data;
 	
 	public Challenger(Player player) {
-		this.name = player.getName();
+		this(player.getName());
+	}
+	
+	public Challenger(String playerName)
+	{
+		this.name = playerName;
 		this.dailyChallenge = ChallengeMain.getInstance().getCurrentDailyChallenge();
 		this.weeklyChallenge = ChallengeMain.getInstance().getCurrentWeeklyChallenge();
 		this.data = new ChallengerData();
 		this.premium = false;
 	}
+	
+	public Challenger(){}
 	
 	public String getChallengerName() {
 		return name;

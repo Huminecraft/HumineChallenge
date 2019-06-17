@@ -1,7 +1,13 @@
 package fr.humine.utils.token;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.HashMap;
+
+import fr.humine.utils.exceptions.SaveFileException;
+import fr.humine.utils.exceptions.SettingMissingException;
+import fr.humine.utils.shop.Savable;
 
 
 /**
@@ -9,9 +15,8 @@ import java.util.HashMap;
  * @author miza
  *
  */
-public class TokenBank implements Serializable{
+public class TokenBank implements Savable{
 
-	private static final long serialVersionUID = -8878858346782253585L;
 	private String moneyNameValue;
 	private HashMap<String, TokenAccount> accounts;
 	
@@ -218,6 +223,19 @@ public class TokenBank implements Serializable{
 		else if (!moneyNameValue.equals(other.moneyNameValue))
 			return false;
 		return true;
+	}
+
+	@Override
+	public void save(File file) throws SaveFileException
+	{
+		
+	}
+
+	@Override
+	public void load(File file) throws FileNotFoundException, SettingMissingException
+	{
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

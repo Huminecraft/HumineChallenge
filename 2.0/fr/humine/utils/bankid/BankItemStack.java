@@ -79,6 +79,9 @@ public class BankItemStack implements Savable{
 			throw new FileNotFoundException();
 		
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+		if(!config.contains("Items"))
+			throw new SettingMissingException("Aucun itemStack");
+		
 		for(String key : config.getConfigurationSection("Items").getKeys(false)) {
 			ItemStack item = config.getItemStack("Items." + key);
 			addItemStack(Integer.parseInt(key), item);

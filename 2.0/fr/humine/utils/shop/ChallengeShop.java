@@ -30,6 +30,10 @@ public class ChallengeShop implements Serializable {
 		}
 	}
 	
+	public ChallengeShop(String name, Challenger challenger) {
+		this(name, new ArrayList<Page>(), challenger);
+	}
+	
 	private void updateData() {
 		for(Page page : this.pages) {
 			for(Palier palier : page.getFreePalier()) {
@@ -45,10 +49,6 @@ public class ChallengeShop implements Serializable {
 		}
 	}
 
-	public ChallengeShop(String name, Challenger challenger) {
-		this(name, new ArrayList<Page>(), challenger);
-	}
-	
 	public void addPalier(Palier palier) {
 		if(this.pages.isEmpty()) {
 			Page p = new Page();

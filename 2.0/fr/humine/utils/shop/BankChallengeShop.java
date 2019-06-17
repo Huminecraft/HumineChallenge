@@ -26,6 +26,9 @@ public class BankChallengeShop implements Iterable<ChallengeShop>{
 		if(this.defaultChallengeShop == null)
 			return;
 		
+		if(this.defaultChallengeShop.isEmpty())
+			return;
+		
 		Challenger c = ChallengeMain.getInstance().getBankChallenger().getChallenger(player);
 		if(c == null)
 			return;

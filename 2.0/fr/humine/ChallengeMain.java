@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import fr.humine.commands.bankcosmetique.BankCosmetiqueCommand;
@@ -25,6 +26,7 @@ import fr.humine.utils.exceptions.SaveFileException;
 import fr.humine.utils.exceptions.SettingMissingException;
 import fr.humine.utils.levels.LevelBank;
 import fr.humine.utils.players.BankChallenger;
+import fr.humine.utils.players.Challenger;
 import fr.humine.utils.shop.BankChallengeShop;
 import fr.humine.utils.shop.ChallengeShop;
 import fr.humine.utils.token.TokenBank;
@@ -58,11 +60,16 @@ public class ChallengeMain extends JavaPlugin{
 	
 	@Override
 	public void onEnable() {
+		if(!getDataFolder().exists())
+			getDataFolder().mkdir();
+		
 		try {
-			this.bankCosmetique = loadBankCosmetique(bankCosmetiqueFolder);
-			this.bankItemStack = loadBankItemStack(bankItemStackFile);
-			this.bankToken = loadBankToken(bankTokenFile);
-			this.bankChallengeShop = loadBankChallengeShop(challengeShopFile);
+			loadBankCosmetique(bankCosmetiqueFolder);
+			loadBankItemStack(bankItemStackFile);
+			loadBankToken(bankTokenFile);
+			loadBankChallengeShop(challengeShopFile);
+			
+			
 			this.bankLevel = loadBankLevel(bankLevelFile);
 			this.currentDailyChallenge = loadCurrentDailyChallenge(currentDailyChallengeFile);
 			this.currentWeeklyChallenge = loadCurrentWeeklyChallenge(currentWeeklyChallengeFile);
@@ -94,13 +101,13 @@ public class ChallengeMain extends JavaPlugin{
 		this.getCommand("bankcosmetique").setExecutor(new BankCosmetiqueCommand());
 	}
 
-	private BankItemStack loadBankItemStack(File file) throws FileNotFoundException, SettingMissingException {
+	private void loadBankItemStack(File file) throws FileNotFoundException, SettingMissingException {
 		if(!file.exists())
-			return new BankItemStack();
+			this.bankItemStack = new BankItemStack();
 		
 		BankItemStack bank = new BankItemStack();
 		bank.load(file);
-		return bank;
+		this.bankItemStack = bank;
 	}
 
 	private BankChallenger loadBankChallenger(File file) throws FileNotFoundException, IOException, ClassNotFoundException {
@@ -136,32 +143,35 @@ public class ChallengeMain extends JavaPlugin{
 	}
 
 
-	private BankChallengeShop loadBankChallengeShop(File file) throws FileNotFoundException, IOException, ClassNotFoundException {
-		if(!file.exists())
-			return new BankChallengeShop(new ChallengeShop("ChallengeShop", null));
+	private void loadBankChallengeShop(File file) throws FileNotFoundException, IOException, ClassNotFoundException {
+		if(!file.exists()) {
+			ChallengeShop defaultShop = new ChallengeShop("ChallengeShop", new Challenger());
+			BankChallengeShop bank = new BankChallengeShop(defaultShop);
+			this.bankChallengeShop = bank;
+		}
 		
 		in = new ObjectInputStream(new FileInputStream(file));
 		ChallengeShop shop = (ChallengeShop) in.readObject();
-		return new BankChallengeShop(shop);
+		this.bankChallengeShop = new BankChallengeShop(shop);
 	}
 
 
-	private TokenBank loadBankToken(File file) throws ClassNotFoundException, IOException {
+	private void loadBankToken(File file) throws ClassNotFoundException, IOException {
 		if(!file.exists())
-			return new TokenBank("Token");
+			this.bankToken = new TokenBank("Token");
 		
 		in = new ObjectInputStream(new FileInputStream(file));
-		return (TokenBank) in.readObject();
+		this.bankToken = (TokenBank) in.readObject();
 	}
 
 
-	private BankCosmetique loadBankCosmetique(File folder) throws FileNotFoundException, SettingMissingException {
+	private void loadBankCosmetique(File folder) throws FileNotFoundException, SettingMissingException {
 		if(!folder.exists())
-			return new BankCosmetique();
+			this.bankCosmetique = new BankCosmetique();
 		
 		BankCosmetique c = new BankCosmetique();
 		c.load(folder);
-		return c;
+		this.bankCosmetique = c;
 	}
 
 
@@ -232,7 +242,19 @@ public class ChallengeMain extends JavaPlugin{
 			file.createNewFile();
 		
 		out = new ObjectOutputStream(new FileOutputStream(file));
-		out.writeObject(this.bankChallengeShop.getDefaultChallengeShop());
+		if(this.bankChallengeShop == null)
+			this.bankChallengeShop = new BankChallengeShop(new ChallengeShop("ChallengeShop", new Challenger()));
+		
+		ChallengeShop shop = this.bankChallengeShop.getDefaultChallengeShop();
+		if(shop == null) {
+			shop = new ChallengeShop("ChallengeShop", new Challenger("null"));
+			Bukkit.broadcastMessage("DEBUG SAVE NULL");
+			out.writeObject(shop);
+		} else {
+			Bukkit.broadcastMessage("DEBUG SAVE NOT NULL");
+			out.writeObject(shop);
+		}
+		
 		out.flush();
 	}
 
