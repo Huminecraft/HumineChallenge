@@ -9,7 +9,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import fr.humine.utils.Challenger;
-import fr.humine.utils.shop.TypePalier;
 import humine.utils.cosmetiques.Cosmetique;
 
 public class Palier

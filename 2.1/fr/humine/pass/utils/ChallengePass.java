@@ -3,12 +3,13 @@ package fr.humine.pass.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 import fr.humine.utils.Challenger;
 
-public class ChallengeShop {
+public class ChallengePass {
 
 	public static final String SHOPNAME = "ChallengeShop";
 	
@@ -18,7 +19,7 @@ public class ChallengeShop {
 	private Challenger challenger;
 	private int currentPage;
 	
-	public ChallengeShop(Challenger challenger) {
+	public ChallengePass(Challenger challenger) {
 		this.challenger = challenger;
 		this.name = SHOPNAME + " " + challenger.getName();
 		this.pages = new ArrayList<Page>();
@@ -92,10 +93,13 @@ public class ChallengeShop {
 		if (player == null)
 			return;
 		
-		if(getPages().isEmpty())
-			return;
+		Inventory inv;
 		
-		Inventory inv = Page.PageToInventory(getFirstPage(), getName(), challenger);
+		if(getPages().isEmpty())
+			inv = Bukkit.createInventory(null, (9*5));
+		else
+			inv = Page.PageToInventory(getFirstPage(), getName(), challenger);
+		
 		currentPage = 0;
 		player.openInventory(inv);
 	}

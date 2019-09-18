@@ -1,0 +1,13 @@
+name: HumineChallenge
+author: MizakiGaming
+version: 2.1b
+main: fr.humine.main.ChallengeMain
+commands:
+  pass:
+    usage:
+    description:
+    permission:
+  token:
+    usage:
+    description:
+    permission:

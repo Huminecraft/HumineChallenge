@@ -2,21 +2,22 @@ package fr.humine.utils;
 
 import org.bukkit.entity.Player;
 
-import fr.humine.pass.utils.ChallengeShop;
+import fr.humine.pass.utils.ChallengePass;
 
 public class Challenger {
 
 	private Player player;
+	private Token token;
 	private boolean premium;
-	private int token;
-	
-	private ChallengeShop shop;
+	private ChallengePass challengePass;
+	private LevelBar levelBar;
 	
 	public Challenger(Player player) {
 		this.player = player;
+		this.token = new Token();
 		this.premium = false;
-		this.token = 0;
-		this.shop = new ChallengeShop(this);
+		this.challengePass = new ChallengePass(this);
+		this.levelBar = new LevelBar(this);
 	}
 	
 	public boolean hasPremium() {
@@ -31,19 +32,23 @@ public class Challenger {
 		return player;
 	}
 	
-	public int getToken() {
+	public Token getToken()
+	{
 		return token;
 	}
 	
-	public void setToken(int token) {
-		this.token = token;
+	public ChallengePass getChallengePass()
+	{
+		return challengePass;
 	}
 	
-	public ChallengeShop getShop() {
-		return shop;
+	public LevelBar getLevelBar()
+	{
+		return levelBar;
 	}
 	
-	public void setShop(ChallengeShop shop) {
-		this.shop = shop;
+	public Level getLevel() 
+	{
+		return levelBar.getLevel();
 	}
 }

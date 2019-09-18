@@ -48,4 +48,9 @@ public class BankChallenger {
 		}
 		return null;
 	}
+	
+	public List<Challenger> getChallengers()
+	{
+		return challengers;
+	}
 }
