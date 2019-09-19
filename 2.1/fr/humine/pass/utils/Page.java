@@ -47,17 +47,20 @@ public class Page
 	{
 		Inventory inv = Bukkit.createInventory(null, (9 * 5), name);
 
-		inv.setItem(5, ItemShop.freeApple());
-		inv.setItem((2 * 8) + 5, ItemShop.premiumApple());
+		inv.setItem(4, ItemShop.freeApple());
+		inv.setItem((2 * 9) + 4, ItemShop.premiumApple());
 
 		Arrays.sort(page.getFreeLine().getPaliers(), new Comparator<Palier>() {
 
 			@Override
 			public int compare(Palier arg0, Palier arg1) {
-				if(arg0.getNumeroPalier() > arg1.getNumeroPalier())
-					return 1;
-				else
-					return -1;
+				if(arg0 != null && arg1 != null) {
+					if(arg0.getNumeroPalier() > arg1.getNumeroPalier())
+						return 1;
+					else
+						return -1;
+				}
+				return 0;
 			}
 		});
 		
@@ -65,10 +68,13 @@ public class Page
 
 			@Override
 			public int compare(Palier arg0, Palier arg1) {
-				if(arg0.getNumeroPalier() > arg1.getNumeroPalier())
-					return 1;
-				else
-					return -1;
+				if(arg0 != null && arg1 != null) {
+					if(arg0.getNumeroPalier() > arg1.getNumeroPalier())
+						return 1;
+					else
+						return -1;
+				}
+				return 0;
 			}
 		});
 		
@@ -95,5 +101,14 @@ public class Page
 		inv.setItem(inv.getSize() - 4, ItemShop.itemNextArrow());
 
 		return inv;
+	}
+	
+	@Override
+	public String toString()
+	{
+		String str = "[Page: \n";
+		str += "==>" + this.freeLine.toString() + "\n";
+		str += "==>" + this.premiumLine.toString() + "\n";
+		return str + "]";
 	}
 }

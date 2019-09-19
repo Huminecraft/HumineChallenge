@@ -11,7 +11,7 @@ import fr.humine.utils.Challenger;
 
 public class ChallengePass {
 
-	public static final String SHOPNAME = "ChallengeShop";
+	public static final String SHOPNAME = "ChallengePass";
 	
 	private String name;
 	private List<Page> pages;
@@ -24,6 +24,48 @@ public class ChallengePass {
 		this.name = SHOPNAME + " " + challenger.getName();
 		this.pages = new ArrayList<Page>();
 		this.currentPage = -1;
+	}
+	
+	public ChallengePass()
+	{
+		this.challenger = null;
+		this.name = SHOPNAME;
+		this.pages = new ArrayList<Page>();
+		this.currentPage = -1;
+	}
+	
+	public boolean addPalier(Palier palier) {
+		if(palier.getType() == TypePalier.FREE) {
+			int i = 0;
+			while(i < getPages().size()){
+				if(getPage(i).getFreeLine().addPalier(palier)) {
+					return true;
+				}
+				i++;
+			}
+			addPage(new Page());
+			return getLastPage().getFreeLine().addPalier(palier);
+			
+		}
+		else if(palier.getType() == TypePalier.PREMIUM) {
+			int i = 0;
+			while(i < getPages().size()){
+				if(getPage(i).getPremiumLine().addPalier(palier)) {
+					return true;
+				}
+				i++;
+			}
+			addPage(new Page());
+			return getLastPage().getPremiumLine().addPalier(palier);
+		}
+		else
+			return false;
+	}
+	
+	
+	public void update(ChallengePass pass) {
+		List<Page> pages = new ArrayList<>(pass.getPages());
+		setPages(pages);
 	}
 	
 	public boolean addPage(Page page) {
@@ -161,5 +203,12 @@ public class ChallengePass {
 		player.closeInventory();
 	}
 	
-	
+	@Override
+	public String toString()
+	{
+		String str = "[ChallengePass: \n";
+		for(Page p : getPages())
+			str += "==>" + p.toString() + "\n";
+		return str + "]";
+	}
 }

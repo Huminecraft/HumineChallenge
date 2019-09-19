@@ -30,6 +30,7 @@ public class Palier
 		this.itemRepresentation = itemRepresentation;
 		this.cosmetique = cosmetique;
 		this.unlock = unlock;
+		this.tokenPass = tokenPass;
 
 		if (premium)
 			this.type = TypePalier.PREMIUM;
@@ -161,5 +162,14 @@ public class Palier
 	public int getPixel() {
 		return pixel;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "Palier [numeroPalier=" + numeroPalier + ", itemRepresentation=" + itemRepresentation + ", cosmetique="
+				+ cosmetique + ", unlock=" + unlock + ", tokenPass=" + tokenPass + ", humis=" + humis + ", pixel="
+				+ pixel + ", type=" + type + "]";
+	}
+	
 	
 }

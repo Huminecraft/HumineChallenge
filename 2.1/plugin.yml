@@ -11,3 +11,11 @@ commands:
     usage:
     description:
     permission:
+  createpalier:
+    usage:
+    description:
+    permission:
+  palierload:
+    usage:
+    description:
+    permission:

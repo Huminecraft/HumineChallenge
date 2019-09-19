@@ -45,6 +45,10 @@ public class LevelBar
 		this.bossBar.setVisible(false);
 	}
 	
+	public void dissociate() {
+		this.bossBar.removePlayer(this.challenger.getPlayer());
+	}
+	
 	public void update() {
 		this.bossBar.setTitle("Niveau: " + this.level.getLevel());
 		this.bossBar.setProgress((100.0 * (double) this.level.getExperience()) / (double) this.level.getExperienceToReach());

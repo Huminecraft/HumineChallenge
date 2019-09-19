@@ -83,5 +83,18 @@ public class Line
 	public Palier[] getPaliers() {
 		return paliers;
 	}
+	
+	@Override
+	public String toString()
+	{
+		String str = "[Line: \n";
+		for(Palier p : this.paliers) {
+			if(p != null)
+				str += "===>" + p.toString() + "\n";
+			else
+				str += "===>NULL\n";
+		}
+		return str + "]";
+	}
 
 }
