@@ -19,3 +19,11 @@ commands:
     usage:
     description:
     permission:
+  palierparticlecosmetique:
+    usage:
+    description:
+    permission:
+  paliermaterialhatcosmetique:
+    usage:
+    description:
+    permission:

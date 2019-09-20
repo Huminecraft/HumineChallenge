@@ -8,8 +8,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import fr.humine.main.ChallengeMain;
-import fr.humine.pass.utils.Palier;
 import fr.humine.utils.Challenger;
+import fr.humine.utils.pass.Palier;
 import humine.utils.cosmetiques.Cosmetique;
 
 public class AddPalierCommand implements CommandExecutor
@@ -63,7 +63,7 @@ public class AddPalierCommand implements CommandExecutor
 		
 		Cosmetique cosmetique = null;
 		if(args.length >= 7) {
-			
+			cosmetique = ChallengeMain.getInstance().getBankCosmetique().getCosmetique(args[6]);
 		}
 		
 		Palier palier = new Palier(Integer.parseInt(args[0]), itemPresentation, Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]), cosmetique, false, premium);

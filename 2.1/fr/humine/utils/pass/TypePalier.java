@@ -1,4 +1,4 @@
-package fr.humine.pass.utils;
+package fr.humine.utils.pass;
 
 public enum TypePalier {
 

@@ -2,7 +2,7 @@ package fr.humine.utils;
 
 import org.bukkit.entity.Player;
 
-import fr.humine.pass.utils.ChallengePass;
+import fr.humine.utils.pass.ChallengePass;
 
 public class Challenger {
 

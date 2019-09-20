@@ -1,7 +1,6 @@
 package fr.humine.commands;
 
 import org.bukkit.Material;
-import org.bukkit.Particle;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -10,13 +9,11 @@ import org.bukkit.inventory.ItemStack;
 
 import fr.humine.main.ChallengeMain;
 import humine.utils.Prestige;
-import humine.utils.cosmetiques.ParticleCosmetique;
+import humine.utils.cosmetiques.MaterialHatCosmetique;
 
-public class AddParticleCosmetiqueCommand implements CommandExecutor
-{
+public class AddMaterialHatCosmetiqueCommand implements CommandExecutor{
 
-	private static final String COMMAND = "/palierparticlecosmetique <name> <MaterialPresentation> <humis> <pixel> <particle> <id> [prestige]";
-	
+	private static final String COMMAND = "/paliermaterialhatcosmetique <name> <MaterialPresentation> <humis> <pixel> <MaterialHat> <id> [prestige]";
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
 	{
@@ -47,9 +44,9 @@ public class AddParticleCosmetiqueCommand implements CommandExecutor
 			return false;
 		}
 		
-		Particle particle = getParticle(args[4]);
-		if(particle == null) {
-			ChallengeMain.sendMessage(sender, "Particle invalide");
+		ItemStack item = getItem(args[4]);
+		if(item == null) {
+			ChallengeMain.sendMessage(sender, "MaterialHat invalide");
 			return false;
 		}
 		
@@ -66,7 +63,7 @@ public class AddParticleCosmetiqueCommand implements CommandExecutor
 		if(prestige == null)
 			prestige = Prestige.COMMUN;
 		
-		ParticleCosmetique p = new ParticleCosmetique(args[0], itemPresentation, Integer.parseInt(args[2]), Integer.parseInt(args[3]), particle, prestige);
+		MaterialHatCosmetique p = new MaterialHatCosmetique(args[0], itemPresentation, Integer.parseInt(args[2]), Integer.parseInt(args[3]), item.getType(), prestige);
 		p.setId(args[5]);
 		
 		ChallengeMain.getInstance().getBankCosmetique().addCosmetique(p);
@@ -94,14 +91,6 @@ public class AddParticleCosmetiqueCommand implements CommandExecutor
 		for(Material m : Material.values()) {
 			if(m.name().equalsIgnoreCase(str))
 				return new ItemStack(m);
-		}
-		return null;
-	}
-	
-	private Particle getParticle(String str) {
-		for(Particle p : Particle.values()) {
-			if(p.name().equalsIgnoreCase(str))
-				return p;
 		}
 		return null;
 	}

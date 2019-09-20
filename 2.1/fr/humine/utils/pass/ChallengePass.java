@@ -1,4 +1,4 @@
-package fr.humine.pass.utils;
+package fr.humine.utils.pass;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,7 @@ import fr.humine.utils.Challenger;
 
 public class ChallengePass {
 
-	public static final String SHOPNAME = "ChallengePass";
+	public static final String SHOPNAME = "SurvivalPass";
 	
 	private String name;
 	private List<Page> pages;

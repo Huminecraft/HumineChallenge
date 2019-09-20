@@ -9,15 +9,17 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import fr.humine.commands.AddMaterialHatCosmetiqueCommand;
 import fr.humine.commands.AddPalierCommand;
+import fr.humine.commands.AddParticleCosmetiqueCommand;
 import fr.humine.commands.PalierLoadCommand;
 import fr.humine.commands.ShowChallengePassCommand;
 import fr.humine.commands.ShowTokenCommand;
 import fr.humine.events.main.CreateChallengerEvent;
-import fr.humine.pass.utils.ChallengePass;
 import fr.humine.utils.BankChallenger;
 import fr.humine.utils.BankCosmetique;
 import fr.humine.utils.Challenger;
+import fr.humine.utils.pass.ChallengePass;
 
 public class ChallengeMain extends JavaPlugin{
 
@@ -76,6 +78,8 @@ public class ChallengeMain extends JavaPlugin{
 		this.getCommand("pass").setExecutor(new ShowChallengePassCommand());
 		this.getCommand("createpalier").setExecutor(new AddPalierCommand());
 		this.getCommand("palierload").setExecutor(new PalierLoadCommand());
+		this.getCommand("palierparticlecosmetique").setExecutor(new AddParticleCosmetiqueCommand());
+		this.getCommand("paliermaterialhatcosmetique").setExecutor(new AddMaterialHatCosmetiqueCommand());
 	}
 	
 	public static void sendMessage(CommandSender sender, String message) {
