@@ -13,6 +13,8 @@ public class ChallengeKill implements Challenge{
 	private int currentAmount;
 	private boolean premium;
 	
+	private Award award;
+	
 	public ChallengeKill(String title, String description, EntityType entityToKill, int amount, boolean premium) {
 		this.title = title;
 		this.description = description;
@@ -20,6 +22,7 @@ public class ChallengeKill implements Challenge{
 		this.amount = amount;
 		this.currentAmount = 0;
 		this.premium = premium;
+		this.award = new Award(0, 0);
 	}
 	
 	@Override
@@ -98,6 +101,16 @@ public class ChallengeKill implements Challenge{
 		sender.sendMessage("Type: " + getType().toString().toLowerCase());
 		sender.sendMessage("Cible: " + entity.toString().toLowerCase());
 		sender.sendMessage("Etat: " + currentAmount + "/" + amount);
+	}
+
+	@Override
+	public Award getAwards() {
+		return award;
+	}
+
+	@Override
+	public void setAward(Award award) {
+		this.award = award;
 	}
 
 }

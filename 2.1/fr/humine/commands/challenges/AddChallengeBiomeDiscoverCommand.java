@@ -6,6 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import fr.humine.main.ChallengeMain;
+import fr.humine.utils.Challenger;
 import fr.humine.utils.challenges.ChallengeBiomeDiscover;
 
 public class AddChallengeBiomeDiscoverCommand implements CommandExecutor{
@@ -43,6 +44,9 @@ public class AddChallengeBiomeDiscoverCommand implements CommandExecutor{
 		ChallengeBiomeDiscover challenge = new ChallengeBiomeDiscover(args[0], description, biome, premium);
 		ChallengeMain.getDailyChallenge().add(challenge);
 
+		for(Challenger c : ChallengeMain.getInstance().getBankChallenger().getChallengers())
+			c.updateDailyChallenge(ChallengeMain.getDailyChallenge());
+		
 		ChallengeMain.sendMessage(sender, "ChallengeBreakBlock " + args[0] + " ajoute !");
 		return true;
 	}

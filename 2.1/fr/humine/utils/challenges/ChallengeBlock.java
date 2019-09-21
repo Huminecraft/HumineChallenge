@@ -1,5 +1,6 @@
 package fr.humine.utils.challenges;
 
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 
@@ -12,6 +13,8 @@ public abstract class ChallengeBlock implements Challenge{
 	protected int currentAmount;
 	protected boolean premium;
 	
+	protected Award award;
+	
 	public ChallengeBlock(String title, String description, ItemStack blockToPlace, int amount, boolean premium) {
 		this.title = title;
 		this.description = description;
@@ -19,6 +22,7 @@ public abstract class ChallengeBlock implements Challenge{
 		this.amount = amount;
 		this.currentAmount = 0;
 		this.premium = premium;
+		this.award = new Award(0, 0);
 	}
 	
 	@Override
@@ -78,7 +82,12 @@ public abstract class ChallengeBlock implements Challenge{
 	@Override
 	public boolean checkCondition(Object o) {
 		if(o instanceof ItemStack) {
-			if(((ItemStack) o).isSimilar(block))
+			if(((ItemStack) o).getType() == this.block.getType())
+				return true;
+		}
+		
+		if(o instanceof Material) {
+			if(((Material) o) == this.block.getType())
 				return true;
 		}
 		
@@ -92,6 +101,16 @@ public abstract class ChallengeBlock implements Challenge{
 		sender.sendMessage("Type: " + getType().toString().toLowerCase());
 		sender.sendMessage("Bloc: " + block.getType().toString().toLowerCase());
 		sender.sendMessage("Etat: " + currentAmount + "/" + amount);
+	}
+	
+	@Override
+	public Award getAwards() {
+		return award;
+	}
+	
+	@Override
+	public void setAward(Award award) {
+		this.award = award;
 	}
 
 }

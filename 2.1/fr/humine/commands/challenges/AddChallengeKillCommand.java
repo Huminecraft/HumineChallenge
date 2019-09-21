@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 
 import fr.humine.main.ChallengeMain;
+import fr.humine.utils.Challenger;
 import fr.humine.utils.challenges.ChallengeKill;
 
 public class AddChallengeKillCommand implements CommandExecutor{
@@ -49,6 +50,9 @@ public class AddChallengeKillCommand implements CommandExecutor{
 		ChallengeKill challenge = new ChallengeKill(args[0], description, entity, Integer.parseInt(args[2]), premium);
 		ChallengeMain.getDailyChallenge().add(challenge);
 
+		for(Challenger c : ChallengeMain.getInstance().getBankChallenger().getChallengers())
+			c.updateDailyChallenge(ChallengeMain.getDailyChallenge());
+		
 		ChallengeMain.sendMessage(sender, "ChallengeKill " + args[0] + " ajoute !");
 		return true;
 	}

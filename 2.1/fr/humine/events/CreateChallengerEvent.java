@@ -1,4 +1,4 @@
-package fr.humine.events.main;
+package fr.humine.events;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

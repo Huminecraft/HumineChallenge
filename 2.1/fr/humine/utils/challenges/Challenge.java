@@ -22,5 +22,7 @@ public interface Challenge {
 	
 	public void showChallenge(CommandSender sender);
 	
-	//TODO public Recompense getAwards();
+	public Award getAwards();
+	
+	public void setAward(Award award);
 }

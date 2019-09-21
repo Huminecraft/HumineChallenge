@@ -17,7 +17,7 @@ public class LevelBar
 		this.challenger = challenger;
 		
 		this.bossBar = Bukkit.createBossBar("Niveau: " + level.getLevel(), BarColor.GREEN, BarStyle.SEGMENTED_6);
-		this.bossBar.setProgress((100.0 * (double) this.level.getExperience()) / (double) this.level.getExperienceToReach());
+		this.bossBar.setProgress(((100.0 * (double) this.level.getExperience()) / (double) this.level.getExperienceToReach()) / 100.0);
 		this.bossBar.addPlayer(this.challenger.getPlayer());
 		show();
 	}
@@ -51,6 +51,6 @@ public class LevelBar
 	
 	public void update() {
 		this.bossBar.setTitle("Niveau: " + this.level.getLevel());
-		this.bossBar.setProgress((100.0 * (double) this.level.getExperience()) / (double) this.level.getExperienceToReach());
+		this.bossBar.setProgress(((100.0 * (double) this.level.getExperience()) / (double) this.level.getExperienceToReach()) / 100.0);
 	}
 }

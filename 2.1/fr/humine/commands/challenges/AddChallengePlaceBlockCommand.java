@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 
 import fr.humine.main.ChallengeMain;
+import fr.humine.utils.Challenger;
 import fr.humine.utils.challenges.ChallengePlaceBlock;
 
 public class AddChallengePlaceBlockCommand implements CommandExecutor{
@@ -51,6 +52,9 @@ public class AddChallengePlaceBlockCommand implements CommandExecutor{
 		ChallengePlaceBlock challenge = new ChallengePlaceBlock(args[0], description, item, Integer.parseInt(args[2]), premium);
 		ChallengeMain.getDailyChallenge().add(challenge);
 
+		for(Challenger c : ChallengeMain.getInstance().getBankChallenger().getChallengers())
+			c.updateDailyChallenge(ChallengeMain.getDailyChallenge());
+		
 		ChallengeMain.sendMessage(sender, "ChallengePlaceBlock " + args[0] + " ajoute !");
 		return true;
 	}

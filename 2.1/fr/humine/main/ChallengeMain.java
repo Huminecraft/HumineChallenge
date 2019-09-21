@@ -17,12 +17,18 @@ import fr.humine.commands.AddParticleCosmetiqueCommand;
 import fr.humine.commands.PalierLoadCommand;
 import fr.humine.commands.ShowChallengePassCommand;
 import fr.humine.commands.ShowTokenCommand;
+import fr.humine.commands.challenges.AddAwardCommand;
 import fr.humine.commands.challenges.AddChallengeBiomeDiscoverCommand;
 import fr.humine.commands.challenges.AddChallengeBreakBlockCommand;
 import fr.humine.commands.challenges.AddChallengeKillCommand;
 import fr.humine.commands.challenges.AddChallengePlaceBlockCommand;
 import fr.humine.commands.challenges.ShowDailyChallengeCommand;
-import fr.humine.events.main.CreateChallengerEvent;
+import fr.humine.events.CreateChallengerEvent;
+import fr.humine.events.challenges.ChallengeBiomeDiscoverEvent;
+import fr.humine.events.challenges.ChallengeBreakBlockEvent;
+import fr.humine.events.challenges.ChallengeKillEvent;
+import fr.humine.events.challenges.ChallengePlaceBlockEvent;
+import fr.humine.events.challenges.GiveAwardEvent;
 import fr.humine.utils.BankChallenger;
 import fr.humine.utils.BankCosmetique;
 import fr.humine.utils.Challenger;
@@ -81,6 +87,11 @@ public class ChallengeMain extends JavaPlugin{
 	
 	private void events() {
 		this.getServer().getPluginManager().registerEvents(new CreateChallengerEvent(), this);
+		this.getServer().getPluginManager().registerEvents(new ChallengeKillEvent(), this);
+		this.getServer().getPluginManager().registerEvents(new ChallengePlaceBlockEvent(), this);
+		this.getServer().getPluginManager().registerEvents(new ChallengeBreakBlockEvent(), this);
+		this.getServer().getPluginManager().registerEvents(new ChallengeBiomeDiscoverEvent(), this);
+		this.getServer().getPluginManager().registerEvents(new GiveAwardEvent(), this);		
 	}
 	
 	private void commands() {
@@ -92,8 +103,9 @@ public class ChallengeMain extends JavaPlugin{
 		this.getCommand("paliermaterialhatcosmetique").setExecutor(new AddMaterialHatCosmetiqueCommand());
 		this.getCommand("addchallengekill").setExecutor(new AddChallengeKillCommand());
 		this.getCommand("addchallengeplaceblock").setExecutor(new AddChallengePlaceBlockCommand());
-		this.getCommand("addchallengebreakcommand").setExecutor(new AddChallengeBreakBlockCommand());
+		this.getCommand("addchallengebreakblock").setExecutor(new AddChallengeBreakBlockCommand());
 		this.getCommand("addchallengebiomediscover").setExecutor(new AddChallengeBiomeDiscoverCommand());
+		this.getCommand("addAward").setExecutor(new AddAwardCommand());
 		this.getCommand("dailychallenge").setExecutor(new ShowDailyChallengeCommand());
 	}
 	

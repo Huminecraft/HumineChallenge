@@ -10,6 +10,7 @@ public class ChallengeBiomeDiscover implements Challenge{
 	private Biome biome;
 	private boolean premium;
 	private boolean discover;
+	private Award award;
 	
 	public ChallengeBiomeDiscover(String title, String description, Biome biomeToDiscover, boolean premium) {
 		this.title = title;
@@ -17,6 +18,7 @@ public class ChallengeBiomeDiscover implements Challenge{
 		this.biome = biomeToDiscover;
 		this.premium = premium;
 		this.discover = false;
+		this.award = new Award(0, 0);
 	}
 	
 	@Override
@@ -70,6 +72,16 @@ public class ChallengeBiomeDiscover implements Challenge{
 		sender.sendMessage("Type: " + getType().toString().toLowerCase());
 		sender.sendMessage("Biome: " + biome.toString().toLowerCase());
 		sender.sendMessage("Etat: " + isFinish());
+	}
+
+	@Override
+	public Award getAwards() {
+		return award;
+	}
+
+	@Override
+	public void setAward(Award award) {
+		this.award = award;
 	}
 
 }

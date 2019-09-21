@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 
 import fr.humine.main.ChallengeMain;
+import fr.humine.utils.Challenger;
 import fr.humine.utils.challenges.ChallengeBreakBlock;
 
 public class AddChallengeBreakBlockCommand implements CommandExecutor{
@@ -50,6 +51,9 @@ public class AddChallengeBreakBlockCommand implements CommandExecutor{
 		ChallengeBreakBlock challenge = new ChallengeBreakBlock(args[0], description, item, Integer.parseInt(args[2]), premium);
 		ChallengeMain.getDailyChallenge().add(challenge);
 
+		for(Challenger c : ChallengeMain.getInstance().getBankChallenger().getChallengers())
+			c.updateDailyChallenge(ChallengeMain.getDailyChallenge());
+		
 		ChallengeMain.sendMessage(sender, "ChallengeBreakBlock " + args[0] + " ajoute !");
 		return true;
 	}

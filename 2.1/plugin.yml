@@ -39,11 +39,15 @@ commands:
     usage:
     description:
     permission:
-  addchallengebreakcommand:
+  addchallengebreakblock:
     usage:
     description:
     permission:
   addchallengebiomediscover:
+    usage:
+    description:
+    permission:
+  addAward:
     usage:
     description:
     permission:
