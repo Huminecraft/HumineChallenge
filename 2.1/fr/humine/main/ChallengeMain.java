@@ -2,6 +2,8 @@ package fr.humine.main;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -15,16 +17,23 @@ import fr.humine.commands.AddParticleCosmetiqueCommand;
 import fr.humine.commands.PalierLoadCommand;
 import fr.humine.commands.ShowChallengePassCommand;
 import fr.humine.commands.ShowTokenCommand;
+import fr.humine.commands.challenges.AddChallengeBiomeDiscoverCommand;
+import fr.humine.commands.challenges.AddChallengeBreakBlockCommand;
+import fr.humine.commands.challenges.AddChallengeKillCommand;
+import fr.humine.commands.challenges.AddChallengePlaceBlockCommand;
+import fr.humine.commands.challenges.ShowDailyChallengeCommand;
 import fr.humine.events.main.CreateChallengerEvent;
 import fr.humine.utils.BankChallenger;
 import fr.humine.utils.BankCosmetique;
 import fr.humine.utils.Challenger;
+import fr.humine.utils.challenges.Challenge;
 import fr.humine.utils.pass.ChallengePass;
 
 public class ChallengeMain extends JavaPlugin{
 
 	private static ChallengeMain instance;
 	private static ChallengePass passMain;
+	private static List<Challenge> dailyChallenge;
 	
 	private BankChallenger bankChallenger;
 	private BankCosmetique bankCosmetique;
@@ -38,6 +47,7 @@ public class ChallengeMain extends JavaPlugin{
 		
 		instance = this;
 		passMain = new ChallengePass();
+		dailyChallenge = new ArrayList<>();
 		
 		this.bankChallenger = new BankChallenger();
 		this.bankCosmetique = new BankCosmetique();
@@ -80,6 +90,11 @@ public class ChallengeMain extends JavaPlugin{
 		this.getCommand("palierload").setExecutor(new PalierLoadCommand());
 		this.getCommand("palierparticlecosmetique").setExecutor(new AddParticleCosmetiqueCommand());
 		this.getCommand("paliermaterialhatcosmetique").setExecutor(new AddMaterialHatCosmetiqueCommand());
+		this.getCommand("addchallengekill").setExecutor(new AddChallengeKillCommand());
+		this.getCommand("addchallengeplaceblock").setExecutor(new AddChallengePlaceBlockCommand());
+		this.getCommand("addchallengebreakcommand").setExecutor(new AddChallengeBreakBlockCommand());
+		this.getCommand("addchallengebiomediscover").setExecutor(new AddChallengeBiomeDiscoverCommand());
+		this.getCommand("dailychallenge").setExecutor(new ShowDailyChallengeCommand());
 	}
 	
 	public static void sendMessage(CommandSender sender, String message) {
@@ -102,5 +117,9 @@ public class ChallengeMain extends JavaPlugin{
 	
 	public BankCosmetique getBankCosmetique() {
 		return bankCosmetique;
+	}
+	
+	public static List<Challenge> getDailyChallenge() {
+		return dailyChallenge;
 	}
 }

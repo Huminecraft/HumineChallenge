@@ -1,22 +1,21 @@
 package fr.humine.utils.challenges;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
+import org.bukkit.inventory.ItemStack;
 
-public class ChallengeKill implements Challenge{
+public abstract class ChallengeBlock implements Challenge{
 
-	private String title;
-	private String description;
-	private EntityType entity;
-	private int amount;
-	private int currentAmount;
-	private boolean premium;
+	protected String title;
+	protected String description;
+	protected ItemStack block;
+	protected int amount;
+	protected int currentAmount;
+	protected boolean premium;
 	
-	public ChallengeKill(String title, String description, EntityType entityToKill, int amount, boolean premium) {
+	public ChallengeBlock(String title, String description, ItemStack blockToPlace, int amount, boolean premium) {
 		this.title = title;
 		this.description = description;
-		this.entity = entityToKill;
+		this.block = blockToPlace;
 		this.amount = amount;
 		this.currentAmount = 0;
 		this.premium = premium;
@@ -33,15 +32,10 @@ public class ChallengeKill implements Challenge{
 	}
 
 	@Override
-	public ChallengeType getType() {
-		return ChallengeType.KILL;
-	}
-
-	@Override
 	public void setPremium(boolean premium) {
 		this.premium = premium;
 	}
-	
+
 	@Override
 	public boolean isPremium() {
 		return premium;
@@ -57,12 +51,12 @@ public class ChallengeKill implements Challenge{
 		currentAmount++;
 	}
 
-	public EntityType getEntity() {
-		return entity;
+	public ItemStack getBlock() {
+		return block;
 	}
 
-	public void setEntity(EntityType entity) {
-		this.entity = entity;
+	public void setBlock(ItemStack block) {
+		this.block = block;
 	}
 
 	public int getAmount() {
@@ -80,11 +74,11 @@ public class ChallengeKill implements Challenge{
 	public void setCurrentAmount(int currentAmount) {
 		this.currentAmount = currentAmount;
 	}
-
+	
 	@Override
 	public boolean checkCondition(Object o) {
-		if(o instanceof Entity) {
-			if(((Entity) o).getType() == entity)
+		if(o instanceof ItemStack) {
+			if(((ItemStack) o).isSimilar(block))
 				return true;
 		}
 		
@@ -96,7 +90,7 @@ public class ChallengeKill implements Challenge{
 		sender.sendMessage("Titre: " + getTitle());
 		sender.sendMessage("Description: " + getDescription());
 		sender.sendMessage("Type: " + getType().toString().toLowerCase());
-		sender.sendMessage("Cible: " + entity.toString().toLowerCase());
+		sender.sendMessage("Bloc: " + block.getType().toString().toLowerCase());
 		sender.sendMessage("Etat: " + currentAmount + "/" + amount);
 	}
 

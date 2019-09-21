@@ -27,3 +27,23 @@ commands:
     usage:
     description:
     permission:
+  addchallengekill:
+    usage:
+    description:
+    permission:
+  addchallengeplaceblock:
+    usage:
+    description:
+    permission:
+  dailychallenge:
+    usage:
+    description:
+    permission:
+  addchallengebreakcommand:
+    usage:
+    description:
+    permission:
+  addchallengebiomediscover:
+    usage:
+    description:
+    permission:

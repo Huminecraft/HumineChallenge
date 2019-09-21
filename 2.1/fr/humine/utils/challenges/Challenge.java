@@ -1,5 +1,7 @@
 package fr.humine.utils.challenges;
 
+import org.bukkit.command.CommandSender;
+
 public interface Challenge {
 
 	public String getTitle();
@@ -17,6 +19,8 @@ public interface Challenge {
 	public void update();
 	
 	public boolean checkCondition(Object o);
+	
+	public void showChallenge(CommandSender sender);
 	
 	//TODO public Recompense getAwards();
 }
