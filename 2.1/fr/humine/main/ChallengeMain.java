@@ -29,6 +29,9 @@ import fr.humine.events.challenges.ChallengeBreakBlockEvent;
 import fr.humine.events.challenges.ChallengeKillEvent;
 import fr.humine.events.challenges.ChallengePlaceBlockEvent;
 import fr.humine.events.challenges.GiveAwardEvent;
+import fr.humine.events.pageapplepay.ClickApplePayEvent;
+import fr.humine.events.pageapplepay.ClickQuitButtonEvent;
+import fr.humine.events.pageapplepay.OpenPageApplePayEvent;
 import fr.humine.utils.BankChallenger;
 import fr.humine.utils.BankCosmetique;
 import fr.humine.utils.Challenger;
@@ -92,6 +95,10 @@ public class ChallengeMain extends JavaPlugin{
 		this.getServer().getPluginManager().registerEvents(new ChallengeBreakBlockEvent(), this);
 		this.getServer().getPluginManager().registerEvents(new ChallengeBiomeDiscoverEvent(), this);
 		this.getServer().getPluginManager().registerEvents(new GiveAwardEvent(), this);		
+	
+		this.getServer().getPluginManager().registerEvents(new ClickApplePayEvent(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickQuitButtonEvent(), this);
+		this.getServer().getPluginManager().registerEvents(new OpenPageApplePayEvent(), this);
 	}
 	
 	private void commands() {

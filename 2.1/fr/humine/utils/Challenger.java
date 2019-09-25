@@ -33,6 +33,10 @@ public class Challenger {
 		return premium;
 	}
 	
+	public void setPremium(boolean premium) {
+		this.premium = premium;
+	}
+	
 	public String getName() {
 		return player.getName();
 	}

@@ -24,4 +24,22 @@ public abstract class ItemShop extends humine.utils.ItemShop{
 		
 		return item;
 	}
+	
+	public static ItemStack applePay(Challenger challenger, int prix) {
+		ItemStack item = new ItemStack(Material.GOLDEN_APPLE);
+		ItemMeta meta = item.getItemMeta();
+		
+		if(challenger.hasPremium())
+			meta.setDisplayName(ChatColor.GREEN + "Vous avez deja le premium :)");
+		else {
+			meta.setDisplayName(ChatColor.GOLD + "Achetez le premium");
+			meta.getLore().add(ChatColor.ITALIC + "Prix: " + prix + " Humis");
+			meta.getLore().add("");
+			meta.getLore().add("Pay");
+		}
+		
+		item.setItemMeta(meta);
+		
+		return item;
+	}
 }
