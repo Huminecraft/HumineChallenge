@@ -16,7 +16,7 @@ public class OpenPageApplePayEvent implements Listener{
 
 	@EventHandler
 	public void onClick(InventoryClickEvent event) {
-		if(event.getInventory().getName().equals(ChallengePass.SHOPNAME)) {
+		if(event.getInventory().getName().startsWith(ChallengePass.SHOPNAME)) {
 			if(event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR) {
 				if(event.getCurrentItem().isSimilar(ItemShop.premiumApple())) {
 					Challenger challenger = ChallengeMain.getInstance().getBankChallenger().getChallenger((Player) event.getWhoClicked());

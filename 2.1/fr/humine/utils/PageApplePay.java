@@ -7,7 +7,7 @@ public abstract class PageApplePay {
 
 	public static final String NAME = "PREMIUM SHOP";
 	public static final int SIZE = (9*4);
-	public static final int PRIZE = 1500;
+	public static final int PRIZE = 0;
 	public static final Inventory inv;
 	
 	static {
@@ -17,7 +17,7 @@ public abstract class PageApplePay {
 	}
 	
 	public static void openShop(Challenger challenger) {
-		inv.setItem(SIZE - 9 - 4, ItemShop.applePay(challenger, PRIZE));
+		inv.setItem(SIZE - (9*2) - 5, ItemShop.applePay(challenger, PRIZE));
 		challenger.getPlayer().openInventory(inv);
 	}
 }
