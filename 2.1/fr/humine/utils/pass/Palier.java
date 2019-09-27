@@ -90,8 +90,11 @@ public class Palier
 	public static ItemStack PalierToItemStack(Palier palier, Challenger challenger)
 	{
 		ItemStack item = palier.getItemRepresentation();
-		item.setAmount(palier.getNumeroPalier());
 		ChatColor color;
+		
+		if((palier.getType() == TypePalier.PREMIUM && challenger.hasPremium() && challenger.getToken().getAmount() >= palier.getTokenPass()) || (palier.getType() == TypePalier.FREE && challenger.getToken().getAmount() >= palier.getTokenPass())) {
+			palier.setUnlock(true);
+		}
 		
 		if(palier.isUnlock())
 			color = ChatColor.GREEN;
@@ -120,8 +123,12 @@ public class Palier
 		
 		meta.setLore(lores);
 		item.setItemMeta(meta);
-		item.setAmount(palier.getNumeroPalier());
 
+		if(palier.isUnlock() == false)
+			item.setAmount(palier.getNumeroPalier());
+		else
+			item.setAmount(1);
+		
 		return item;
 	}
 	
