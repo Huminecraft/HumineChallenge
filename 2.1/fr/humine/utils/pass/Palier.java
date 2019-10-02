@@ -1,22 +1,26 @@
 package fr.humine.utils.pass;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import fr.humine.main.ChallengeMain;
 import fr.humine.utils.Challenger;
 import humine.utils.cosmetiques.Cosmetique;
 
-public class Palier
+public class Palier implements Serializable
 {
 
+	private static final long serialVersionUID = 7556577054897105339L;
 	private int					numeroPalier;
-	private ItemStack			itemRepresentation;
-	private Cosmetique			cosmetique;
+	private Material			itemRepresentation;
+	private String				cosmetique;
 	private boolean				unlock;
 	private int					tokenPass;
 	private int					humis;
@@ -27,8 +31,8 @@ public class Palier
 			boolean unlock, boolean premium)
 	{
 		this.numeroPalier = numPalier;
-		this.itemRepresentation = itemRepresentation;
-		this.cosmetique = cosmetique;
+		this.itemRepresentation = itemRepresentation.getType();
+		this.cosmetique = cosmetique.getId();
 		this.unlock = unlock;
 		this.tokenPass = tokenPass;
 
@@ -147,19 +151,19 @@ public class Palier
 	}
 
 	public ItemStack getItemRepresentation() {
-		return itemRepresentation;
+		return new ItemStack(itemRepresentation);
 	}
 
 	public void setItemRepresentation(ItemStack itemRepresentation) {
-		this.itemRepresentation = itemRepresentation;
+		this.itemRepresentation = itemRepresentation.getType();
 	}
 
 	public Cosmetique getCosmetique() {
-		return cosmetique;
+		return ChallengeMain.getInstance().getBankCosmetique().getCosmetique(cosmetique);
 	}
 
 	public void setCosmetique(Cosmetique cosmetique) {
-		this.cosmetique = cosmetique;
+		this.cosmetique = cosmetique.getId();
 	}
 
 	public int getHumis() {

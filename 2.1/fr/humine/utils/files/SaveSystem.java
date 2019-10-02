@@ -12,6 +12,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import fr.humine.utils.Challenger;
 import fr.humine.utils.challenges.Challenge;
+import fr.humine.utils.pass.Page;
 
 public abstract class SaveSystem
 {
@@ -52,11 +53,11 @@ public abstract class SaveSystem
 		
 		File hebdoFolder = new File(folder, "HebdoChallenge");
 		File DailyFolder = new File(folder, "DailyChallenge");
-		saveChallenge(challenger.getHebdoChallenge(), hebdoFolder);
-		saveChallenge(challenger.getDailyChallenge(), DailyFolder);
+		saveChallenges(challenger.getHebdoChallenge(), hebdoFolder);
+		saveChallenges(challenger.getDailyChallenge(), DailyFolder);
 	}
 	
-	public static void saveChallenge(List<Challenge> challenges, File folder) throws IOException {
+	public static void saveChallenges(List<Challenge> challenges, File folder) throws IOException {
 		if(!folder.getParentFile().exists())
 			throw new FileNotFoundException();
 		if(!folder.exists()) {
@@ -68,6 +69,24 @@ public abstract class SaveSystem
 			File f = new File(folder, c.getTitle() + ".challenge");
 			out = new ObjectOutputStream(new FileOutputStream(f));
 			out.writeObject(c);
+			out.flush();
+			out.close();
+		}
+	}
+	
+	public static void savePages(List<Page> pages, File folder) throws IOException {
+		if(!folder.getParentFile().exists())
+			throw new FileNotFoundException();
+		if(!folder.exists()) {
+			folder.mkdirs();
+		}
+		
+		ObjectOutputStream out;
+		int i = 0;
+		for(Page page : pages) {
+			File f = new File(folder, i++ + ".page");
+			out = new ObjectOutputStream(new FileOutputStream(f));
+			out.writeObject(page);
 			out.flush();
 			out.close();
 		}

@@ -48,6 +48,7 @@ import fr.humine.utils.challenges.Challenge;
 import fr.humine.utils.files.LoadSystem;
 import fr.humine.utils.files.SaveSystem;
 import fr.humine.utils.pass.ChallengePass;
+import fr.humine.utils.pass.Page;
 
 public class ChallengeMain extends JavaPlugin{
 
@@ -65,6 +66,7 @@ public class ChallengeMain extends JavaPlugin{
 	public final File FOLDERDAILYCHALLENGE = new File(getDataFolder(), "DailyChallenge");
 	public final File FOLDERHEBDOCHALLENGE = new File(getDataFolder(), "HebdoChallenge");
 	public final File FOLDERCHALLENGER = new File(getDataFolder(), "Challengers");
+	public final File FOLDERDATA = new File(getDataFolder(), "Data");
 	
 	@Override
 	public void onEnable()
@@ -143,6 +145,18 @@ public class ChallengeMain extends JavaPlugin{
 				e.printStackTrace();
 			}
 		}
+		
+		File pageFolder = new File(FOLDERDATA, "Pages");
+		File dailyFolder = new File(FOLDERDATA, "DailyChallenge");
+		File hebdoFolder = new File(FOLDERDATA, "HebdoChallenge");
+		
+		try {
+			SaveSystem.savePages(passMain.getPages(), pageFolder);
+			SaveSystem.saveChallenges(dailyChallenge, dailyFolder);
+			SaveSystem.saveChallenges(HebdoChallenge, hebdoFolder);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void files() {
@@ -160,6 +174,12 @@ public class ChallengeMain extends JavaPlugin{
 			if(!FOLDERCHALLENGER.exists())
 				FOLDERCHALLENGER.mkdirs();
 			
+			if(!FOLDERCHALLENGER.exists())
+				FOLDERCHALLENGER.mkdirs();
+			
+			if(!FOLDERDATA.exists())
+				FOLDERDATA.mkdirs();
+			
 			if(getConfig().contains("currentdailydate")) {
 				String date[] = getConfig().getString("currentdailydate").split("-");
 				this.currentDailyChallengeDate = LocalDate.of(Integer.parseInt(date[0]), Integer.parseInt(date[1]), Integer.parseInt(date[2]));
@@ -174,6 +194,39 @@ public class ChallengeMain extends JavaPlugin{
 			}
 			else {
 				this.currentHebdoChallengeDate = LocalDate.now();
+			}
+			
+			File pageFolder = new File(FOLDERDATA, "Pages");
+			File dailyFolder = new File(FOLDERDATA, "DailyChallenge");
+			File hebdoFolder = new File(FOLDERDATA, "HebdoChallenge");
+			
+			if(pageFolder.exists()) {
+				try {
+						List<Page> pages = LoadSystem.loadPages(pageFolder);
+						passMain.setPages(pages);
+				} catch (ClassNotFoundException | IOException e) {
+					e.printStackTrace();
+				}
+				
+				
+			}
+			
+			if(dailyFolder.exists()) {
+				try {
+					List<Challenge> dailyList = LoadSystem.loadChallenges(dailyFolder);
+					dailyChallenge.addAll(dailyList);
+				} catch (ClassNotFoundException | IOException e) {
+				e.printStackTrace();
+				}
+			}
+			
+			if(dailyFolder.exists()) {
+				try {
+					List<Challenge> hebdoList = LoadSystem.loadChallenges(hebdoFolder);
+					HebdoChallenge.addAll(hebdoList);
+				} catch (ClassNotFoundException | IOException e) {
+				e.printStackTrace();
+				}
 			}
 			
 		}

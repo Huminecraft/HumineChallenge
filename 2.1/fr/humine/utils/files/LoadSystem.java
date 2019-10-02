@@ -16,6 +16,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import fr.humine.main.ChallengeMain;
 import fr.humine.utils.Challenger;
 import fr.humine.utils.challenges.Challenge;
+import fr.humine.utils.pass.Page;
+import fr.humine.utils.pass.Palier;
 
 public abstract class LoadSystem
 {
@@ -49,7 +51,7 @@ public abstract class LoadSystem
 			}
 			else {
 				File hebdoFolder = new File(folder, "HebdoChallenge");
-				List<Challenge> challenges = loadChallenge(hebdoFolder);
+				List<Challenge> challenges = loadChallenges(hebdoFolder);
 				challenger.updateHebdoChallenge(challenges);
 			}
 		}
@@ -60,15 +62,22 @@ public abstract class LoadSystem
 		}
 		else {
 			File dailyFolder = new File(folder, "DailyChallenge");
-			List<Challenge> challenges = loadChallenge(dailyFolder);
+			List<Challenge> challenges = loadChallenges(dailyFolder);
 			challenger.updateDailyChallenge(challenges);
 		}
 		
+		ChallengeMain.getInstance();
+		challenger.getChallengePass().setPages(new ArrayList<>(ChallengeMain.getPassMain().getPages()));
+		for(Page page : challenger.getChallengePass().getPages()) {
+			for(int i = 0; i < page.getFreeLine().getPaliers().length && page.getFreeLine().getPaliers()[i] != null && page.getFreeLine().getPaliers()[i].getTokenPass(); i++) {
+				
+			}
+		}
 		
 		return challenger;
 	}
 	
-	public static List<Challenge> loadChallenge(File folder) throws IOException, ClassNotFoundException {
+	public static List<Challenge> loadChallenges(File folder) throws IOException, ClassNotFoundException {
 		if(!folder.exists())
 			throw new FileNotFoundException();
 		
@@ -81,5 +90,20 @@ public abstract class LoadSystem
 		}
 		
 		return challenges;
+	}
+	
+	public static List<Page> loadPages(File folder) throws IOException, ClassNotFoundException {
+		if(!folder.exists())
+			throw new FileNotFoundException();
+		
+		List<Page> pages = new ArrayList<Page>();
+		
+		ObjectInputStream in;
+		for(File f : folder.listFiles()) {
+			in = new ObjectInputStream(new FileInputStream(f));
+			pages.add((Page) in.readObject());
+		}
+		
+		return pages;
 	}
 }

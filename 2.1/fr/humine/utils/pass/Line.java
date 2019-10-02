@@ -1,7 +1,10 @@
 package fr.humine.utils.pass;
 
-public class Line
+import java.io.Serializable;
+
+public class Line implements Serializable
 {
+	private static final long serialVersionUID = 4076514741578193630L;
 	private static final byte	lineLimit	= 9;
 	private Palier[] paliers;
 	

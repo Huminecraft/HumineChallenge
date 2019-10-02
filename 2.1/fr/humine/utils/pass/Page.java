@@ -1,5 +1,6 @@
 package fr.humine.utils.pass;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -9,8 +10,9 @@ import org.bukkit.inventory.Inventory;
 import fr.humine.utils.Challenger;
 import fr.humine.utils.ItemShop;
 
-public class Page
+public class Page implements Serializable
 {
+	private static final long serialVersionUID = -8974287729367150905L;
 	private Line freeLine;
 	private Line premiumLine;
 
