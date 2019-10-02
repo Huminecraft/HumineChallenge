@@ -2,6 +2,8 @@ package fr.humine.main;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +16,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import fr.humine.commands.AddMaterialHatCosmetiqueCommand;
 import fr.humine.commands.AddPalierCommand;
 import fr.humine.commands.AddParticleCosmetiqueCommand;
+import fr.humine.commands.DailyChallengeLoadCommand;
+import fr.humine.commands.HebdoChallengeLoadCommand;
 import fr.humine.commands.PalierLoadCommand;
 import fr.humine.commands.ShowChallengePassCommand;
 import fr.humine.commands.ShowTokenCommand;
@@ -23,20 +27,26 @@ import fr.humine.commands.challenges.AddChallengeBreakBlockCommand;
 import fr.humine.commands.challenges.AddChallengeKillCommand;
 import fr.humine.commands.challenges.AddChallengePlaceBlockCommand;
 import fr.humine.commands.challenges.ShowDailyChallengeCommand;
+import fr.humine.commands.challenges.ShowHedboChallengeCommand;
 import fr.humine.events.CreateChallengerEvent;
+import fr.humine.events.QuitChallengerEvent;
 import fr.humine.events.challenges.ChallengeBiomeDiscoverEvent;
 import fr.humine.events.challenges.ChallengeBreakBlockEvent;
 import fr.humine.events.challenges.ChallengeKillEvent;
 import fr.humine.events.challenges.ChallengePlaceBlockEvent;
 import fr.humine.events.challenges.GiveAwardEvent;
 import fr.humine.events.challenges.GiveAwardPalierEvent;
-import fr.humine.events.pageapplepay.ClickApplePayEvent;
-import fr.humine.events.pageapplepay.ClickQuitButtonEvent;
-import fr.humine.events.pageapplepay.OpenPageApplePayEvent;
+import fr.humine.events.defaultpage.pageapplepay.ClickApplePayEvent;
+import fr.humine.events.defaultpage.pageapplepay.ClickQuitButtonEvent;
+import fr.humine.events.defaultpage.pageapplepay.OpenPageApplePayEvent;
+import fr.humine.events.defaultpage.pageunlockpalier.ClickUnlockPalierEvent;
+import fr.humine.events.defaultpage.pageunlockpalier.OpenPageUnlockPalierEvent;
 import fr.humine.utils.BankChallenger;
 import fr.humine.utils.BankCosmetique;
 import fr.humine.utils.Challenger;
 import fr.humine.utils.challenges.Challenge;
+import fr.humine.utils.files.LoadSystem;
+import fr.humine.utils.files.SaveSystem;
 import fr.humine.utils.pass.ChallengePass;
 
 public class ChallengeMain extends JavaPlugin{
@@ -44,11 +54,17 @@ public class ChallengeMain extends JavaPlugin{
 	private static ChallengeMain instance;
 	private static ChallengePass passMain;
 	private static List<Challenge> dailyChallenge;
-	
+	private static List<Challenge> HebdoChallenge;
+
+	private LocalDate currentDailyChallengeDate;
+	private LocalDate currentHebdoChallengeDate;
 	private BankChallenger bankChallenger;
 	private BankCosmetique bankCosmetique;
 
 	public final File FILEPALIER = new File(getDataFolder(), "paliers.hc");
+	public final File FOLDERDAILYCHALLENGE = new File(getDataFolder(), "DailyChallenge");
+	public final File FOLDERHEBDOCHALLENGE = new File(getDataFolder(), "HebdoChallenge");
+	public final File FOLDERCHALLENGER = new File(getDataFolder(), "Challengers");
 	
 	@Override
 	public void onEnable()
@@ -58,23 +74,75 @@ public class ChallengeMain extends JavaPlugin{
 		instance = this;
 		passMain = new ChallengePass();
 		dailyChallenge = new ArrayList<>();
+		HebdoChallenge = new ArrayList<>();
 		
 		this.bankChallenger = new BankChallenger();
 		this.bankCosmetique = new BankCosmetique();
 
-		for(Player player : Bukkit.getOnlinePlayers())
-			bankChallenger.addChallenger(new Challenger(player));
-		
 		files();
 		commands();
 		events();
+		
+		for(Player player : Bukkit.getOnlinePlayers()) {
+			File folder = new File(FOLDERCHALLENGER, player.getName());
+			if(!folder.exists()) {
+				Challenger challenger = new Challenger(player);
+				bankChallenger.addChallenger(challenger);
+				continue;
+			}
+
+			try
+			{
+				Challenger challenger = LoadSystem.loadChallenger(folder);
+				bankChallenger.addChallenger(challenger);
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+			catch (ClassNotFoundException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+			public void run()
+			{
+				if(currentDailyChallengeDate.isBefore(LocalDate.now())) {
+					currentDailyChallengeDate = LocalDate.now();
+					getServer().dispatchCommand(getServer().getConsoleSender(), "dailyload");
+				}
+				
+				if(LocalDate.now().getDayOfWeek() == DayOfWeek.MONDAY && currentHebdoChallengeDate.isBefore(LocalDate.now())) {
+					currentHebdoChallengeDate = LocalDate.now();
+					getServer().dispatchCommand(getServer().getConsoleSender(), "hebdoload");
+				}
+				
+			}
+		}, 0L, (60 * 20));
 	}
 	
 	@Override
 	public void onDisable()
 	{
-		for(Challenger challenger : bankChallenger.getChallengers())
+		getConfig().set("currentdailydate", this.currentDailyChallengeDate.toString());
+		getConfig().set("currenthebdodate", this.currentHebdoChallengeDate.toString());
+		saveConfig();
+		
+		for(Challenger challenger : bankChallenger.getChallengers()) {
 			challenger.getLevelBar().dissociate();
+			File folder = new File(FOLDERCHALLENGER, challenger.getName());
+			folder.mkdirs();
+			try
+			{
+				SaveSystem.saveChallenger(challenger, folder);
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	private void files() {
@@ -82,6 +150,32 @@ public class ChallengeMain extends JavaPlugin{
 		{
 			if(!FILEPALIER.exists())
 				FILEPALIER.createNewFile();
+			
+			if(!FOLDERDAILYCHALLENGE.exists())
+				FOLDERDAILYCHALLENGE.mkdirs();
+			
+			if(!FOLDERHEBDOCHALLENGE.exists())
+				FOLDERHEBDOCHALLENGE.mkdirs();
+			
+			if(!FOLDERCHALLENGER.exists())
+				FOLDERCHALLENGER.mkdirs();
+			
+			if(getConfig().contains("currentdailydate")) {
+				String date[] = getConfig().getString("currentdailydate").split("-");
+				this.currentDailyChallengeDate = LocalDate.of(Integer.parseInt(date[0]), Integer.parseInt(date[1]), Integer.parseInt(date[2]));
+			}
+			else {
+				this.currentDailyChallengeDate = LocalDate.now();
+			}
+			
+			if(getConfig().contains("currenthebdodate")) {
+				String date[] = getConfig().getString("currenthebdodate").split("-");
+				this.currentHebdoChallengeDate = LocalDate.of(Integer.parseInt(date[0]), Integer.parseInt(date[1]), Integer.parseInt(date[2]));
+			}
+			else {
+				this.currentHebdoChallengeDate = LocalDate.now();
+			}
+			
 		}
 		catch (IOException e)
 		{
@@ -91,6 +185,7 @@ public class ChallengeMain extends JavaPlugin{
 	
 	private void events() {
 		this.getServer().getPluginManager().registerEvents(new CreateChallengerEvent(), this);
+		this.getServer().getPluginManager().registerEvents(new QuitChallengerEvent(), this);
 		this.getServer().getPluginManager().registerEvents(new ChallengeKillEvent(), this);
 		this.getServer().getPluginManager().registerEvents(new ChallengePlaceBlockEvent(), this);
 		this.getServer().getPluginManager().registerEvents(new ChallengeBreakBlockEvent(), this);
@@ -101,6 +196,10 @@ public class ChallengeMain extends JavaPlugin{
 		this.getServer().getPluginManager().registerEvents(new ClickQuitButtonEvent(), this);
 		this.getServer().getPluginManager().registerEvents(new OpenPageApplePayEvent(), this);
 		this.getServer().getPluginManager().registerEvents(new GiveAwardPalierEvent(), this);
+		
+		this.getServer().getPluginManager().registerEvents(new fr.humine.events.defaultpage.pageunlockpalier.ClickQuitButtonEvent(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickUnlockPalierEvent(), this);
+		this.getServer().getPluginManager().registerEvents(new OpenPageUnlockPalierEvent(), this);
 	}
 	
 	private void commands() {
@@ -108,6 +207,8 @@ public class ChallengeMain extends JavaPlugin{
 		this.getCommand("pass").setExecutor(new ShowChallengePassCommand());
 		this.getCommand("createpalier").setExecutor(new AddPalierCommand());
 		this.getCommand("palierload").setExecutor(new PalierLoadCommand());
+		this.getCommand("dailyload").setExecutor(new DailyChallengeLoadCommand());
+		this.getCommand("hebdoload").setExecutor(new HebdoChallengeLoadCommand());
 		this.getCommand("palierparticlecosmetique").setExecutor(new AddParticleCosmetiqueCommand());
 		this.getCommand("paliermaterialhatcosmetique").setExecutor(new AddMaterialHatCosmetiqueCommand());
 		this.getCommand("addchallengekill").setExecutor(new AddChallengeKillCommand());
@@ -116,6 +217,7 @@ public class ChallengeMain extends JavaPlugin{
 		this.getCommand("addchallengebiomediscover").setExecutor(new AddChallengeBiomeDiscoverCommand());
 		this.getCommand("addAward").setExecutor(new AddAwardCommand());
 		this.getCommand("dailychallenge").setExecutor(new ShowDailyChallengeCommand());
+		this.getCommand("hebdochallenge").setExecutor(new ShowHedboChallengeCommand());
 	}
 	
 	public static void sendMessage(CommandSender sender, String message) {
@@ -142,5 +244,19 @@ public class ChallengeMain extends JavaPlugin{
 	
 	public static List<Challenge> getDailyChallenge() {
 		return dailyChallenge;
+	}
+	
+	public static List<Challenge> getHebdoChallenge()
+	{
+		return HebdoChallenge;
+	}
+	public LocalDate getCurrentDailyChallengeDate()
+	{
+		return currentDailyChallengeDate;
+	}
+	
+	public LocalDate getCurrentHebdoChallengeDate()
+	{
+		return currentHebdoChallengeDate;
 	}
 }

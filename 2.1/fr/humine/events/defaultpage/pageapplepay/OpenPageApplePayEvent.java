@@ -1,4 +1,4 @@
-package fr.humine.events.pageapplepay;
+package fr.humine.events.defaultpage.pageapplepay;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -9,7 +9,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import fr.humine.main.ChallengeMain;
 import fr.humine.utils.Challenger;
 import fr.humine.utils.ItemShop;
-import fr.humine.utils.PageApplePay;
+import fr.humine.utils.defaultpage.PageApplePay;
 import fr.humine.utils.pass.ChallengePass;
 
 public class OpenPageApplePayEvent implements Listener{

@@ -1,7 +1,10 @@
-package fr.humine.utils;
+package fr.humine.utils.defaultpage;
 
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
+
+import fr.humine.utils.Challenger;
+import fr.humine.utils.ItemShop;
 
 public abstract class PageApplePay {
 

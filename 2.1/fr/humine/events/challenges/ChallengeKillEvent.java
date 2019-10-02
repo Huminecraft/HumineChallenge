@@ -16,12 +16,35 @@ import fr.humine.utils.events.ChallengeFinishEvent;
 public class ChallengeKillEvent implements Listener{
 
 	@EventHandler
-	public void onKill(EntityDeathEvent event) {
+	public void onKillDaily(EntityDeathEvent event) {
 		if(event.getEntity().getKiller() != null) {
 			Player player = event.getEntity().getKiller();
 			Challenger challenger = ChallengeMain.getInstance().getBankChallenger().getChallenger(player);
 			if(challenger != null) {
 				List<Challenge> challenges = challenger.getDailyChallenges(ChallengeType.KILL);
+				if(!challenges.isEmpty()) {
+					for(Challenge c : challenges) {
+						if(!c.isFinish()) {
+							if(c.checkCondition(event.getEntity())) {
+								c.update();
+								if(c.isFinish()) {
+									ChallengeMain.getInstance().getServer().getPluginManager().callEvent(new ChallengeFinishEvent(c, challenger));
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onKillHebdo(EntityDeathEvent event) {
+		if(event.getEntity().getKiller() != null) {
+			Player player = event.getEntity().getKiller();
+			Challenger challenger = ChallengeMain.getInstance().getBankChallenger().getChallenger(player);
+			if(challenger != null && challenger.hasPremium()) {
+				List<Challenge> challenges = challenger.getHebdoChallenges(ChallengeType.KILL);
 				if(!challenges.isEmpty()) {
 					for(Challenge c : challenges) {
 						if(!c.isFinish()) {

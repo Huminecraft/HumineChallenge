@@ -1,6 +1,6 @@
 name: HumineChallenge
 author: MizakiGaming
-version: 2.1b
+version: 2.1.5b
 main: fr.humine.main.ChallengeMain
 commands:
   pass:
@@ -16,6 +16,14 @@ commands:
     description:
     permission:
   palierload:
+    usage:
+    description:
+    permission:
+  dailyload:
+    usage:
+    description:
+    permission:
+  hebdoload:
     usage:
     description:
     permission:
@@ -36,6 +44,10 @@ commands:
     description:
     permission:
   dailychallenge:
+    usage:
+    description:
+    permission:
+  hebdochallenge:
     usage:
     description:
     permission:

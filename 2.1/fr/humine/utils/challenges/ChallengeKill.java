@@ -6,6 +6,7 @@ import org.bukkit.entity.EntityType;
 
 public class ChallengeKill implements Challenge{
 
+	private static final long serialVersionUID = -4436621919615400988L;
 	private String title;
 	private String description;
 	private EntityType entity;

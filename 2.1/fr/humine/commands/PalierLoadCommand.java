@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import fr.humine.main.ChallengeMain;
-import fr.humine.utils.files.ChallengePalierFile;
+import fr.humine.utils.files.ChallengeFile;
 
 public class PalierLoadCommand implements CommandExecutor {
 
@@ -25,7 +25,7 @@ public class PalierLoadCommand implements CommandExecutor {
 		
 		try
 		{
-			List<String> commands = ChallengePalierFile.loadPalierFile(ChallengeMain.getInstance().FILEPALIER);
+			List<String> commands = ChallengeFile.loadCommandFile(ChallengeMain.getInstance().FILEPALIER);
 			ChallengeMain.getPassMain().getPages().clear();
 			for(String str : commands) {
 				ChallengeMain.getInstance().getServer().dispatchCommand(player, str);

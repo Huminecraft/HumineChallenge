@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import fr.humine.utils.files.ChallengePalierFile;
+import fr.humine.utils.files.ChallengeFile;
 
 public class LoadPalierFile
 {
@@ -15,7 +15,7 @@ public class LoadPalierFile
 	public void test() throws IOException
 	{
 		File f = new File("C:/Users/allan/Desktop/palier.hc");
-		List<String> list = ChallengePalierFile.loadPalierFile(f);
+		List<String> list = ChallengeFile.loadCommandFile(f);
 	
 		for(String str : list)
 			System.out.println(str);

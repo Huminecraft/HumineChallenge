@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 
 public class ChallengeBiomeDiscover implements Challenge{
 
+	private static final long serialVersionUID = 8598010162097323245L;
 	private String title;
 	private String description;
 	private Biome biome;

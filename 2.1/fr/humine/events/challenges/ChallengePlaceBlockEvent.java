@@ -15,7 +15,7 @@ import fr.humine.utils.events.ChallengeFinishEvent;
 public class ChallengePlaceBlockEvent implements Listener{
 
 	@EventHandler
-	public void onPose(BlockPlaceEvent event) {
+	public void onPoseDaily(BlockPlaceEvent event) {
 		if(event.getPlayer() == null)
 			return;
 		
@@ -28,6 +28,29 @@ public class ChallengePlaceBlockEvent implements Listener{
 						c.update();
 						if(c.isFinish()) {
 							ChallengeMain.getInstance().getServer().getPluginManager().callEvent(new ChallengeFinishEvent(c, challenger));
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onPoseHebdo(BlockPlaceEvent event) {
+		if(event.getPlayer() == null)
+			return;
+		
+		Challenger challenger = ChallengeMain.getInstance().getBankChallenger().getChallenger(event.getPlayer());
+		if(challenger.hasPremium()) {
+			List<Challenge> challenges = challenger.getHebdoChallenges(ChallengeType.PLACE_BLOCK);
+			if(!challenges.isEmpty()) {
+				for(Challenge c : challenges) {
+					if(!c.isFinish()) {
+						if(c.checkCondition(event.getItemInHand())) {
+							c.update();
+							if(c.isFinish()) {
+								ChallengeMain.getInstance().getServer().getPluginManager().callEvent(new ChallengeFinishEvent(c, challenger));
+							}
 						}
 					}
 				}

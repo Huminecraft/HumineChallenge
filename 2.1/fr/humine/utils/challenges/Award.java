@@ -1,7 +1,10 @@
 package fr.humine.utils.challenges;
 
-public class Award {
+import java.io.Serializable;
 
+public class Award implements Serializable{
+
+	private static final long serialVersionUID = 1551445127015996475L;
 	private int exp;
 	private int token;
 	

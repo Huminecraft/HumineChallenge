@@ -26,7 +26,7 @@ public class ChallengeBiomeDiscoverEvent implements Listener{
 	}
 	
 	@EventHandler
-	public void onChange(PlayerChangeBiomeEvent event) {
+	public void onChangeDaily(PlayerChangeBiomeEvent event) {
 		Challenger challenger = ChallengeMain.getInstance().getBankChallenger().getChallenger(event.getPlayer());
 		List<Challenge> challenges = challenger.getDailyChallenges(ChallengeType.BIOME_DISCOVER);
 		if(!challenges.isEmpty()) {
@@ -36,6 +36,26 @@ public class ChallengeBiomeDiscoverEvent implements Listener{
 						c.update();
 						if(c.isFinish()) {
 							ChallengeMain.getInstance().getServer().getPluginManager().callEvent(new ChallengeFinishEvent(c, challenger));
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onChangeHebdo(PlayerChangeBiomeEvent event) {
+		Challenger challenger = ChallengeMain.getInstance().getBankChallenger().getChallenger(event.getPlayer());
+		if(challenger.hasPremium()) {
+			List<Challenge> challenges = challenger.getHebdoChallenges(ChallengeType.BIOME_DISCOVER);
+			if(!challenges.isEmpty()) {
+				for(Challenge c : challenges) {
+					if(!c.isFinish()) {
+						if(c.checkCondition(event.fromBiome()) || c.checkCondition(event.toBiome())) {
+							c.update();
+							if(c.isFinish()) {
+								ChallengeMain.getInstance().getServer().getPluginManager().callEvent(new ChallengeFinishEvent(c, challenger));
+							}
 						}
 					}
 				}

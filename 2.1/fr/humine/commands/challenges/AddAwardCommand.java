@@ -1,5 +1,7 @@
 package fr.humine.commands.challenges;
 
+import java.util.Arrays;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,6 +18,10 @@ public class AddAwardCommand implements CommandExecutor{
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
+		boolean hebdo = Arrays.asList(args).contains("HEBDOCHALLENGE");
+		if(hebdo)
+			args[args.length-1] = "";
+		
 		if(args.length < 3) {
 			ChallengeMain.sendMessage(sender, "Argument insuffisant");
 			ChallengeMain.sendMessage(sender, COMMAND);
@@ -23,9 +29,18 @@ public class AddAwardCommand implements CommandExecutor{
 		}
 		
 		Challenge challenge = null;
-		for(Challenge c : ChallengeMain.getDailyChallenge()) {
-			if(c.getTitle().equals(args[0])) {
-				challenge = c;
+		if(!hebdo) {
+			for(Challenge c : ChallengeMain.getDailyChallenge()) {
+				if(c.getTitle().equals(args[0])) {
+					challenge = c;
+				}
+			}
+		}
+		else {
+			for(Challenge c : ChallengeMain.getHebdoChallenge()) {
+				if(c.getTitle().equals(args[0])) {
+					challenge = c;
+				}
 			}
 		}
 		
@@ -50,8 +65,16 @@ public class AddAwardCommand implements CommandExecutor{
 		Award award = new Award(Integer.parseInt(args[1]), Integer.parseInt(args[2]));
 		challenge.setAward(award);
 		
-		for(Challenger c : ChallengeMain.getInstance().getBankChallenger().getChallengers())
-			c.updateDailyChallenge(ChallengeMain.getDailyChallenge());
+		if(!hebdo) {
+			for(Challenger c : ChallengeMain.getInstance().getBankChallenger().getChallengers())
+				c.updateDailyChallenge(ChallengeMain.getDailyChallenge());
+		}
+		else {
+			for(Challenger c : ChallengeMain.getInstance().getBankChallenger().getChallengers())
+				c.updateHebdoChallenge(ChallengeMain.getHebdoChallenge());
+		}
+		
+		ChallengeMain.sendMessage(sender, "Adward  " + args[0] + " ajoute !");
 		
 		return true;
 	}

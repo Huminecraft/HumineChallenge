@@ -13,6 +13,7 @@ public class GiveAwardPalierEvent implements Listener
 
 	@EventHandler
 	public void onGive(PalierUnlockEvent event) {
+		ChallengeMain.sendMessage(event.getChallenger().getPlayer(), "Palier " + event.getPalier().getNumeroPalier() + " debloque !");
 		Cosmetique c = event.getPalier().getCosmetique();
 		if(c != null) {
 			MainShop.getInstance().getInventories().getStockOfPlayer(event.getChallenger().getPlayer().getName()).addCosmetique(c);

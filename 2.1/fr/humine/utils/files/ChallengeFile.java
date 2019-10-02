@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public abstract class ChallengePalierFile
+public abstract class ChallengeFile
 {
 
-	public static List<String> loadPalierFile(File file) throws IOException {
+	public static List<String> loadCommandFile(File file) throws IOException {
 		if(!file.exists())
 			throw new FileNotFoundException("Impossible de load le fichier de palier");
 		

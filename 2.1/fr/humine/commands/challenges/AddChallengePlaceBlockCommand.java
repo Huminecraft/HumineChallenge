@@ -1,5 +1,7 @@
 package fr.humine.commands.challenges;
 
+import java.util.Arrays;
+
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,6 +19,9 @@ public class AddChallengePlaceBlockCommand implements CommandExecutor{
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
+		boolean hebdo = Arrays.asList(args).contains("HEBDOCHALLENGE");
+		if(hebdo)
+			args[args.length-1] = "";
 		
 		if(args.length < 3) {
 			ChallengeMain.sendMessage(sender, "Argument insuffisant");
@@ -50,10 +55,16 @@ public class AddChallengePlaceBlockCommand implements CommandExecutor{
 		}
 		
 		ChallengePlaceBlock challenge = new ChallengePlaceBlock(args[0], description, item, Integer.parseInt(args[2]), premium);
-		ChallengeMain.getDailyChallenge().add(challenge);
-
-		for(Challenger c : ChallengeMain.getInstance().getBankChallenger().getChallengers())
-			c.updateDailyChallenge(ChallengeMain.getDailyChallenge());
+		
+		if(!hebdo) {
+			ChallengeMain.getDailyChallenge().add(challenge);
+			for(Challenger c : ChallengeMain.getInstance().getBankChallenger().getChallengers())
+				c.updateDailyChallenge(ChallengeMain.getDailyChallenge());
+		}else {
+			ChallengeMain.getHebdoChallenge().add(challenge);
+			for(Challenger c : ChallengeMain.getInstance().getBankChallenger().getChallengers())
+				c.updateHebdoChallenge(ChallengeMain.getHebdoChallenge());
+		}
 		
 		ChallengeMain.sendMessage(sender, "ChallengePlaceBlock " + args[0] + " ajoute !");
 		return true;

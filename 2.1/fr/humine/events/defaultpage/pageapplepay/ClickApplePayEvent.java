@@ -1,4 +1,4 @@
-package fr.humine.events.pageapplepay;
+package fr.humine.events.defaultpage.pageapplepay;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -9,7 +9,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import fr.humine.main.ChallengeMain;
 import fr.humine.utils.Challenger;
 import fr.humine.utils.ItemShop;
-import fr.humine.utils.PageApplePay;
+import fr.humine.utils.defaultpage.PageApplePay;
+import fr.humine.utils.events.PalierUnlockEvent;
+import fr.humine.utils.pass.Page;
+import fr.humine.utils.pass.Palier;
 import humine.main.MainShop;
 
 public class ClickApplePayEvent implements Listener {
@@ -34,9 +37,23 @@ public class ClickApplePayEvent implements Listener {
 			challenger.getChallengePass().closeShop();
 			ChallengeMain.sendMessage(challenger.getPlayer(), "Vous avez acheter le HuminePass, Bienvenue dans l'elite !");
 			challenger.setPremium(true);
+			checkPalier(challenger);
 		}
 		else {
 			ChallengeMain.sendMessage(challenger.getPlayer(), "Vous n'avez pas assez de humis :(");
+		}
+	}
+	
+	private void checkPalier(Challenger challenger) {
+		for(Page page : challenger.getChallengePass().getPages()) {
+			for(Palier palier : page.getPremiumLine().getPaliers()) {
+				if(palier != null) {
+					if(!palier.isUnlock() && challenger.getToken().getAmount() >= palier.getTokenPass()) {
+						palier.setUnlock(true);
+						ChallengeMain.getInstance().getServer().getPluginManager().callEvent(new PalierUnlockEvent(challenger, palier));
+					}
+				}
+			}
 		}
 	}
 

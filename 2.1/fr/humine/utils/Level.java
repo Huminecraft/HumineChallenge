@@ -52,4 +52,19 @@ public class Level
 		return experienceToReach;
 	}
 	
+	public void setLevel(int level)
+	{
+		this.level = level;
+	}
+	
+	public void setExperience(int experience)
+	{
+		this.experience = experience;
+	}
+	
+	public void setExperienceToReach(int experienceToReach)
+	{
+		this.experienceToReach = experienceToReach;
+	}
+	
 }

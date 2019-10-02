@@ -6,9 +6,10 @@ import org.bukkit.inventory.ItemStack;
 
 public abstract class ChallengeBlock implements Challenge{
 
+	private static final long serialVersionUID = 6658325060908901604L;
 	protected String title;
 	protected String description;
-	protected ItemStack block;
+	protected Material block;
 	protected int amount;
 	protected int currentAmount;
 	protected boolean premium;
@@ -18,7 +19,7 @@ public abstract class ChallengeBlock implements Challenge{
 	public ChallengeBlock(String title, String description, ItemStack blockToPlace, int amount, boolean premium) {
 		this.title = title;
 		this.description = description;
-		this.block = blockToPlace;
+		this.block = blockToPlace.getType();
 		this.amount = amount;
 		this.currentAmount = 0;
 		this.premium = premium;
@@ -55,12 +56,12 @@ public abstract class ChallengeBlock implements Challenge{
 		currentAmount++;
 	}
 
-	public ItemStack getBlock() {
+	public Material getBlock() {
 		return block;
 	}
 
 	public void setBlock(ItemStack block) {
-		this.block = block;
+		this.block = block.getType();
 	}
 
 	public int getAmount() {
@@ -82,12 +83,12 @@ public abstract class ChallengeBlock implements Challenge{
 	@Override
 	public boolean checkCondition(Object o) {
 		if(o instanceof ItemStack) {
-			if(((ItemStack) o).getType() == this.block.getType())
+			if(((ItemStack) o).getType() == this.block)
 				return true;
 		}
 		
 		if(o instanceof Material) {
-			if(((Material) o) == this.block.getType())
+			if(((Material) o) == this.block)
 				return true;
 		}
 		
@@ -99,7 +100,7 @@ public abstract class ChallengeBlock implements Challenge{
 		sender.sendMessage("Titre: " + getTitle());
 		sender.sendMessage("Description: " + getDescription());
 		sender.sendMessage("Type: " + getType().toString().toLowerCase());
-		sender.sendMessage("Bloc: " + block.getType().toString().toLowerCase());
+		sender.sendMessage("Bloc: " + block.toString().toLowerCase());
 		sender.sendMessage("Etat: " + currentAmount + "/" + amount);
 	}
 	

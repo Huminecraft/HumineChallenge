@@ -1,8 +1,10 @@
 package fr.humine.utils.challenges;
 
+import java.io.Serializable;
+
 import org.bukkit.command.CommandSender;
 
-public interface Challenge {
+public interface Challenge extends Serializable{
 
 	public String getTitle();
 	
@@ -25,4 +27,5 @@ public interface Challenge {
 	public Award getAwards();
 	
 	public void setAward(Award award);
+	
 }

@@ -5,8 +5,12 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import fr.humine.utils.pass.Palier;
+import humine.main.MainShop;
 
 public abstract class ItemShop extends humine.utils.ItemShop{
 
@@ -42,6 +46,29 @@ public abstract class ItemShop extends humine.utils.ItemShop{
 			lores.add("Pay");
 			meta.setLore(lores);
 		}
+		
+		item.setItemMeta(meta);
+		
+		return item;
+	}
+	
+	public static ItemStack palierPay(Player player, Palier palier) {
+		ItemStack item = new ItemStack(palier.getItemRepresentation());
+		ItemMeta meta = item.getItemMeta();
+		
+		int humis = MainShop.getInstance().getBankHumis().getMoney(player);
+		
+		if(humis >= palier.getHumis()) {
+			meta.setDisplayName(ChatColor.GREEN + "Acheter ce palier");
+		}
+		else {
+			meta.setDisplayName(ChatColor.RED + "Vous ne pouvez pas acheter ce palier");
+		}
+		
+		List<String> lores = new ArrayList<>();
+		lores.add("Prix: " + palier.getHumis() + " Humis");
+		lores.add("Vos Humis: " + humis);
+		meta.setLore(lores);
 		
 		item.setItemMeta(meta);
 		

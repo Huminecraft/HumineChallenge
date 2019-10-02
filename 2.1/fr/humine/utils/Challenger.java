@@ -1,5 +1,6 @@
 package fr.humine.utils;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,9 @@ public class Challenger {
 	private LevelBar levelBar;
 	
 	private List<Challenge> dailyChallenge;
+	private List<Challenge> hebdoChallenge;
+	
+	private LocalDate lastConnection;
 	
 	public Challenger(Player player) {
 		this.player = player;
@@ -26,7 +30,9 @@ public class Challenger {
 		this.premium = false;
 		this.challengePass = new ChallengePass(this);
 		this.levelBar = new LevelBar(this);
+		this.lastConnection = LocalDate.now();
 		updateDailyChallenge(ChallengeMain.getDailyChallenge());
+		updateHebdoChallenge(ChallengeMain.getHebdoChallenge());
 	}
 	
 	public boolean hasPremium() {
@@ -69,6 +75,21 @@ public class Challenger {
 		return dailyChallenge;
 	}
 	
+	public List<Challenge> getHebdoChallenge()
+	{
+		return hebdoChallenge;
+	}
+	
+	public LocalDate getLastConnection()
+	{
+		return lastConnection;
+	}
+	
+	public void setLastConnection(LocalDate lastConnection)
+	{
+		this.lastConnection = lastConnection;
+	}
+	
 	public List<Challenge> getDailyChallenges(ChallengeType type) {
 		List<Challenge> list = new ArrayList<>();
 		for(Challenge c : dailyChallenge) {
@@ -78,7 +99,21 @@ public class Challenger {
 		return list;
 	}
 	
+	public List<Challenge> getHebdoChallenges(ChallengeType type) {
+		List<Challenge> list = new ArrayList<>();
+		for(Challenge c : hebdoChallenge) {
+			if(c.getType() == type)
+				list.add(c);
+		}
+		return list;
+	}
+	
 	public void updateDailyChallenge(List<Challenge> challenges) {
 		this.dailyChallenge = new ArrayList<>(challenges);
+	}
+	
+	public void updateHebdoChallenge(List<Challenge> challenges)
+	{
+		this.hebdoChallenge = new ArrayList<>(challenges);
 	}
 }
