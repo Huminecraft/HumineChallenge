@@ -5,7 +5,13 @@ import org.bukkit.inventory.ItemStack;
 
 import fr.humine.utils.Challenger;
 
-public abstract class ChallengeBlock implements Challenge{
+/**
+ * {@link Challenge} Permettant de creer un defi lier au block <br />
+ * Challengeblock est une classe mere abstraite
+ * 
+ * @author Miza
+ */
+public abstract class ChallengeBlock implements Challenge {
 
 	private static final long serialVersionUID = 6658325060908901604L;
 	protected String title;
@@ -14,9 +20,9 @@ public abstract class ChallengeBlock implements Challenge{
 	protected int amount;
 	protected int currentAmount;
 	protected boolean premium;
-	
+
 	protected Award award;
-	
+
 	public ChallengeBlock(String title, String description, ItemStack blockToPlace, int amount, boolean premium) {
 		this.title = title;
 		this.description = description;
@@ -26,7 +32,7 @@ public abstract class ChallengeBlock implements Challenge{
 		this.premium = premium;
 		this.award = new Award(0, 0);
 	}
-	
+
 	@Override
 	public String getTitle() {
 		return title;
@@ -80,37 +86,37 @@ public abstract class ChallengeBlock implements Challenge{
 	public void setCurrentAmount(int currentAmount) {
 		this.currentAmount = currentAmount;
 	}
-	
+
 	@Override
 	public boolean checkCondition(Object o) {
-		if(o instanceof ItemStack) {
-			if(((ItemStack) o).getType() == this.block)
+		if (o instanceof ItemStack) {
+			if (((ItemStack) o).getType() == this.block)
 				return true;
 		}
-		
-		if(o instanceof Material) {
-			if(((Material) o) == this.block)
+
+		if (o instanceof Material) {
+			if (((Material) o) == this.block)
 				return true;
 		}
-		
+
 		return false;
 	}
 
 	@Override
 	public void showChallenge(Challenger challenger) {
-		
+
 		challenger.getPlayer().sendMessage("Titre: " + getTitle());
 		challenger.getPlayer().sendMessage("Description: " + getDescription());
 		challenger.getPlayer().sendMessage("Type: " + getType().toString().toLowerCase());
 		challenger.getPlayer().sendMessage("Bloc: " + block.toString().toLowerCase());
 		challenger.getPlayer().sendMessage("Etat: " + currentAmount + "/" + amount);
 	}
-	
+
 	@Override
 	public Award getAwards() {
 		return award;
 	}
-	
+
 	@Override
 	public void setAward(Award award) {
 		this.award = award;

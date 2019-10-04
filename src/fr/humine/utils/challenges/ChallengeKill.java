@@ -6,7 +6,12 @@ import org.bukkit.entity.EntityType;
 
 import fr.humine.utils.Challenger;
 
-public class ChallengeKill implements Challenge{
+/**
+ * {@link Challenge} Permettant de creer un defi d'assassinat sur des entites
+ * 
+ * @author Miza
+ */
+public class ChallengeKill implements Challenge {
 
 	private static final long serialVersionUID = -4436621919615400988L;
 	private String title;
@@ -15,9 +20,9 @@ public class ChallengeKill implements Challenge{
 	private int amount;
 	private int currentAmount;
 	private boolean premium;
-	
+
 	private Award award;
-	
+
 	public ChallengeKill(String title, String description, EntityType entityToKill, int amount, boolean premium) {
 		this.title = title;
 		this.description = description;
@@ -27,7 +32,7 @@ public class ChallengeKill implements Challenge{
 		this.premium = premium;
 		this.award = new Award(0, 0);
 	}
-	
+
 	@Override
 	public String getTitle() {
 		return title;
@@ -47,7 +52,7 @@ public class ChallengeKill implements Challenge{
 	public void setPremium(boolean premium) {
 		this.premium = premium;
 	}
-	
+
 	@Override
 	public boolean isPremium() {
 		return premium;
@@ -89,22 +94,22 @@ public class ChallengeKill implements Challenge{
 
 	@Override
 	public boolean checkCondition(Object o) {
-		if(o instanceof Entity) {
-			if(((Entity) o).getType() == entity)
+		if (o instanceof Entity) {
+			if (((Entity) o).getType() == entity)
 				return true;
 		}
-		
+
 		return false;
 	}
 
 	@Override
 	public void showChallenge(Challenger challenger) {
 		ChatColor color;
-		if(isFinish())
+		if (isFinish())
 			color = ChatColor.GREEN;
 		else
 			color = ChatColor.YELLOW;
-		
+
 		challenger.getPlayer().sendMessage(color + "Titre : " + getTitle());
 		challenger.getPlayer().sendMessage(color + "Description : " + getDescription());
 		challenger.getPlayer().sendMessage(color + "Etat : " + currentAmount + " / " + amount);
@@ -121,13 +126,12 @@ public class ChallengeKill implements Challenge{
 	}
 
 	@Override
-	public Challenge clonage()
-	{
+	public Challenge clonage() {
 		ChallengeKill kill = new ChallengeKill(new String(title), new String(description), entity, amount, premium);
 		Award a = new Award(award.getExp(), award.getToken());
 		kill.setAward(a);
 		kill.setCurrentAmount(currentAmount);
 		return kill;
 	}
-	
+
 }

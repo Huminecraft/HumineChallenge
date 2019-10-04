@@ -9,6 +9,11 @@ import org.bukkit.inventory.Inventory;
 import fr.humine.main.ChallengeMain;
 import fr.humine.utils.Challenger;
 
+/**
+ * 
+ * @author miza
+ *
+ */
 public class ChallengePass {
 
 	public static final String SHOPNAME = "SurvivalPass";

@@ -1,0 +1,14 @@
+fr.humine.commands
+fr.humine.commands.challenges
+fr.humine.events
+fr.humine.events.challenges
+fr.humine.events.defaultpage.hebdopage
+fr.humine.events.defaultpage.pageapplepay
+fr.humine.events.defaultpage.pageunlockpalier
+fr.humine.main
+fr.humine.utils
+fr.humine.utils.challenges
+fr.humine.utils.defaultpage
+fr.humine.utils.events
+fr.humine.utils.files
+fr.humine.utils.pass

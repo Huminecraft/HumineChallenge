@@ -4,6 +4,11 @@ import org.bukkit.block.Biome;
 
 import fr.humine.utils.Challenger;
 
+/**
+ * {@link Challenge} Permettant de creer un defi de decouverte de biome
+ * 
+ * @author Miza
+ */
 public class ChallengeBiomeDiscover implements Challenge{
 
 	private static final long serialVersionUID = 8598010162097323245L;

@@ -12,6 +12,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import fr.humine.utils.pass.Palier;
 import humine.main.MainShop;
 
+/**
+ * Classe contenant des {@link ItemStack} predefinis et utilisation 
+ * de maniere simple
+ * @author Miza
+ */
 public abstract class ItemShop extends humine.utils.ItemShop{
 
 	public static ItemStack premiumApple() {

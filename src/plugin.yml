@@ -1,6 +1,6 @@
 name: HumineChallenge
 author: MizakiGaming
-version: 2.1.5b
+version: 2.1.8b
 main: fr.humine.main.ChallengeMain
 commands:
   pass:
