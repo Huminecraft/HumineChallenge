@@ -1,0 +1,69 @@
+name: HumineChallenge
+author: MizakiGaming
+version: 2.1.5b
+main: fr.humine.main.ChallengeMain
+commands:
+  pass:
+    usage:
+    description: ouvrir le HuminePass
+    permission: huminechallenge.user.openpass
+  token:
+    usage:
+    description: voir ses tokens
+    permission: huminechallenge.user.token
+  createpalier:
+    usage:
+    description: creer un palier
+    permission: huminechallenge.admin.createpalier
+  palierload:
+    usage:
+    description: charger le fichier 'palier.hc'
+    permission: huminechallenge.admin.palierload
+  dailyload:
+    usage:
+    description: charger les fichier des challenges du jour manuellements 
+    permission: huminechallenge.admin.dailyload
+  hebdoload:
+    usage:
+    description: charger les fichier des challenges de la semaine manuellements 
+    permission: huminechallenge.admin.hebdoload
+  palierparticlecosmetique:
+    usage:
+    description: Creer un particle cosmetique pour les paliers
+    permission: huminechallenge.admin.palierparticlecosmetique
+  paliermaterialhatcosmetique:
+    usage:
+    description: Creer un material cosmetique pour les paliers
+    permission: huminechallenge.admin.paliermaterialcosmetique
+  addchallengekill:
+    usage:
+    description: Creer un challenge de type kill
+    permission: huminechallenge.admin.challengekill
+  addchallengeplaceblock:
+    usage:
+    description: Creer un challenge de type placeblock
+    permission: huminechallenge.admin.challengeplaceblock
+  dailychallenge:
+    usage:
+    description: voir les challenges du jour
+    permission: huminechallenge.user.dailychallenge
+  hebdochallenge:
+    usage:
+    description: voir les challenges de la semaine
+    permission: huminechallenge.user.hebdochallenge
+  addchallengebreakblock:
+    usage:
+    description: Creer un challenge de type breakblock
+    permission: huminechallenge.admin.challengebreakblock
+  addchallengebiomediscover:
+    usage:
+    description: Creer un challenge de type biomediscover
+    permission: huminechallenge.admin.challengebiomediscover
+  addAward:
+    usage:
+    description: ajouter une recompense a un challenge
+    permission: huminechallenge.admin.addaward
+  hebdomenu:
+    usage:
+    description: ouvrir le menu avec tout les challenges hebdomadaires precedents
+    permission: huminechallenge.user.hebdomenu
