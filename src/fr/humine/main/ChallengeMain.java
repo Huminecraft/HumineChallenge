@@ -22,6 +22,8 @@ import fr.humine.commands.PalierLoadCommand;
 import fr.humine.commands.ShowChallengePassCommand;
 import fr.humine.commands.ShowHebdoPageCommand;
 import fr.humine.commands.ShowTokenCommand;
+import fr.humine.commands.TokenAddCommand;
+import fr.humine.commands.TokenRemoveCommand;
 import fr.humine.commands.challenges.AddAwardCommand;
 import fr.humine.commands.challenges.AddChallengeBiomeDiscoverCommand;
 import fr.humine.commands.challenges.AddChallengeBreakBlockCommand;
@@ -314,6 +316,8 @@ public class ChallengeMain extends JavaPlugin{
 		this.getCommand("addAward").setExecutor(new AddAwardCommand());
 		this.getCommand("dailychallenge").setExecutor(new ShowDailyChallengeCommand());
 		this.getCommand("hebdochallenge").setExecutor(new ShowHedboChallengeCommand());
+		this.getCommand("addtoken").setExecutor(new TokenAddCommand());
+		this.getCommand("removetoken").setExecutor(new TokenRemoveCommand());
 	}
 	
 	public static void sendMessage(CommandSender sender, String message) {

@@ -18,7 +18,7 @@ public class GiveAwardPalierEvent implements Listener
 		if(c != null) {
 			MainShop.getInstance().getInventories().getStockOfPlayer(event.getChallenger().getPlayer().getName()).addCosmetique(c);
 			ChallengeMain.sendMessage(event.getChallenger().getPlayer(), "Cosmetique Debloquer !");
-			ChallengeMain.sendMessage(event.getChallenger().getPlayer(), "Cosmetique: " + c.getName());
+			ChallengeMain.sendMessage(event.getChallenger().getPlayer(), "Cosmetique : " + c.getName());
 		}
 	}
 }

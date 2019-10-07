@@ -1,8 +1,6 @@
 package fr.humine.utils.pass;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Comparator;
 
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
@@ -16,6 +14,7 @@ import fr.humine.utils.ItemShop;
  * @author Miza
  */
 public class Page implements Serializable {
+	
 	private static final long serialVersionUID = -8974287729367150905L;
 	private Line freeLine;
 	private Line premiumLine;
@@ -94,45 +93,13 @@ public class Page implements Serializable {
 		inv.setItem(4, ItemShop.freeApple());
 		inv.setItem((2 * 9) + 4, ItemShop.premiumApple());
 
-		Arrays.sort(page.getFreeLine().getPaliers(), new Comparator<Palier>() {
-
-			@Override
-			public int compare(Palier arg0, Palier arg1) {
-				if (arg0 != null && arg1 != null) {
-					if (arg0.getNumeroPalier() > arg1.getNumeroPalier())
-						return 1;
-					else
-						return -1;
-				}
-				return 0;
-			}
-		});
-
-		Arrays.sort(page.getPremiumLine().getPaliers(), new Comparator<Palier>() {
-
-			@Override
-			public int compare(Palier arg0, Palier arg1) {
-				if (arg0 != null && arg1 != null) {
-					if (arg0.getNumeroPalier() > arg1.getNumeroPalier())
-						return 1;
-					else
-						return -1;
-				}
-				return 0;
-			}
-		});
-
-		for (int i = 0; i < page.getFreeLine().getPaliers().length; i++) {
-			if (page.getFreeLine().getPaliers()[i] != null) {
-				inv.setItem((9 + i), Palier.PalierToItemStack(page.getFreeLine().getPaliers()[i], challenger));
-			}
-		}
-
-		for (int i = 0; i < page.getPremiumLine().getPaliers().length; i++) {
-			if (page.getPremiumLine().getPaliers()[i] != null) {
-				inv.setItem((9 * 3 + i), Palier.PalierToItemStack(page.getPremiumLine().getPaliers()[i], challenger));
-			}
-		}
+		int i = 0;
+		for(Palier palier : page.getFreeLine())
+			inv.setItem((9 + i++), Palier.PalierToItemStack(palier, challenger));
+		
+		i = 0;
+		for(Palier palier : page.getPremiumLine())
+			inv.setItem((9 * 3 + i++), Palier.PalierToItemStack(palier, challenger));
 
 		inv.setItem(inv.getSize() - 9, ItemShop.itemQuit());
 		inv.setItem(inv.getSize() - 1, ItemShop.itemQuit());
@@ -162,4 +129,37 @@ public class Page implements Serializable {
 		page.setPremiumLine(premiumLine.clonage());
 		return page;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((freeLine == null) ? 0 : freeLine.hashCode());
+		result = prime * result + ((premiumLine == null) ? 0 : premiumLine.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Page other = (Page) obj;
+		if (freeLine == null) {
+			if (other.freeLine != null)
+				return false;
+		} else if (!freeLine.equals(other.freeLine))
+			return false;
+		if (premiumLine == null) {
+			if (other.premiumLine != null)
+				return false;
+		} else if (!premiumLine.equals(other.premiumLine))
+			return false;
+		return true;
+	}
+	
+	
 }

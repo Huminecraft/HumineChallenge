@@ -82,4 +82,43 @@ public class LevelBar
 		this.bossBar.setTitle("Niveau : " + this.level.getLevel());
 		this.bossBar.setProgress(((100.0 * (double) this.level.getExperience()) / (double) this.level.getExperienceToReach()) / 100.0);
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((bossBar == null) ? 0 : bossBar.hashCode());
+		result = prime * result + ((challenger == null) ? 0 : challenger.hashCode());
+		result = prime * result + ((level == null) ? 0 : level.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		LevelBar other = (LevelBar) obj;
+		if (bossBar == null) {
+			if (other.bossBar != null)
+				return false;
+		} else if (!bossBar.equals(other.bossBar))
+			return false;
+		if (challenger == null) {
+			if (other.challenger != null)
+				return false;
+		} else if (!challenger.equals(other.challenger))
+			return false;
+		if (level == null) {
+			if (other.level != null)
+				return false;
+		} else if (!level.equals(other.level))
+			return false;
+		return true;
+	}
+	
+	
 }

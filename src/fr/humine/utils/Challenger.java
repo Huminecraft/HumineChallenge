@@ -43,8 +43,6 @@ public class Challenger {
 		this.levelBar = new LevelBar(this);
 		this.lastConnection = LocalDate.now();
 		this.currentHebdoWeek = ChallengeMain.getInstance().getCurrentWeek();
-		this.dailyChallenge = new ArrayList<>();
-		this.hebdoChallenge = new ArrayList<>();
 		updateDailyChallenge(ChallengeMain.getDailyChallenge());
 		updateHebdoChallenge(ChallengeMain.getHebdoChallenge());
 	}
@@ -203,6 +201,14 @@ public class Challenger {
 		return new File(ChallengeMain.getInstance().FOLDERCHALLENGER, player.getName());
 	}
 	
+	public File getDailyChallengeFolder() {
+		return new File(getChallengerFolder(), "DailyChallenge");
+	}
+	
+	public File getHebdoChallengeFolder() {
+		return new File(getChallengerFolder(), "HebdoChallenge");
+	}
+	
 	/**
 	 * @return le numero de semaine de la liste des {@link Challenge} hebdomaires
 	 * charges
@@ -221,4 +227,73 @@ public class Challenger {
 	{
 		this.currentHebdoWeek = currentHebdoWeek;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((challengePass == null) ? 0 : challengePass.hashCode());
+		result = prime * result + currentHebdoWeek;
+		result = prime * result + ((dailyChallenge == null) ? 0 : dailyChallenge.hashCode());
+		result = prime * result + ((hebdoChallenge == null) ? 0 : hebdoChallenge.hashCode());
+		result = prime * result + ((lastConnection == null) ? 0 : lastConnection.hashCode());
+		result = prime * result + ((levelBar == null) ? 0 : levelBar.hashCode());
+		result = prime * result + ((player == null) ? 0 : player.hashCode());
+		result = prime * result + (premium ? 1231 : 1237);
+		result = prime * result + ((token == null) ? 0 : token.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Challenger other = (Challenger) obj;
+		if (challengePass == null) {
+			if (other.challengePass != null)
+				return false;
+		} else if (!challengePass.equals(other.challengePass))
+			return false;
+		if (currentHebdoWeek != other.currentHebdoWeek)
+			return false;
+		if (dailyChallenge == null) {
+			if (other.dailyChallenge != null)
+				return false;
+		} else if (!dailyChallenge.equals(other.dailyChallenge))
+			return false;
+		if (hebdoChallenge == null) {
+			if (other.hebdoChallenge != null)
+				return false;
+		} else if (!hebdoChallenge.equals(other.hebdoChallenge))
+			return false;
+		if (lastConnection == null) {
+			if (other.lastConnection != null)
+				return false;
+		} else if (!lastConnection.equals(other.lastConnection))
+			return false;
+		if (levelBar == null) {
+			if (other.levelBar != null)
+				return false;
+		} else if (!levelBar.equals(other.levelBar))
+			return false;
+		if (player == null) {
+			if (other.player != null)
+				return false;
+		} else if (!player.equals(other.player))
+			return false;
+		if (premium != other.premium)
+			return false;
+		if (token == null) {
+			if (other.token != null)
+				return false;
+		} else if (!token.equals(other.token))
+			return false;
+		return true;
+	}
+	
+	
 }

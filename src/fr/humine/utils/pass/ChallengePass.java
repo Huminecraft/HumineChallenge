@@ -39,32 +39,15 @@ public class ChallengePass {
 		this.currentPage = -1;
 	}
 	
-	public boolean addPalier(Palier palier) {
+	public void addPalier(Palier palier) {
 		if(palier.getType() == TypePalier.FREE) {
-			int i = 0;
-			while(i < getPages().size()){
-				if(getPage(i).getFreeLine().addPalier(palier)) {
-					return true;
-				}
-				i++;
-			}
-			addPage(new Page());
-			return getLastPage().getFreeLine().addPalier(palier);
-			
+			while(!getLastPage().getFreeLine().addPalier(palier)) 
+				this.pages.add(new Page());
 		}
-		else if(palier.getType() == TypePalier.PREMIUM) {
-			int i = 0;
-			while(i < getPages().size()){
-				if(getPage(i).getPremiumLine().addPalier(palier)) {
-					return true;
-				}
-				i++;
-			}
-			addPage(new Page());
-			return getLastPage().getPremiumLine().addPalier(palier);
+		else {
+			while(!getLastPage().getPremiumLine().addPalier(palier)) 
+				this.pages.add(new Page());
 		}
-		else
-			return false;
 	}
 	
 	
@@ -75,17 +58,15 @@ public class ChallengePass {
 		setPages(pages);
 		
 		for(Page p : this.pages) {
-			for(Palier palier : p.getFreeLine().getPaliers()) {
-				if(palier != null)
-					palier.setUnlock((challenger.getToken().getAmount() >= palier.getTokenPass()));
+			for(Palier palier : p.getFreeLine()) {
+				palier.setUnlock((challenger.getToken().getAmount() >= palier.getTokenPass()));
 			}
 		}
 		
 		if(challenger.hasPremium()) {
 			for(Page p : this.pages) {
-				for(Palier palier : p.getPremiumLine().getPaliers()) {
-					if(palier != null)
-						palier.setUnlock((challenger.getToken().getAmount() >= palier.getTokenPass()));
+				for(Palier palier : p.getPremiumLine()) {
+					palier.setUnlock((challenger.getToken().getAmount() >= palier.getTokenPass()));
 				}
 			}
 		}
@@ -158,14 +139,12 @@ public class ChallengePass {
 		if (player == null)
 			return;
 		
-		Inventory inv;
-		
 		if(getPages().isEmpty()) {
 			ChallengeMain.sendMessage(challenger.getPlayer(), "ChallengePass vide");
 			return;
 		}
 		
-		inv = Page.PageToInventory(getFirstPage(), getName(), challenger);
+		Inventory inv = Page.PageToInventory(getFirstPage(), getName(), challenger);
 		
 		currentPage = 0;
 		player.openInventory(inv);
@@ -236,4 +215,43 @@ public class ChallengePass {
 			str += "==>" + p.toString() + "\n";
 		return str + "]";
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((challenger == null) ? 0 : challenger.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((pages == null) ? 0 : pages.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ChallengePass other = (ChallengePass) obj;
+		if (challenger == null) {
+			if (other.challenger != null)
+				return false;
+		} else if (!challenger.equals(other.challenger))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (pages == null) {
+			if (other.pages != null)
+				return false;
+		} else if (!pages.equals(other.pages))
+			return false;
+		return true;
+	}
+	
+	
 }

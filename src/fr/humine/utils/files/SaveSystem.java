@@ -55,8 +55,8 @@ public abstract class SaveSystem
 		
 		config.save(challengerFile);
 		
-		File hebdoFolder = new File(folder, "HebdoChallenge");
-		File dailyFolder = new File(folder, "DailyChallenge");
+		File hebdoFolder = challenger.getHebdoChallengeFolder();
+		File dailyFolder = challenger.getDailyChallengeFolder();
 		saveWeekHebdoChallenge(challenger.getHebdoChallenge(), hebdoFolder, ChallengeMain.getInstance().getCurrentWeek());
 		saveChallenges(challenger.getDailyChallenge(), dailyFolder);
 		
@@ -65,6 +65,10 @@ public abstract class SaveSystem
 	public static void saveChallenges(List<Challenge> challenges, File folder) throws IOException {
 		if(!folder.exists()) {
 			folder.mkdirs();
+		}
+		else {
+			for(File f : folder.listFiles())
+				f.delete();
 		}
 		
 		ObjectOutputStream out;

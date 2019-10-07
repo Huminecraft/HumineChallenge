@@ -63,7 +63,7 @@ public class AddMaterialHatCosmetiqueCommand implements CommandExecutor{
 		if(prestige == null)
 			prestige = Prestige.COMMUN;
 		
-		MaterialHatCosmetique p = new MaterialHatCosmetique(args[0], itemPresentation, Integer.parseInt(args[2]), Integer.parseInt(args[3]), item.getType(), prestige);
+		MaterialHatCosmetique p = new MaterialHatCosmetique(args[0].replace("_", " "), itemPresentation, Integer.parseInt(args[2]), Integer.parseInt(args[3]), item.getType(), prestige);
 		p.setId(args[5]);
 		
 		ChallengeMain.getInstance().getBankCosmetique().addCosmetique(p);

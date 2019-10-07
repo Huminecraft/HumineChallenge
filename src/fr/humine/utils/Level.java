@@ -11,7 +11,7 @@ public class Level
 	private int experience;
 	private int experienceToReach;
 	
-	private final int ECART = 100;
+	private static final int ECART = 100;
 	
 	/**
 	 * Constructeur de Level
@@ -117,5 +117,34 @@ public class Level
 	{
 		this.experienceToReach = experienceToReach;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + experience;
+		result = prime * result + experienceToReach;
+		result = prime * result + level;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Level other = (Level) obj;
+		if (experience != other.experience)
+			return false;
+		if (experienceToReach != other.experienceToReach)
+			return false;
+		if (level != other.level)
+			return false;
+		return true;
+	}
+	
 	
 }

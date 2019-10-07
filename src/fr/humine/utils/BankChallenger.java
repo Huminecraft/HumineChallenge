@@ -1,8 +1,9 @@
 package fr.humine.utils;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
+import java.util.Map;
+import java.util.Set;
 
 import org.bukkit.entity.Player;
 
@@ -13,14 +14,14 @@ import org.bukkit.entity.Player;
  */
 public class BankChallenger {
 
-	private List<Challenger> challengers;
+	private Map<Player, Challenger> challengers;
 
 	/**
 	 * Constructeur de BankChallenge
 	 * 
 	 * @param challengers une liste deja existante
 	 */
-	public BankChallenger(List<Challenger> challengers) {
+	public BankChallenger(Map<Player, Challenger> challengers) {
 		this.challengers = challengers;
 	}
 
@@ -28,7 +29,7 @@ public class BankChallenger {
 	 * Constructeur de BankChallenge
 	 */
 	public BankChallenger() {
-		this(new ArrayList<Challenger>());
+		this(new HashMap<Player, Challenger>());
 	}
 
 	/**
@@ -37,8 +38,8 @@ public class BankChallenger {
 	 * @param challenger le nouveau challenger
 	 * @return true si insere, sinon false
 	 */
-	public boolean addChallenger(Challenger challenger) {
-		return this.challengers.add(challenger);
+	public Challenger addChallenger(Challenger challenger) {
+		return this.challengers.put(challenger.getPlayer(), challenger);
 	}
 
 	/**
@@ -47,8 +48,8 @@ public class BankChallenger {
 	 * @param challenger le challenger a supprimer
 	 * @return true si supprime, sinon false
 	 */
-	public boolean removeChallenger(Challenger challenger) {
-		return this.challengers.remove(challenger);
+	public Challenger removeChallenger(Challenger challenger) {
+		return this.challengers.remove(challenger.getPlayer());
 	}
 
 	/**
@@ -58,11 +59,7 @@ public class BankChallenger {
 	 * @return true si la liste contient le joueur, sinon false
 	 */
 	public boolean contains(Player player) {
-		for (Challenger challenger : this.challengers) {
-			if (challenger.getName().equals(player.getName()))
-				return true;
-		}
-		return false;
+		return this.challengers.containsKey(player);
 	}
 
 	/**
@@ -72,31 +69,27 @@ public class BankChallenger {
 	 * @return Challenger du joueur, null si non trouve
 	 */
 	public Challenger getChallenger(Player player) {
-		for (Challenger c : this.challengers) {
-			if (c.getName().equals(player.getName()))
-				return c;
-		}
-		return null;
-	}
-
-	/**
-	 * Recupere le compte Challenger du joueur
-	 * 
-	 * @param id l'id unique du joueur
-	 * @return Challenger du joueur, null si non trouve
-	 */
-	public Challenger getChallenger(UUID id) {
-		for (Challenger c : this.challengers) {
-			if (c.getPlayer().getUniqueId().equals(id))
-				return c;
-		}
-		return null;
+		return this.challengers.get(player);
 	}
 
 	/**
 	 * @return la liste des challengers
 	 */
 	public List<Challenger> getChallengers() {
+		return (List<Challenger>) challengers.values();
+	}
+	
+	/**
+	 * @return la liste des joueurs
+	 */
+	public Set<Player> getPlayers() {
+		return challengers.keySet();
+	}
+	
+	/**
+	 * @return la hashmap cle: Player, valeur: Challenger
+	 */
+	public Map<Player, Challenger> getMapChallengers() {
 		return challengers;
 	}
 }

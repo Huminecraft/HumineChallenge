@@ -66,7 +66,7 @@ public class AddParticleCosmetiqueCommand implements CommandExecutor
 		if(prestige == null)
 			prestige = Prestige.COMMUN;
 		
-		ParticleCosmetique p = new ParticleCosmetique(args[0], itemPresentation, Integer.parseInt(args[2]), Integer.parseInt(args[3]), particle, prestige);
+		ParticleCosmetique p = new ParticleCosmetique(args[0].replace("_", " "), itemPresentation, Integer.parseInt(args[2]), Integer.parseInt(args[3]), particle, prestige);
 		p.setId(args[5]);
 		
 		ChallengeMain.getInstance().getBankCosmetique().addCosmetique(p);

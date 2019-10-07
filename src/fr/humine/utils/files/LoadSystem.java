@@ -51,8 +51,7 @@ public abstract class LoadSystem
 				challenger.updateHebdoChallenge(ChallengeMain.getHebdoChallenge());
 			}
 			else {
-				File hebdoFolder = new File(folder, "HebdoChallenge");
-				List<Challenge> challenges = loadWeekHebdoChallenge(hebdoFolder, ChallengeMain.getInstance().getCurrentWeek());
+				List<Challenge> challenges = loadWeekHebdoChallenge(challenger.getHebdoChallengeFolder(), ChallengeMain.getInstance().getCurrentWeek());
 				challenger.updateHebdoChallenge(challenges);
 			}
 		}
@@ -65,8 +64,7 @@ public abstract class LoadSystem
 			challenger.updateDailyChallenge(ChallengeMain.getDailyChallenge());
 		}
 		else {
-			File dailyFolder = new File(folder, "DailyChallenge");
-			List<Challenge> challenges = loadChallenges(dailyFolder);
+			List<Challenge> challenges = loadChallenges(challenger.getDailyChallengeFolder());
 			challenger.updateDailyChallenge(challenges);
 		}
 		

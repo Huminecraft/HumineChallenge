@@ -1,17 +1,23 @@
 package fr.humine.utils.pass;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * Classe contenant un tableau fixe de {@link Palier}
  * 
  * @author Miza
  */
-public class Line implements Serializable {
+public class Line implements Serializable, Iterator<Palier>, Iterable<Palier> {
+	
 	private static final long serialVersionUID = 4076514741578193630L;
 	private static final byte lineLimit = 9;
 	private Palier[] paliers;
+	
+	private int currentIdx;
 
+	private int currentIteration;
 	/**
 	 * Constructeur de Line
 	 * 
@@ -19,6 +25,8 @@ public class Line implements Serializable {
 	 */
 	public Line(Palier[] paliers) {
 		this.paliers = paliers;
+		this.currentIdx = 0;
+		this.currentIteration = 0;
 	}
 
 	/**
@@ -32,22 +40,14 @@ public class Line implements Serializable {
 	 * @return true si le tableau de {@link Palier} est vide, sinon false
 	 */
 	public boolean isEmpty() {
-		for (int i = 0; i < this.paliers.length; i++) {
-			if (this.paliers[i] != null)
-				return false;
-		}
-		return true;
+		return this.currentIdx == 0;
 	}
 
 	/**
 	 * @return true si le tableau de {@link Palier} est plein, sinon false
 	 */
 	public boolean isFull() {
-		for (int i = 0; i < this.paliers.length; i++) {
-			if (this.paliers[i] == null)
-				return false;
-		}
-		return true;
+		return this.currentIdx == lineLimit;
 	}
 
 	/**
@@ -57,28 +57,11 @@ public class Line implements Serializable {
 	 * @return true si il a pu etre ajouter, sinon false
 	 */
 	public boolean addPalier(Palier palier) {
-		for (int i = 0; i < this.paliers.length; i++) {
-			if (this.paliers[i] == null) {
-				this.paliers[i] = palier;
-				return true;
-			}
-		}
-		return false;
-
-	}
-
-	/**
-	 * Placer un {@link Palier} dans un emplacement precis
-	 * 
-	 * @param palier le palier a ajouter
-	 * @param slot   l'index
-	 * @return true si le {@link Palier} est ajouter, sinon false
-	 */
-	public boolean setPalier(Palier palier, int slot) {
-		if (slot < 0 && slot >= this.paliers.length)
+		if(isFull())
 			return false;
-
-		this.paliers[slot] = palier;
+		
+		this.paliers[currentIdx++] = palier;
+		Arrays.sort(this.paliers);
 		return true;
 	}
 
@@ -89,7 +72,7 @@ public class Line implements Serializable {
 	 * @return le {@link Palier}, sinon null
 	 */
 	public Palier getPalier(int slot) {
-		if (slot < 0 && slot >= this.paliers.length)
+		if (slot < 0 && slot >= this.currentIdx)
 			return null;
 
 		return this.paliers[slot];
@@ -98,15 +81,32 @@ public class Line implements Serializable {
 	/**
 	 * Permet de supprimer un {@link Palier} dans un emplacement
 	 * 
-	 * @param slot l'index
-	 * @return si le {@link Palier} est supprimer, sinon false
+	 * @return le {@link Palier} supprimer, sinon null
 	 */
-	public boolean removePalier(int slot) {
-		if (slot < 0 && slot >= this.paliers.length)
-			return false;
-
-		this.paliers[slot] = null;
-		return true;
+	public Palier removeLastPalier() {
+		if (isEmpty())
+			return null;
+		
+		Palier p = this.paliers[this.currentIdx-1];
+		this.paliers[this.currentIdx--] = null;
+		return p;
+	}
+	
+	/**
+	 * Permet de supprimer un {@link Palier} dans un emplacement
+	 * 
+	 * @param slot l'index de la ou il faut supprimer
+	 * @return le {@link Palier} supprimer, sinon null
+	 */
+	public Palier remove(int slot) {
+		if(slot < 0 || slot >= this.currentIdx)
+			return null;
+		
+		Palier p = this.paliers[slot];
+		this.paliers[slot] = this.paliers[this.currentIdx-1];
+		this.paliers[this.currentIdx-1] = null;
+		Arrays.sort(this.paliers);
+		return p;
 	}
 
 	/**
@@ -116,11 +116,18 @@ public class Line implements Serializable {
 	 * @return true si trouver, sinon false
 	 */
 	public boolean contains(Palier palier) {
-		for (int i = 0; i < this.paliers.length; i++) {
-			if (this.paliers[i].equals(palier))
-				return true;
-		}
-		return false;
+		return indexOf(palier) != -1;
+	}
+	
+	/**
+	 * Permet de detecter a quel index se trouve un Palier dans le tableau de {@link Palier}
+	 * @param palier le palier a chercher
+	 * @return l'index du Palier, -1 si introuvable
+	 */
+	public int indexOf(Palier palier) {
+		int i;
+		for(i = 0; i < this.currentIdx && !this.paliers[i].equals(palier); i++);
+		return this.paliers[i].equals(palier) ? i : -1;
 	}
 
 	/**
@@ -129,7 +136,7 @@ public class Line implements Serializable {
 	public Palier[] getPaliers() {
 		return paliers;
 	}
-
+	
 	@Override
 	public String toString() {
 		String str = "[Line: \n";
@@ -155,4 +162,45 @@ public class Line implements Serializable {
 		Line line = new Line(paliers);
 		return line;
 	}
+
+	@Override
+	public Iterator<Palier> iterator() {
+		return new Line(paliers);
+	}
+
+	@Override
+	public boolean hasNext() {
+		return this.currentIteration < this.currentIdx;
+	}
+
+	@Override
+	public Palier next() {
+		return this.paliers[this.currentIteration++];
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + currentIdx;
+		result = prime * result + Arrays.hashCode(paliers);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Line other = (Line) obj;
+		if (currentIdx != other.currentIdx)
+			return false;
+		if (!Arrays.equals(paliers, other.paliers))
+			return false;
+		return true;
+	}
+	
 }

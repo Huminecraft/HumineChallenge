@@ -2,6 +2,7 @@ package fr.humine.utils.pass;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.bukkit.ChatColor;
@@ -23,7 +24,7 @@ import humine.utils.cosmetiques.Cosmetique;
  * 
  * @author Miza
  */
-public class Palier implements Serializable {
+public class Palier implements Serializable, Comparable<Palier>, Comparator<Palier> {
 
 	private static final long serialVersionUID = 7556577054897105339L;
 	private int numeroPalier;
@@ -151,25 +152,23 @@ public class Palier implements Serializable {
 		ItemStack item = palier.getItemRepresentation();
 		ChatColor color;
 
-		if ((palier.getType() == TypePalier.PREMIUM && challenger.hasPremium()
-				&& challenger.getToken().getAmount() >= palier.getTokenPass())
-				|| (palier.getType() == TypePalier.FREE
-						&& challenger.getToken().getAmount() >= palier.getTokenPass())) {
-			palier.setUnlock(true);
-		}
-
-		if (palier.isUnlock())
+		if (palier.isUnlock()) {
 			color = ChatColor.GREEN;
-		else if (palier.getType() == TypePalier.PREMIUM && !challenger.hasPremium())
-			color = ChatColor.RED;
-		else
-			color = ChatColor.YELLOW;
+			item.setAmount(1);
+		}
+		else {
+			if(palier.getType() == TypePalier.PREMIUM && !challenger.hasPremium())
+				color = ChatColor.RED;
+			else
+				color = ChatColor.YELLOW;
+			
+			item.setAmount(palier.getNumeroPalier());
+		}
 
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(color + "Palier " + palier.getNumeroPalier());
 
 		List<String> lores = new ArrayList<>();
-
 		lores.add(color + "Token necessaire: " + palier.getTokenPass());
 		lores.add(" ");
 
@@ -177,18 +176,8 @@ public class Palier implements Serializable {
 			lores.add(color + "Cosmetique: " + palier.getCosmetique().getName());
 		}
 
-		if (palier.getType() == TypePalier.PREMIUM && !challenger.hasPremium()) {
-			lores.add(" ");
-			lores.add(color + "Blocked");
-		}
-
 		meta.setLore(lores);
 		item.setItemMeta(meta);
-
-		if (palier.isUnlock() == false)
-			item.setAmount(palier.getNumeroPalier());
-		else
-			item.setAmount(1);
 
 		return item;
 	}
@@ -280,4 +269,73 @@ public class Palier implements Serializable {
 		return palier;
 	}
 
+	@Override
+	public int compareTo(Palier palier) {
+		if(palier != null) {
+			if(this.tokenPass < palier.tokenPass)
+				return -1;
+			else if(this.tokenPass > palier.tokenPass)
+				return 1;
+		}
+		return 0;
+	}
+
+	@Override
+	public int compare(Palier p1, Palier p2) {
+		if(p1 != null && p2 != null) {
+			if(p1.tokenPass < p2.tokenPass)
+				return -1;
+			else if(p1.tokenPass > p2.tokenPass)
+				return 1;
+		}
+		return 0;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((cosmetique == null) ? 0 : cosmetique.hashCode());
+		result = prime * result + humis;
+		result = prime * result + ((itemRepresentation == null) ? 0 : itemRepresentation.hashCode());
+		result = prime * result + numeroPalier;
+		result = prime * result + pixel;
+		result = prime * result + tokenPass;
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		result = prime * result + (unlock ? 1231 : 1237);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Palier other = (Palier) obj;
+		if (cosmetique == null) {
+			if (other.cosmetique != null)
+				return false;
+		} else if (!cosmetique.equals(other.cosmetique))
+			return false;
+		if (humis != other.humis)
+			return false;
+		if (itemRepresentation != other.itemRepresentation)
+			return false;
+		if (numeroPalier != other.numeroPalier)
+			return false;
+		if (pixel != other.pixel)
+			return false;
+		if (tokenPass != other.tokenPass)
+			return false;
+		if (type != other.type)
+			return false;
+		if (unlock != other.unlock)
+			return false;
+		return true;
+	}
+
+	
 }

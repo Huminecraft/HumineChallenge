@@ -74,11 +74,11 @@ public class ChallengeBiomeDiscover implements Challenge{
 
 	@Override
 	public void showChallenge(Challenger challenger) {
-		challenger.getPlayer().sendMessage("Titre: " + getTitle());
-		challenger.getPlayer().sendMessage("Description: " + getDescription());
-		challenger.getPlayer().sendMessage("Type: " + getType().toString().toLowerCase());
-		challenger.getPlayer().sendMessage("Biome: " + biome.toString().toLowerCase());
-		challenger.getPlayer().sendMessage("Etat: " + isFinish());
+		challenger.getPlayer().sendMessage("Titre : " + getTitle());
+		challenger.getPlayer().sendMessage("Description : " + getDescription());
+		challenger.getPlayer().sendMessage("Type : " + getType().toString().toLowerCase());
+		challenger.getPlayer().sendMessage("Biome : " + biome.toString().toLowerCase());
+		challenger.getPlayer().sendMessage("Etat : " + isFinish());
 	}
 
 	@Override

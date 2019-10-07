@@ -68,14 +68,10 @@ public class AddPalierCommand implements CommandExecutor
 		
 		Palier palier = new Palier(Integer.parseInt(args[0]), itemPresentation, Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]), cosmetique, false, premium);
 		
-		if(ChallengeMain.getPassMain().addPalier(palier)) {
-			for(Challenger c : ChallengeMain.getInstance().getBankChallenger().getChallengers())
-				c.getChallengePass().update(ChallengeMain.getPassMain());
-			ChallengeMain.sendMessage(sender, "Palier n" + args[0] + " " + palier.getType().toString() + " ajoute !");
-		}
-		else {
-			ChallengeMain.sendMessage(sender, "Palier n" + args[0] + " " + palier.getType().toString() + " NON ajoute !");
-		}
+		ChallengeMain.getPassMain().addPalier(palier);
+		for(Challenger c : ChallengeMain.getInstance().getBankChallenger().getChallengers())
+			c.getChallengePass().update(ChallengeMain.getPassMain());
+		ChallengeMain.sendMessage(sender, "Palier n" + args[0] + " " + palier.getType().toString() + " ajoute !");
 		return true;
 	}
 	

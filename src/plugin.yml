@@ -67,3 +67,11 @@ commands:
     usage:
     description: ouvrir le menu avec tout les challenges hebdomadaires precedents
     permission: huminechallenge.user.hebdomenu
+  addtoken:
+    usage:
+    description: ajouter des tokens a une personne
+    permission: huminechallenge.admin.addtoken
+  removetoken:
+    usage:
+    description: enelver des tokens a une personne
+    permission: huminechallenge.admin.removetoken

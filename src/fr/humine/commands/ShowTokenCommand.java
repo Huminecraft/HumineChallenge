@@ -27,7 +27,7 @@ public class ShowTokenCommand implements CommandExecutor
 			return false;
 		}
 		
-		ChallengeMain.sendMessage(player, "Votre solde de token: " + challenger.getToken().getAmount());
+		ChallengeMain.sendMessage(player, "Votre solde de token : " + challenger.getToken().getAmount());
 		
 		return true;
 	}

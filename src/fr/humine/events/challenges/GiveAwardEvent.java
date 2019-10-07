@@ -24,8 +24,8 @@ public class GiveAwardEvent implements Listener{
 		challenger.getLevelBar().update();
 		
 		ChallengeMain.sendMessage(event.getChallenger().getPlayer(), "Challenge " + event.getChallenge().getTitle() + " Termine !");
-		ChallengeMain.sendMessage(event.getChallenger().getPlayer(), "Experience gagnee: " + award.getExp());
-		ChallengeMain.sendMessage(event.getChallenger().getPlayer(), "Token gagne: " + award.getToken());
+		ChallengeMain.sendMessage(event.getChallenger().getPlayer(), "Experience gagnee : " + award.getExp());
+		ChallengeMain.sendMessage(event.getChallenger().getPlayer(), "Token gagne : " + award.getToken());
 		
 		checkPalier(challenger);
 	}
