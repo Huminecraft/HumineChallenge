@@ -63,7 +63,7 @@ public abstract class ItemShop extends humine.utils.ItemShop{
 		
 		int humis = MainShop.getInstance().getBankHumis().getMoney(player);
 		
-		if(humis >= palier.getHumis()) {
+		if(humis >= palier.getPriceHumis()) {
 			meta.setDisplayName(ChatColor.GREEN + "Acheter ce palier");
 		}
 		else {
@@ -71,7 +71,7 @@ public abstract class ItemShop extends humine.utils.ItemShop{
 		}
 		
 		List<String> lores = new ArrayList<>();
-		lores.add("Prix: " + palier.getHumis() + " Humis");
+		lores.add("Prix: " + palier.getPriceHumis() + " Humis");
 		lores.add("Vos Humis: " + humis);
 		meta.setLore(lores);
 		

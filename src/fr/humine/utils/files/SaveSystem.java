@@ -87,6 +87,10 @@ public abstract class SaveSystem
 		if(!folder.exists()) {
 			folder.mkdirs();
 		}
+		else {
+			for(File f : folder.listFiles())
+				f.delete();
+		}
 		
 		ObjectOutputStream out;
 		int i = 0;
@@ -104,6 +108,10 @@ public abstract class SaveSystem
 	public static void saveCosmetiques(List<Cosmetique> cosmetiques, File folder) throws IOException {
 		if(!folder.exists()) {
 			folder.mkdirs();
+		}
+		else {
+			for(File f : folder.listFiles())
+				f.delete();
 		}
 		
 		ObjectOutputStream out;

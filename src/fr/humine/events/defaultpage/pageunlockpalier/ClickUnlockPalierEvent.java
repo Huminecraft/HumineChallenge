@@ -33,9 +33,9 @@ public class ClickUnlockPalierEvent implements Listener {
 	
 	private void buy(Challenger player, Palier palier) {
 		int humis = MainShop.getInstance().getBankHumis().getMoney(player.getPlayer());
-		if(humis >= palier.getHumis()) {
+		if(humis >= palier.getPriceHumis()) {
 			player.getPlayer().closeInventory();
-			MainShop.getInstance().getBankHumis().removeMoney(player.getPlayer(), palier.getHumis());
+			MainShop.getInstance().getBankHumis().removeMoney(player.getPlayer(), palier.getPriceHumis());
 			palier.setUnlock(true);
 			player.getToken().setAmount(palier.getTokenPass());
 			ChallengeMain.getInstance().getServer().getPluginManager().callEvent(new PalierUnlockEvent(player, palier));

@@ -22,7 +22,7 @@ public class QuitChallengerEvent implements Listener
 		Challenger challenger = ChallengeMain.getInstance().getBankChallenger().getChallenger(player);
 		ChallengeMain.getInstance().getBankChallenger().removeChallenger(challenger);
 		
-		File folder = new File(ChallengeMain.getInstance().FOLDERCHALLENGER, player.getName());
+		File folder = challenger.getChallengerFolder();
 		SaveSystem.saveChallenger(challenger, folder);
 	}
 }

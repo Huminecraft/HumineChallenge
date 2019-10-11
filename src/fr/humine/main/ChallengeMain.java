@@ -95,7 +95,7 @@ public class ChallengeMain extends JavaPlugin{
 		events();
 		
 		for(Player player : Bukkit.getOnlinePlayers()) {
-			File folder = new File(FOLDERCHALLENGER, player.getName());
+			File folder = new File(FOLDERCHALLENGER, player.getUniqueId().toString());
 			if(!folder.exists()) {
 				Challenger challenger = new Challenger(player);
 				bankChallenger.addChallenger(challenger);
@@ -168,7 +168,7 @@ public class ChallengeMain extends JavaPlugin{
 		
 		for(Challenger challenger : bankChallenger.getChallengers()) {
 			challenger.getLevelBar().dissociate();
-			File folder = new File(FOLDERCHALLENGER, challenger.getName());
+			File folder = challenger.getChallengerFolder();
 			folder.mkdirs();
 			try
 			{

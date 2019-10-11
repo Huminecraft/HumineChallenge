@@ -32,7 +32,9 @@ public class Palier implements Serializable, Comparable<Palier>, Comparator<Pali
 	private String cosmetique;
 	private boolean unlock;
 	private int tokenPass;
-	private int humis;
+	private int priceHumis;
+	private int awardHumis;
+	private int awardExp;
 	private int pixel;
 	private TypePalier type;
 
@@ -49,8 +51,7 @@ public class Palier implements Serializable, Comparable<Palier>, Comparator<Pali
 	 * @param unlock             Le Palier est debloquer ou non
 	 * @param premium            Le Palier est premium ou non
 	 */
-	public Palier(int numPalier, ItemStack itemRepresentation, int humis, int pixel, int tokenPass,
-			Cosmetique cosmetique, boolean unlock, boolean premium) {
+	public Palier(int numPalier, ItemStack itemRepresentation, int priceHumis, int awardHumis, int awardExp, int tokenPass, Cosmetique cosmetique, boolean unlock, boolean premium) {
 		this.numeroPalier = numPalier;
 		this.itemRepresentation = itemRepresentation.getType();
 		this.cosmetique = (cosmetique != null) ? cosmetique.getId() : "";
@@ -62,8 +63,9 @@ public class Palier implements Serializable, Comparable<Palier>, Comparator<Pali
 		else
 			this.type = TypePalier.FREE;
 
-		this.humis = humis;
-		this.pixel = pixel;
+		this.priceHumis = priceHumis;
+		this.awardHumis = awardHumis;
+		this.awardExp = awardExp;
 	}
 
 	/**
@@ -110,8 +112,8 @@ public class Palier implements Serializable, Comparable<Palier>, Comparator<Pali
 	 * 
 	 * @param humis le montant
 	 */
-	public void setHumis(int humis) {
-		this.humis = humis;
+	public void setPriceHumis(int humis) {
+		this.priceHumis = humis;
 	}
 
 	/**
@@ -194,7 +196,9 @@ public class Palier implements Serializable, Comparable<Palier>, Comparator<Pali
 		sender.sendMessage("Numero Palier: " + ChatColor.AQUA + palier.getNumeroPalier());
 		sender.sendMessage("Type de palier: " + ChatColor.AQUA + palier.getType());
 		sender.sendMessage("Item Representation: " + ChatColor.AQUA + palier.getItemRepresentation().getType());
-		sender.sendMessage("Prix Humis : " + ChatColor.AQUA + palier.getHumis());
+		sender.sendMessage("Prix Humis : " + ChatColor.AQUA + palier.getPriceHumis());
+		sender.sendMessage("Recompense Humis : " + ChatColor.AQUA + palier.getAwardHumis());
+		sender.sendMessage("Recompense Exp: " + ChatColor.AQUA + palier.getAwardExp());
 		sender.sendMessage("Prix Pixel : " + ChatColor.AQUA + palier.getPixel());
 		sender.sendMessage("Nombre de token necessaire : " + ChatColor.AQUA + palier.getTokenPass());
 		sender.sendMessage("Cosmetique : " + ChatColor.AQUA
@@ -238,8 +242,8 @@ public class Palier implements Serializable, Comparable<Palier>, Comparator<Pali
 	/**
 	 * @return le prix du Palier en Humis
 	 */
-	public int getHumis() {
-		return humis;
+	public int getPriceHumis() {
+		return priceHumis;
 	}
 
 	/**
@@ -249,11 +253,33 @@ public class Palier implements Serializable, Comparable<Palier>, Comparator<Pali
 		return pixel;
 	}
 
+	public int getAwardHumis()
+	{
+		return awardHumis;
+	}
+
+	public void setAwardHumis(int awardHumis)
+	{
+		this.awardHumis = awardHumis;
+	}
+
+	public int getAwardExp()
+	{
+		return awardExp;
+	}
+
+	public void setAwardExp(int awardExp)
+	{
+		this.awardExp = awardExp;
+	}
+
+
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return "Palier [numeroPalier=" + numeroPalier + ", itemRepresentation=" + itemRepresentation + ", cosmetique="
-				+ cosmetique + ", unlock=" + unlock + ", tokenPass=" + tokenPass + ", humis=" + humis + ", pixel="
-				+ pixel + ", type=" + type + "]";
+				+ cosmetique + ", unlock=" + unlock + ", tokenPass=" + tokenPass + ", priceHumis=" + priceHumis
+				+ ", awardHumis=" + awardHumis + ", awardExp=" + awardExp + ", pixel=" + pixel + ", type=" + type + "]";
 	}
 
 	/**
@@ -264,8 +290,7 @@ public class Palier implements Serializable, Comparable<Palier>, Comparator<Pali
 	public Palier clonage() {
 		Cosmetique c = ChallengeMain.getInstance().getBankCosmetique().getCosmetique(cosmetique);
 		boolean premium = (type == TypePalier.FREE) ? false : true;
-		Palier palier = new Palier(numeroPalier, new ItemStack(itemRepresentation), humis, pixel, tokenPass, c, unlock,
-				premium);
+		Palier palier = new Palier(numeroPalier, new ItemStack(itemRepresentation), priceHumis, awardHumis, awardExp, tokenPass, c, false, premium);
 		return palier;
 	}
 
@@ -292,14 +317,17 @@ public class Palier implements Serializable, Comparable<Palier>, Comparator<Pali
 	}
 
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + awardExp;
+		result = prime * result + awardHumis;
 		result = prime * result + ((cosmetique == null) ? 0 : cosmetique.hashCode());
-		result = prime * result + humis;
 		result = prime * result + ((itemRepresentation == null) ? 0 : itemRepresentation.hashCode());
 		result = prime * result + numeroPalier;
 		result = prime * result + pixel;
+		result = prime * result + priceHumis;
 		result = prime * result + tokenPass;
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		result = prime * result + (unlock ? 1231 : 1237);
@@ -307,7 +335,8 @@ public class Palier implements Serializable, Comparable<Palier>, Comparator<Pali
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(Object obj)
+	{
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -315,18 +344,24 @@ public class Palier implements Serializable, Comparable<Palier>, Comparator<Pali
 		if (getClass() != obj.getClass())
 			return false;
 		Palier other = (Palier) obj;
-		if (cosmetique == null) {
+		if (awardExp != other.awardExp)
+			return false;
+		if (awardHumis != other.awardHumis)
+			return false;
+		if (cosmetique == null)
+		{
 			if (other.cosmetique != null)
 				return false;
-		} else if (!cosmetique.equals(other.cosmetique))
-			return false;
-		if (humis != other.humis)
+		}
+		else if (!cosmetique.equals(other.cosmetique))
 			return false;
 		if (itemRepresentation != other.itemRepresentation)
 			return false;
 		if (numeroPalier != other.numeroPalier)
 			return false;
 		if (pixel != other.pixel)
+			return false;
+		if (priceHumis != other.priceHumis)
 			return false;
 		if (tokenPass != other.tokenPass)
 			return false;
@@ -337,5 +372,4 @@ public class Palier implements Serializable, Comparable<Palier>, Comparator<Pali
 		return true;
 	}
 
-	
 }

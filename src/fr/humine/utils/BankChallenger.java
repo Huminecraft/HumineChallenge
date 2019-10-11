@@ -1,7 +1,7 @@
 package fr.humine.utils;
 
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -75,8 +75,8 @@ public class BankChallenger {
 	/**
 	 * @return la liste des challengers
 	 */
-	public List<Challenger> getChallengers() {
-		return (List<Challenger>) challengers.values();
+	public Collection<Challenger> getChallengers() {
+		return challengers.values();
 	}
 	
 	/**

@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import fr.humine.main.ChallengeMain;
+import fr.humine.main.ChallengeUtils;
 import fr.humine.utils.Challenger;
 
 public class TokenRemoveCommand implements CommandExecutor{
@@ -27,7 +28,7 @@ public class TokenRemoveCommand implements CommandExecutor{
 			return false;
 		}
 		
-		if(!isNumber(args[1])) {
+		if(!ChallengeUtils.isNumber(args[1])) {
 			ChallengeMain.sendMessage(sender, "Montant invalide");
 			return false;
 		}
@@ -37,14 +38,6 @@ public class TokenRemoveCommand implements CommandExecutor{
 		
 		ChallengeMain.sendMessage(sender, "Vous avez enleve " + args[1] + " Token a " + args[0]);
 		ChallengeMain.sendMessage(target, sender.getName() + " vous a retirez  " + args[1] + " Token");
-		return true;
-	}
-	
-	private boolean isNumber(String str) {
-		for(int i = 0; i < str.length(); i++) {
-			if(str.charAt(i) < '0' && str.charAt(i) > '9')
-				return false;
-		}
 		return true;
 	}
 }

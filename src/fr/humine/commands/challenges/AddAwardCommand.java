@@ -7,6 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import fr.humine.main.ChallengeMain;
+import fr.humine.main.ChallengeUtils;
 import fr.humine.utils.Challenger;
 import fr.humine.utils.challenges.Award;
 import fr.humine.utils.challenges.Challenge;
@@ -50,13 +51,13 @@ public class AddAwardCommand implements CommandExecutor{
 			return false;
 		}
 		
-		if(!isNumber(args[1])) {
+		if(!ChallengeUtils.isNumber(args[1])) {
 			ChallengeMain.sendMessage(sender, "Exp invalide");
 			ChallengeMain.sendMessage(sender, COMMAND);
 			return false;
 		}
 		
-		if(!isNumber(args[2])) {
+		if(!ChallengeUtils.isNumber(args[2])) {
 			ChallengeMain.sendMessage(sender, "Token invalide");
 			ChallengeMain.sendMessage(sender, COMMAND);
 			return false;
@@ -76,14 +77,6 @@ public class AddAwardCommand implements CommandExecutor{
 		
 		ChallengeMain.sendMessage(sender, "Adward  " + args[0] + " ajoute !");
 		
-		return true;
-	}
-	
-	private boolean isNumber(String str) {
-		for(int i = 0; i < str.length(); i++) {
-			if(str.charAt(i) < '0' && str.charAt(i) > '9')
-				return false;
-		}
 		return true;
 	}
 

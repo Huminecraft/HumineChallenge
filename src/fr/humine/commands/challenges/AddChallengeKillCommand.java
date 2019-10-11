@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 
 import fr.humine.main.ChallengeMain;
+import fr.humine.main.ChallengeUtils;
 import fr.humine.utils.Challenger;
 import fr.humine.utils.challenges.ChallengeKill;
 
@@ -28,14 +29,14 @@ public class AddChallengeKillCommand implements CommandExecutor{
 			return false;
 		}
 		
-		EntityType entity = getEntity(args[1]);
+		EntityType entity = ChallengeUtils.getEntity(args[1]);
 		if(entity == null) {
 			ChallengeMain.sendMessage(sender, "Entity invalide");
 			ChallengeMain.sendMessage(sender, COMMAND);
 			return false;
 		}
 		
-		if(!isNumber(args[2])) {
+		if(!ChallengeUtils.isNumber(args[2])) {
 			ChallengeMain.sendMessage(sender, "Amount invalide");
 			ChallengeMain.sendMessage(sender, COMMAND);
 			return false;
@@ -67,21 +68,5 @@ public class AddChallengeKillCommand implements CommandExecutor{
 		
 		ChallengeMain.sendMessage(sender, "ChallengeKill " + args[0] + " ajoute !");
 		return true;
-	}
-	
-	private boolean isNumber(String str) {
-		for(int i = 0; i < str.length(); i++) {
-			if(str.charAt(i) < '0' && str.charAt(i) > '9')
-				return false;
-		}
-		return true;
-	}
-	
-	private EntityType getEntity(String str) {
-		for(EntityType e : EntityType.values()) {
-			if(e.name().equalsIgnoreCase(str))
-				return e;
-		}
-		return null;
 	}
 }

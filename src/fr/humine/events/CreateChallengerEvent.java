@@ -20,7 +20,7 @@ public class CreateChallengerEvent implements Listener
 	public void onJoin(PlayerJoinEvent event) throws ClassNotFoundException, IOException {
 		Player player = event.getPlayer();
 		
-		File folder = new File(ChallengeMain.getInstance().FOLDERCHALLENGER, player.getName());
+		File folder = new File(ChallengeMain.getInstance().FOLDERCHALLENGER, player.getUniqueId().toString());
 		Challenger challenger;
 		if(folder.exists()) {
 			challenger = LoadSystem.loadChallenger(folder);

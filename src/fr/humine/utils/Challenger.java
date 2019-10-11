@@ -198,7 +198,7 @@ public class Challenger {
 	 */
 	public File getChallengerFolder()
 	{
-		return new File(ChallengeMain.getInstance().FOLDERCHALLENGER, player.getName());
+		return new File(ChallengeMain.getInstance().FOLDERCHALLENGER, player.getUniqueId().toString());
 	}
 	
 	public File getDailyChallengeFolder() {
@@ -207,6 +207,10 @@ public class Challenger {
 	
 	public File getHebdoChallengeFolder() {
 		return new File(getChallengerFolder(), "HebdoChallenge");
+	}
+	
+	public File getChallengerYAMLFile() {
+		return new File(getChallengerFolder(), "Challenger.yml");
 	}
 	
 	/**

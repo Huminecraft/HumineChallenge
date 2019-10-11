@@ -40,6 +40,9 @@ public class ChallengePass {
 	}
 	
 	public void addPalier(Palier palier) {
+		if(isEmpty())
+			this.pages.add(new Page());
+		
 		if(palier.getType() == TypePalier.FREE) {
 			while(!getLastPage().getFreeLine().addPalier(palier)) 
 				this.pages.add(new Page());
@@ -58,15 +61,17 @@ public class ChallengePass {
 		setPages(pages);
 		
 		for(Page p : this.pages) {
-			for(Palier palier : p.getFreeLine()) {
-				palier.setUnlock((challenger.getToken().getAmount() >= palier.getTokenPass()));
+			for(Palier palier : p.getFreeLine().getPaliers()) {
+				if(palier != null)
+					palier.setUnlock((challenger.getToken().getAmount() >= palier.getTokenPass()));
 			}
 		}
 		
 		if(challenger.hasPremium()) {
 			for(Page p : this.pages) {
-				for(Palier palier : p.getPremiumLine()) {
-					palier.setUnlock((challenger.getToken().getAmount() >= palier.getTokenPass()));
+				for(Palier palier : p.getPremiumLine().getPaliers()) {
+					if(palier != null)
+						palier.setUnlock((challenger.getToken().getAmount() >= palier.getTokenPass()));
 				}
 			}
 		}

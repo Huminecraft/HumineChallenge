@@ -8,6 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import fr.humine.main.ChallengeMain;
+import fr.humine.main.ChallengeUtils;
 import fr.humine.utils.Challenger;
 import fr.humine.utils.challenges.ChallengeBiomeDiscover;
 
@@ -28,7 +29,7 @@ public class AddChallengeBiomeDiscoverCommand implements CommandExecutor{
 			return false;
 		}
 		
-		Biome biome = getBiome(args[1]);
+		Biome biome = ChallengeUtils.getBiome(args[1]);
 		if(biome == null) {
 			ChallengeMain.sendMessage(sender, "Biome invalide");
 			ChallengeMain.sendMessage(sender, COMMAND);
@@ -62,14 +63,6 @@ public class AddChallengeBiomeDiscoverCommand implements CommandExecutor{
 		
 		ChallengeMain.sendMessage(sender, "ChallengeBreakBlock " + args[0] + " ajoute !");
 		return true;
-	}
-	
-	private Biome getBiome(String str) {
-		for(Biome b : Biome.values()) {
-			if(b.name().equalsIgnoreCase(str))
-				return b;
-		}
-		return null;
 	}
 
 }

@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 
 import fr.humine.main.ChallengeMain;
+import fr.humine.main.ChallengeUtils;
 import fr.humine.utils.Challenger;
 import fr.humine.utils.challenges.ChallengeBreakBlock;
 
@@ -29,14 +30,14 @@ public class AddChallengeBreakBlockCommand implements CommandExecutor{
 			return false;
 		}
 		
-		ItemStack item = getItem(args[1]);
+		Material item = ChallengeUtils.getItem(args[1]);
 		if(item == null) {
 			ChallengeMain.sendMessage(sender, "ItemToBreak invalide");
 			ChallengeMain.sendMessage(sender, COMMAND);
 			return false;
 		}
 		
-		if(!isNumber(args[2])) {
+		if(!ChallengeUtils.isNumber(args[2])) {
 			ChallengeMain.sendMessage(sender, "Amount invalide");
 			ChallengeMain.sendMessage(sender, COMMAND);
 			return false;
@@ -54,7 +55,7 @@ public class AddChallengeBreakBlockCommand implements CommandExecutor{
 				description += args[i] + " ";
 		}
 		
-		ChallengeBreakBlock challenge = new ChallengeBreakBlock(args[0], description, item, Integer.parseInt(args[2]), premium);
+		ChallengeBreakBlock challenge = new ChallengeBreakBlock(args[0], description, new ItemStack(item), Integer.parseInt(args[2]), premium);
 		
 		if(!hebdo) {
 			ChallengeMain.getDailyChallenge().add(challenge);
@@ -69,22 +70,6 @@ public class AddChallengeBreakBlockCommand implements CommandExecutor{
 		
 		ChallengeMain.sendMessage(sender, "ChallengeBreakBlock " + args[0] + " ajoute !");
 		return true;
-	}
-	
-	private boolean isNumber(String str) {
-		for(int i = 0; i < str.length(); i++) {
-			if(str.charAt(i) < '0' && str.charAt(i) > '9')
-				return false;
-		}
-		return true;
-	}
-	
-	private ItemStack getItem(String str) {
-		for(Material m : Material.values()) {
-			if(m.name().equalsIgnoreCase(str))
-				return new ItemStack(m);
-		}
-		return null;
 	}
 
 }
