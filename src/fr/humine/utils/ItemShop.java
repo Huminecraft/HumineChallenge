@@ -11,6 +11,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import fr.humine.utils.pass.Palier;
 import humine.main.MainShop;
+import humine.utils.Shopper;
 
 /**
  * Classe contenant des {@link ItemStack} predefinis et utilisation 
@@ -61,7 +62,8 @@ public abstract class ItemShop extends humine.utils.ItemShop{
 		ItemStack item = new ItemStack(palier.getItemRepresentation());
 		ItemMeta meta = item.getItemMeta();
 		
-		int humis = MainShop.getInstance().getBankHumis().getMoney(player);
+		Shopper shopper = MainShop.getShopperManager().getShopper(player);
+		int humis = shopper.getHumis().getAmount();
 		
 		if(humis >= palier.getPriceHumis()) {
 			meta.setDisplayName(ChatColor.GREEN + "Acheter ce palier");

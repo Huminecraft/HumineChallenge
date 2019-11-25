@@ -1,5 +1,9 @@
 package fr.humine.commands;
 
+import fr.humine.main.ChallengeMain;
+import fr.humine.main.ChallengeUtils;
+import humine.utils.Prestige;
+import humine.utils.cosmetiques.MaterialHatCosmetique;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -7,10 +11,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import fr.humine.main.ChallengeMain;
-import fr.humine.main.ChallengeUtils;
-import humine.utils.Prestige;
-import humine.utils.cosmetiques.MaterialHatCosmetique;
 
 public class AddMaterialHatCosmetiqueCommand implements CommandExecutor{
 

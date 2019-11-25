@@ -14,6 +14,7 @@ import fr.humine.utils.events.PalierUnlockEvent;
 import fr.humine.utils.pass.Page;
 import fr.humine.utils.pass.Palier;
 import humine.main.MainShop;
+import humine.utils.Shopper;
 
 public class ClickUnlockPalierEvent implements Listener {
 
@@ -32,10 +33,11 @@ public class ClickUnlockPalierEvent implements Listener {
 	}
 	
 	private void buy(Challenger player, Palier palier) {
-		int humis = MainShop.getInstance().getBankHumis().getMoney(player.getPlayer());
+		Shopper shopper = MainShop.getShopperManager().getShopper(player.getPlayer());
+		int humis = shopper.getHumis().getAmount();
 		if(humis >= palier.getPriceHumis()) {
 			player.getPlayer().closeInventory();
-			MainShop.getInstance().getBankHumis().removeMoney(player.getPlayer(), palier.getPriceHumis());
+			shopper.getHumis().removeAmount(palier.getPriceHumis());
 			palier.setUnlock(true);
 			player.getToken().setAmount(palier.getTokenPass());
 			ChallengeMain.getInstance().getServer().getPluginManager().callEvent(new PalierUnlockEvent(player, palier));

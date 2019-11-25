@@ -14,6 +14,7 @@ import fr.humine.utils.events.PalierUnlockEvent;
 import fr.humine.utils.pass.Page;
 import fr.humine.utils.pass.Palier;
 import humine.main.MainShop;
+import humine.utils.Shopper;
 
 public class ClickApplePayEvent implements Listener {
 	
@@ -33,7 +34,8 @@ public class ClickApplePayEvent implements Listener {
 	}
 
 	private void buy(Challenger challenger) {
-		if(MainShop.getInstance().getBankHumis().getMoney(challenger.getPlayer()) >= PageApplePay.PRIZE) {
+		Shopper shopper = MainShop.getShopperManager().getShopper(challenger.getPlayer());
+		if(shopper.getHumis().getAmount() >= PageApplePay.PRIZE) {
 			challenger.getChallengePass().closeShop();
 			ChallengeMain.sendMessage(challenger.getPlayer(), "Vous avez acheter le HuminePass, Bienvenue dans l'elite !");
 			challenger.setPremium(true);
