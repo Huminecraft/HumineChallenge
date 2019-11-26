@@ -13,6 +13,7 @@ import fr.humine.utils.defaultpage.PageUnlockPalier;
 import fr.humine.utils.pass.ChallengePass;
 import fr.humine.utils.pass.Page;
 import fr.humine.utils.pass.Palier;
+import humine.utils.cosmetiques.AbstractParticleCosmetique;
 
 public class OpenPageUnlockPalierEvent implements Listener {
 
@@ -23,8 +24,22 @@ public class OpenPageUnlockPalierEvent implements Listener {
 				if(event.getCurrentItem().getItemMeta().getDisplayName().contains("Palier")) {
 					Challenger challenger = ChallengeMain.getInstance().getBankChallenger().getChallenger((Player) event.getWhoClicked());
 					Palier palier[] = getPalier(challenger, event.getCurrentItem(), Integer.parseInt(event.getCurrentItem().getItemMeta().getDisplayName().split(" ")[1]));
-					if(palier[0] != null && palier[1] != null && (palier[0].isUnlock() && !palier[1].isUnlock())) {
-						PageUnlockPalier.openShop(challenger, palier[1]);
+					if(palier[1] != null) {
+						if(palier[1].getCosmetique() != null && palier[1].getCosmetique() instanceof AbstractParticleCosmetique) {
+							if(palier[0] != null) {
+								if(palier[0].isUnlock()) {
+									if(!palier[1].isUnlock()) {
+										PageUnlockPalier.openShop(challenger, palier[1], true, true);
+										return;
+									}
+								}
+							}
+							PageUnlockPalier.openShop(challenger, palier[1], false, true);
+						}
+						else {
+							if(palier[0] != null && palier[0].isUnlock() && !palier[1].isUnlock())
+								PageUnlockPalier.openShop(challenger, palier[1], true, false);
+						}
 					}
 				}
 			}

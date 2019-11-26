@@ -19,10 +19,12 @@ public class GiveAwardPalierEvent implements Listener
 		
 		Shopper shopper = MainShop.getShopperManager().getShopper(event.getChallenger().getPlayer());
 		shopper.getHumis().addAmount(event.getPalier().getAwardHumis());
-
+		shopper.getPixel().addAmount(event.getPalier().getAwardPixel());
+		
 		event.getChallenger().getLevel().addExperience(event.getPalier().getAwardExp());
 		ChallengeMain.sendMessage(event.getChallenger().getPlayer(), "===PALIER DEBLOQUE !===");
 		ChallengeMain.sendMessage(event.getChallenger().getPlayer(), "Humis gagne : " + event.getPalier().getAwardHumis());
+		ChallengeMain.sendMessage(event.getChallenger().getPlayer(), "Pixel gagne : " + event.getPalier().getAwardPixel());
 		ChallengeMain.sendMessage(event.getChallenger().getPlayer(), "Experience gagne : " + event.getPalier().getAwardExp());
 		
 		if(c != null) {

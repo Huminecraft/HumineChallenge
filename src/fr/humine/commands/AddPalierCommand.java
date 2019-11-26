@@ -15,7 +15,7 @@ import humine.utils.cosmetiques.Cosmetique;
 
 public class AddPalierCommand implements CommandExecutor
 {
-	private static final String COMMAND = "/createpalier <numPalier> <MaterialPresentation> <priceHumis> <awardHumis> <awardExp> <token> [premium] [numeroCosmetique]";
+	private static final String COMMAND = "/createpalier <numPalier> <MaterialPresentation> <priceHumis> <awardHumis> <awardPixel> <awardExp> <token> [premium] [numeroCosmetique]";
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
@@ -25,7 +25,7 @@ public class AddPalierCommand implements CommandExecutor
 			return false;
 		}
 		
-		if(args.length < 6) {
+		if(args.length < 7) {
 			ChallengeMain.sendMessage(sender, "Argument insuffisant");
 			ChallengeMain.sendMessage(sender, COMMAND);
 			return false;
@@ -53,31 +53,37 @@ public class AddPalierCommand implements CommandExecutor
 		}
 		
 		if(!ChallengeUtils.isNumber(args[4])) {
-			ChallengeMain.sendMessage(sender, "awardExp invalide");
+			ChallengeMain.sendMessage(sender, "awardPixel invalide");
 			return false;
 		}
 		
 		if(!ChallengeUtils.isNumber(args[5])) {
+			ChallengeMain.sendMessage(sender, "awardExp invalide");
+			return false;
+		}
+		
+		if(!ChallengeUtils.isNumber(args[6])) {
 			ChallengeMain.sendMessage(sender, "Token invalide");
 			return false;
 		}
 		
 		boolean premium = false;
-		if(args.length >= 7 && args[6].equalsIgnoreCase("true")) {
+		if(args.length >= 8 && args[7].equalsIgnoreCase("true")) {
 			premium = true;
 		}
 		
 		Cosmetique cosmetique = null;
-		if(args.length >= 8) {
-			cosmetique = ChallengeMain.getInstance().getBankCosmetique().getCosmetique(args[7]);
+		if(args.length >= 9) {
+			cosmetique = ChallengeMain.getInstance().getBankCosmetique().getCosmetique(args[8]);
 		}
 		
 		int numPalier = Integer.parseInt(args[0]);
 		int priceHumis = Integer.parseInt(args[2]);
 		int awardHumis = Integer.parseInt(args[3]);
-		int awardExp = Integer.parseInt(args[4]);
-		int tokenPass = Integer.parseInt(args[5]);
-		Palier palier = new Palier(numPalier, new ItemStack(itemPresentation), priceHumis, awardHumis, awardExp, tokenPass, cosmetique, false, premium);
+		int awardPixel = Integer.parseInt(args[4]);
+		int awardExp = Integer.parseInt(args[5]);
+		int tokenPass = Integer.parseInt(args[6]);
+		Palier palier = new Palier(numPalier, new ItemStack(itemPresentation), priceHumis, awardHumis, awardPixel, awardExp, tokenPass, cosmetique, false, premium);
 				
 		ChallengeMain.getPassMain().addPalier(palier);
 		for(Challenger c : ChallengeMain.getInstance().getBankChallenger().getChallengers())
