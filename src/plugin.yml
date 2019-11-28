@@ -74,5 +74,17 @@ commands:
     permission: huminechallenge.admin.addtoken
   removetoken:
     usage:
-    description: enelver des tokens a une personne
+    description: enlever des tokens a une personne
     permission: huminechallenge.admin.removetoken
+  paliercustomhatcosmetique:
+    usage:
+    description:
+    permission:
+  addchallengeopenchest:
+    usage:
+    description:
+    permission:
+  addchallengedropblock:
+    usage:
+    description:
+    permission:

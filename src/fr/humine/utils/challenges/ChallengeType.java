@@ -10,6 +10,8 @@ public enum ChallengeType {
 
 	KILL, 
 	PLACE_BLOCK, 
-	BREAK_BLOCK, 
-	BIOME_DISCOVER;
+	BREAK_BLOCK,
+	DROP_BLOCK, 
+	BIOME_DISCOVER,
+	OPEN_CHEST;
 }

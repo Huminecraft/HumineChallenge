@@ -13,6 +13,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import fr.humine.commands.AddCustomHeadCosmetique;
 import fr.humine.commands.AddMaterialHatCosmetiqueCommand;
 import fr.humine.commands.AddPalierCommand;
 import fr.humine.commands.AddParticleCosmetiqueCommand;
@@ -27,7 +28,9 @@ import fr.humine.commands.TokenRemoveCommand;
 import fr.humine.commands.challenges.AddAwardCommand;
 import fr.humine.commands.challenges.AddChallengeBiomeDiscoverCommand;
 import fr.humine.commands.challenges.AddChallengeBreakBlockCommand;
+import fr.humine.commands.challenges.AddChallengeDropBlockCommand;
 import fr.humine.commands.challenges.AddChallengeKillCommand;
+import fr.humine.commands.challenges.AddChallengeOpenChestCommand;
 import fr.humine.commands.challenges.AddChallengePlaceBlockCommand;
 import fr.humine.commands.challenges.ShowDailyChallengeCommand;
 import fr.humine.commands.challenges.ShowHedboChallengeCommand;
@@ -37,6 +40,7 @@ import fr.humine.events.QuitChallengerEvent;
 import fr.humine.events.challenges.ChallengeBiomeDiscoverEvent;
 import fr.humine.events.challenges.ChallengeBreakBlockEvent;
 import fr.humine.events.challenges.ChallengeKillEvent;
+import fr.humine.events.challenges.ChallengeOpenChestEvent;
 import fr.humine.events.challenges.ChallengePlaceBlockEvent;
 import fr.humine.events.challenges.GiveAwardEvent;
 import fr.humine.events.challenges.GiveAwardPalierEvent;
@@ -284,6 +288,7 @@ public class ChallengeMain extends JavaPlugin{
 		this.getServer().getPluginManager().registerEvents(new ChallengePlaceBlockEvent(), this);
 		this.getServer().getPluginManager().registerEvents(new ChallengeBreakBlockEvent(), this);
 		this.getServer().getPluginManager().registerEvents(new ChallengeBiomeDiscoverEvent(), this);
+		this.getServer().getPluginManager().registerEvents(new ChallengeOpenChestEvent(), this);
 		this.getServer().getPluginManager().registerEvents(new GiveAwardEvent(), this);		
 	
 		this.getServer().getPluginManager().registerEvents(new ClickApplePayEvent(), this);
@@ -309,10 +314,14 @@ public class ChallengeMain extends JavaPlugin{
 		this.getCommand("hebdoload").setExecutor(new HebdoChallengeLoadCommand());
 		this.getCommand("palierparticlecosmetique").setExecutor(new AddParticleCosmetiqueCommand());
 		this.getCommand("paliermaterialhatcosmetique").setExecutor(new AddMaterialHatCosmetiqueCommand());
+		
 		this.getCommand("addchallengekill").setExecutor(new AddChallengeKillCommand());
 		this.getCommand("addchallengeplaceblock").setExecutor(new AddChallengePlaceBlockCommand());
 		this.getCommand("addchallengebreakblock").setExecutor(new AddChallengeBreakBlockCommand());
 		this.getCommand("addchallengebiomediscover").setExecutor(new AddChallengeBiomeDiscoverCommand());
+		this.getCommand("addchallengeopenchest").setExecutor(new AddChallengeOpenChestCommand());
+		this.getCommand("addchallengedropblock").setExecutor(new AddChallengeDropBlockCommand());
+		this.getCommand("paliercustomhatcosmetique").setExecutor(new AddCustomHeadCosmetique());
 		this.getCommand("addAward").setExecutor(new AddAwardCommand());
 		this.getCommand("dailychallenge").setExecutor(new ShowDailyChallengeCommand());
 		this.getCommand("hebdochallenge").setExecutor(new ShowHedboChallengeCommand());
