@@ -88,3 +88,11 @@ commands:
     usage:
     description:
     permission:
+  addchallengeenchantitem:
+    usage:
+    description:
+    permission:
+ addchallengefish:
+    usage:
+    description:
+    permission:
