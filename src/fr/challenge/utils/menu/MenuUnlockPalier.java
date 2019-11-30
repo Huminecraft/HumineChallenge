@@ -1,4 +1,4 @@
-package fr.challenge.utils.defaultpage;
+package fr.challenge.utils.menu;
 
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
@@ -12,7 +12,7 @@ import fr.challenge.utils.pass.Palier;
  * 
  * @author Miza
  */
-public abstract class PageUnlockPalier {
+public abstract class MenuUnlockPalier {
 
 	public static final String NAME = "UNLOCK PALIER";
 	public static final int SIZE = (9 * 4);
@@ -23,7 +23,7 @@ public abstract class PageUnlockPalier {
 	 * 
 	 * @param challenger la cible
 	 */
-	public static void openShop(Challenger challenger, Palier palier, boolean pay, boolean demo) {
+	public static void openMenu(Challenger challenger, Palier palier, boolean pay, boolean demo) {
 		String name = NAME + " " + palier.getNumeroPalier();
 
 		inv = Bukkit.createInventory(null, SIZE, name);

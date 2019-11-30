@@ -7,13 +7,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 import fr.challenge.utils.ItemShop;
-import fr.challenge.utils.defaultpage.PageHebo;
+import fr.challenge.utils.menu.MenuChangeHebdoChallenge;
 
 public class ClickQuitButtonEvent implements Listener {
 
 	@EventHandler
 	public void onClick(InventoryClickEvent event) {
-		if(event.getView().getTitle().equals(PageHebo.NAME)) {
+		if(event.getView().getTitle().equals(MenuChangeHebdoChallenge.NAME)) {
 			if(event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR) {
 				if(event.getCurrentItem().isSimilar(ItemShop.itemQuit())) {
 					quit((Player) event.getWhoClicked());

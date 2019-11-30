@@ -41,6 +41,7 @@ import fr.challenge.events.CreateChallengerEvent;
 import fr.challenge.events.QuitChallengerEvent;
 import fr.challenge.events.challenges.ChallengeBiomeDiscoverEvent;
 import fr.challenge.events.challenges.ChallengeBreakBlockEvent;
+import fr.challenge.events.challenges.ChallengeDropBlockEvent;
 import fr.challenge.events.challenges.ChallengeEnchantItemEvent;
 import fr.challenge.events.challenges.ChallengeFishEvent;
 import fr.challenge.events.challenges.ChallengeKillEvent;
@@ -49,6 +50,11 @@ import fr.challenge.events.challenges.ChallengePlaceBlockEvent;
 import fr.challenge.events.challenges.GiveAwardEvent;
 import fr.challenge.events.challenges.GiveAwardPalierEvent;
 import fr.challenge.events.defaultpage.hebdopage.ClickHebdoItemEvent;
+import fr.challenge.events.defaultpage.menuaccueil.ClickChangeHebdoEvent;
+import fr.challenge.events.defaultpage.menuaccueil.ClickDailyEvent;
+import fr.challenge.events.defaultpage.menuaccueil.ClickHebdoEvent;
+import fr.challenge.events.defaultpage.menuaccueil.ClickSurvivalPassEvent;
+import fr.challenge.events.defaultpage.menudaily.ClickQuitEvent;
 import fr.challenge.events.defaultpage.pageapplepay.ClickApplePayEvent;
 import fr.challenge.events.defaultpage.pageapplepay.ClickQuitButtonEvent;
 import fr.challenge.events.defaultpage.pageapplepay.OpenPageApplePayEvent;
@@ -58,9 +64,9 @@ import fr.challenge.utils.BankChallenger;
 import fr.challenge.utils.BankCosmetique;
 import fr.challenge.utils.Challenger;
 import fr.challenge.utils.challenges.Challenge;
-import fr.challenge.utils.defaultpage.PageApplePay;
 import fr.challenge.utils.files.LoadSystem;
 import fr.challenge.utils.files.SaveSystem;
+import fr.challenge.utils.menu.MenuApplePay;
 import fr.challenge.utils.pass.ChallengePass;
 import fr.challenge.utils.pass.Page;
 import humine.utils.cosmetiques.Cosmetique;
@@ -238,10 +244,10 @@ public class ChallengeMain extends JavaPlugin{
 			}
 			
 			if(getConfig().contains("huminepass")) {
-				PageApplePay.PRIZE = getConfig().getInt("huminepass");
+				MenuApplePay.PRIZE = getConfig().getInt("huminepass");
 			}
 			else {
-				PageApplePay.PRIZE = 0;
+				MenuApplePay.PRIZE = 0;
 			}
 			
 			if(getConfig().contains("semaine")) {
@@ -285,31 +291,51 @@ public class ChallengeMain extends JavaPlugin{
 	}
 	
 	private void events() {
+		//initialize custom events
 		this.getServer().getPluginManager().registerEvents(new InitializeEvents(), this);
 		
+		//fr.challenge.events
+		this.getServer().getPluginManager().registerEvents(new ChallengerQuitPassEvent(), this);
 		this.getServer().getPluginManager().registerEvents(new CreateChallengerEvent(), this);
 		this.getServer().getPluginManager().registerEvents(new QuitChallengerEvent(), this);
-		this.getServer().getPluginManager().registerEvents(new ChallengerQuitPassEvent(), this);
-		this.getServer().getPluginManager().registerEvents(new ChallengeKillEvent(), this);
-		this.getServer().getPluginManager().registerEvents(new ChallengePlaceBlockEvent(), this);
-		this.getServer().getPluginManager().registerEvents(new ChallengeBreakBlockEvent(), this);
+		
+		//fr.challenge.events.challenges
 		this.getServer().getPluginManager().registerEvents(new ChallengeBiomeDiscoverEvent(), this);
-		this.getServer().getPluginManager().registerEvents(new ChallengeOpenChestEvent(), this);
+		this.getServer().getPluginManager().registerEvents(new ChallengeBreakBlockEvent(), this);
+		this.getServer().getPluginManager().registerEvents(new ChallengeDropBlockEvent(), this);
 		this.getServer().getPluginManager().registerEvents(new ChallengeEnchantItemEvent(), this);
 		this.getServer().getPluginManager().registerEvents(new ChallengeFishEvent(), this);
+		this.getServer().getPluginManager().registerEvents(new ChallengeKillEvent(), this);
+		this.getServer().getPluginManager().registerEvents(new ChallengeOpenChestEvent(), this);
+		this.getServer().getPluginManager().registerEvents(new ChallengePlaceBlockEvent(), this);
 		this.getServer().getPluginManager().registerEvents(new GiveAwardEvent(), this);
-	
+		this.getServer().getPluginManager().registerEvents(new GiveAwardPalierEvent(), this);
+		
+		//fr.challenge.events.defaultpage.hebdopage
+		this.getServer().getPluginManager().registerEvents(new fr.challenge.events.defaultpage.hebdopage.ClickQuitButtonEvent(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickHebdoItemEvent(), this);
+		
+		//fr.challenge.events.defaultpage.menuaccueil
+		this.getServer().getPluginManager().registerEvents(new ClickChangeHebdoEvent(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickDailyEvent(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickHebdoEvent(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickSurvivalPassEvent(), this);
+		
+		//fr.challenge.events.defaultpage.menudaily
+		this.getServer().getPluginManager().registerEvents(new ClickQuitEvent(), this);
+		
+		//fr.challenge.events.defaultpage.menuhebdo
+		this.getServer().getPluginManager().registerEvents(new fr.challenge.events.defaultpage.menuhebdo.ClickQuitEvent(), this);
+		
+		//fr.challenge.events.defaultpage.pageapplepay
 		this.getServer().getPluginManager().registerEvents(new ClickApplePayEvent(), this);
 		this.getServer().getPluginManager().registerEvents(new ClickQuitButtonEvent(), this);
 		this.getServer().getPluginManager().registerEvents(new OpenPageApplePayEvent(), this);
-		this.getServer().getPluginManager().registerEvents(new GiveAwardPalierEvent(), this);
 		
+		//fr.challenge.events.defaultpage.pageunlockpalier
 		this.getServer().getPluginManager().registerEvents(new fr.challenge.events.defaultpage.pageunlockpalier.ClickQuitButtonEvent(), this);
 		this.getServer().getPluginManager().registerEvents(new ClickUnlockPalierEvent(), this);
 		this.getServer().getPluginManager().registerEvents(new OpenPageUnlockPalierEvent(), this);
-		
-		this.getServer().getPluginManager().registerEvents(new fr.challenge.events.defaultpage.hebdopage.ClickQuitButtonEvent(), this);
-		this.getServer().getPluginManager().registerEvents(new ClickHebdoItemEvent(), this);
 	}
 	
 	private void commands() {

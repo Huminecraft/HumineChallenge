@@ -9,7 +9,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import fr.challenge.main.ChallengeMain;
 import fr.challenge.utils.Challenger;
 import fr.challenge.utils.ItemShop;
-import fr.challenge.utils.defaultpage.PageApplePay;
+import fr.challenge.utils.menu.MenuApplePay;
 import fr.challenge.utils.pass.ChallengePass;
 
 public class OpenPageApplePayEvent implements Listener{
@@ -21,7 +21,7 @@ public class OpenPageApplePayEvent implements Listener{
 				if(event.getCurrentItem().isSimilar(ItemShop.premiumApple())) {
 					Challenger challenger = ChallengeMain.getInstance().getBankChallenger().getChallenger((Player) event.getWhoClicked());
 					challenger.getChallengePass().closeShop();
-					PageApplePay.openShop(challenger);
+					MenuApplePay.openMenu(challenger);
 				}
 			}
 			event.setCancelled(true);

@@ -1,6 +1,11 @@
 package fr.challenge.utils.challenges;
 
+import java.util.List;
+
+import org.bukkit.ChatColor;
 import org.bukkit.block.Biome;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import fr.challenge.utils.Challenger;
 
@@ -53,6 +58,20 @@ public class ChallengeBiomeDiscover extends AbstractChallenge{
 		challenger.getPlayer().sendMessage("Etat : " + isFinish());
 	}
 
+	@Override
+	public ItemStack toItemStack() {
+		ItemStack item = super.toItemStack();
+		ChatColor color = (isFinish()) ? ChatColor.GREEN : ChatColor.YELLOW;
+		
+		ItemMeta meta = item.getItemMeta();
+		List<String> lores = meta.getLore();
+		lores.add(" ");
+		lores.add(color + "Etat : " + (isFinish() ? "Trouve" : "Non trouve"));
+		
+		item.setItemMeta(meta);
+		return item;
+	}
+	
 //	@Override
 //	public Challenge clonage()
 //	{

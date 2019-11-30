@@ -1,4 +1,4 @@
-package fr.challenge.utils.defaultpage;
+package fr.challenge.utils.menu;
 
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
@@ -11,7 +11,7 @@ import fr.challenge.utils.ItemShop;
  * 
  * @author Miza
  */
-public abstract class PageApplePay {
+public abstract class MenuApplePay {
 
 	public static final String NAME = "PREMIUM SHOP";
 	public static final int SIZE = (9 * 4);
@@ -23,11 +23,12 @@ public abstract class PageApplePay {
 	 * 
 	 * @param challenger la cible
 	 */
-	public static void openShop(Challenger challenger) {
+	public static void openMenu(Challenger challenger) {
 		inv = Bukkit.createInventory(null, SIZE, NAME);
 		inv.setItem(SIZE - (9 * 2) - 5, ItemShop.applePay(challenger, PRIZE));
 		inv.setItem(SIZE - 9, ItemShop.itemQuit());
 		inv.setItem(SIZE - 1, ItemShop.itemQuit());
 		challenger.getPlayer().openInventory(inv);
 	}
+	
 }

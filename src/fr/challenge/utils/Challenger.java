@@ -14,8 +14,9 @@ import fr.challenge.utils.pass.ChallengePass;
 import humine.main.MainShop;
 
 /**
- * Classe contenant toutes les informations du joueur par rapport
- * au plugin HumineChallenge
+ * Classe contenant toutes les informations du joueur par rapport au plugin
+ * HumineChallenge
+ * 
  * @author Miza
  */
 public class Challenger {
@@ -26,14 +27,15 @@ public class Challenger {
 	private ChallengePass challengePass;
 	private LevelBar levelBar;
 	private int currentHebdoWeek;
-	
+
 	private List<Challenge> dailyChallenge;
 	private List<Challenge> hebdoChallenge;
-	
+
 	private LocalDate lastConnection;
-	
+
 	/**
 	 * Constructeur du Challenger
+	 * 
 	 * @param player le joueur auquel il faut creer un compte Challenger
 	 */
 	public Challenger(Player player) {
@@ -47,136 +49,132 @@ public class Challenger {
 		updateDailyChallenge(ChallengeMain.getDailyChallenge());
 		updateHebdoChallenge(ChallengeMain.getHebdoChallenge());
 	}
-	
+
 	/**
 	 * @return true si le joueur possede le HumineSurvival, sinon false
 	 */
 	public boolean hasPremium() {
 		return premium;
 	}
-	
+
 	/**
 	 * Definir si le joueur possede le HumineSurvival
+	 * 
 	 * @param premium true si il le possede, sinon false
 	 */
 	public void setPremium(boolean premium) {
 		this.premium = premium;
 	}
-	
+
 	/**
 	 * @return Le pseudo du joueur
 	 */
 	public String getName() {
 		return player.getName();
 	}
-	
+
 	/**
 	 * @return Le {@link Player} possedant le compte Challenger
 	 */
 	public Player getPlayer() {
 		return player;
 	}
-	
+
 	/**
 	 * @return les {@link Token} du joueurs
 	 */
-	public Token getToken()
-	{
+	public Token getToken() {
 		return token;
 	}
-	
+
 	/**
 	 * @return le {@link ChallengePass} du joueur
 	 */
-	public ChallengePass getChallengePass()
-	{
+	public ChallengePass getChallengePass() {
 		return challengePass;
 	}
-	
+
 	/**
 	 * @return la {@link LevelBar} du joueur
 	 */
-	public LevelBar getLevelBar()
-	{
+	public LevelBar getLevelBar() {
 		return levelBar;
 	}
-	
+
 	/**
 	 * @return le {@link Level} du joueur
 	 */
-	public Level getLevel() 
-	{
+	public Level getLevel() {
 		return levelBar.getLevel();
 	}
-	
+
 	/**
 	 * @return la liste des challenges journaliers du Challenger
 	 */
 	public List<Challenge> getDailyChallenge() {
 		return dailyChallenge;
 	}
-	
+
 	/**
 	 * @return la liste des challenges hebdomadaires du Challenger
 	 */
-	public List<Challenge> getHebdoChallenge()
-	{
+	public List<Challenge> getHebdoChallenge() {
 		return hebdoChallenge;
 	}
-	
+
 	/**
-	 * @return le {@link LocalDate} du Challenger represenant le dernier jour
-	 * de connection du Challenger
+	 * @return le {@link LocalDate} du Challenger represenant le dernier jour de
+	 *         connection du Challenger
 	 */
-	public LocalDate getLastConnection()
-	{
+	public LocalDate getLastConnection() {
 		return lastConnection;
 	}
-	
+
 	/**
 	 * Definir le dernier de connection du Challenger
+	 * 
 	 * @param lastConnection la derniere connection
 	 */
-	public void setLastConnection(LocalDate lastConnection)
-	{
+	public void setLastConnection(LocalDate lastConnection) {
 		this.lastConnection = lastConnection;
 	}
-	
+
 	/**
 	 * @param type Le type de challenge a filtrer
-	 * @return la liste des challenges journaliers du Challenger comportant le
-	 * meme {@link ChallengeType}
+	 * @return la liste des challenges journaliers du Challenger comportant le meme
+	 *         {@link ChallengeType}
 	 */
 	public List<Challenge> getDailyChallenges(ChallengeType type) {
 		List<Challenge> list = new ArrayList<>();
-		for(Challenge c : dailyChallenge) {
-			if(c.getType() == type)
+		for (Challenge c : dailyChallenge) {
+			if (c.getType() == type)
 				list.add(c);
 		}
 		return list;
 	}
-	
+
 	/**
 	 * @param type Le type de challenge a filtrer
 	 * @return la liste des challenges hebdomadaires du Challenger comportant le
-	 * meme {@link ChallengeType}
+	 *         meme {@link ChallengeType}
 	 */
 	public List<Challenge> getHebdoChallenges(ChallengeType type) {
 		List<Challenge> list = new ArrayList<>();
-		for(Challenge c : hebdoChallenge) {
-			if(c.getType() == type)
+		for (Challenge c : hebdoChallenge) {
+			if (c.getType() == type)
 				list.add(c);
 		}
 		return list;
 	}
-	
+
 	/**
-	 * Met a jour la liste des {@link Challenge} journaliers du Challenger 
+	 * Met a jour la liste des {@link Challenge} journaliers du Challenger
+	 * 
 	 * @param challenges la liste de reference pour la mise a jour
 	 */
 	public void updateDailyChallenge(List<Challenge> challenges) {
 		this.dailyChallenge = new ArrayList<>();
-		for(Challenge challenge : challenges) {
+		for (Challenge challenge : challenges) {
 			try {
 				Challenge c = (Challenge) challenge.clone();
 				this.dailyChallenge.add(c);
@@ -185,60 +183,59 @@ public class Challenger {
 			}
 		}
 	}
-	
+
 	/**
-	 * Met a jour la liste des {@link Challenge} hebdomadaires du Challenger 
+	 * Met a jour la liste des {@link Challenge} hebdomadaires du Challenger
+	 * 
 	 * @param challenges la liste de reference pour la mise a jour
 	 */
 	public void updateHebdoChallenge(List<Challenge> challenges) {
 		this.hebdoChallenge = new ArrayList<>();
-		for(Challenge challenge : challenges) {
+		for (Challenge challenge : challenges) {
 			try {
 				Challenge c = (Challenge) challenge.clone();
 				this.hebdoChallenge.add(c);
 			} catch (CloneNotSupportedException e) {
 				MainShop.getInstance().getLogger().severe(e.getMessage());
 			}
-			
+
 		}
 	}
-	
+
 	/**
 	 * @return le dossier du Challenger
 	 */
-	public File getChallengerFolder()
-	{
+	public File getChallengerFolder() {
 		return new File(ChallengeMain.getInstance().FOLDERCHALLENGER, player.getUniqueId().toString());
 	}
-	
+
 	public File getDailyChallengeFolder() {
 		return new File(getChallengerFolder(), "DailyChallenge");
 	}
-	
+
 	public File getHebdoChallengeFolder() {
 		return new File(getChallengerFolder(), "HebdoChallenge");
 	}
-	
+
 	public File getChallengerYAMLFile() {
 		return new File(getChallengerFolder(), "Challenger.yml");
 	}
-	
+
 	/**
 	 * @return le numero de semaine de la liste des {@link Challenge} hebdomaires
-	 * charges
+	 *         charges
 	 */
-	public int getCurrentHebdoWeek()
-	{
+	public int getCurrentHebdoWeek() {
 		return currentHebdoWeek;
 	}
-	
+
 	/**
 	 * Permet de definir le numero de semaine de la liste des {@link Challenge}
 	 * hebdomadaires
+	 * 
 	 * @param currentHebdoWeek le numero de le semaine
 	 */
-	public void setCurrentHebdoWeek(int currentHebdoWeek)
-	{
+	public void setCurrentHebdoWeek(int currentHebdoWeek) {
 		this.currentHebdoWeek = currentHebdoWeek;
 	}
 
@@ -308,6 +305,4 @@ public class Challenger {
 			return false;
 		return true;
 	}
-	
-	
 }

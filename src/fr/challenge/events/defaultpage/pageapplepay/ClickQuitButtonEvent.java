@@ -9,13 +9,13 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import fr.challenge.main.ChallengeMain;
 import fr.challenge.utils.Challenger;
 import fr.challenge.utils.ItemShop;
-import fr.challenge.utils.defaultpage.PageApplePay;
+import fr.challenge.utils.menu.MenuApplePay;
 
 public class ClickQuitButtonEvent implements Listener{
 
 	@EventHandler
 	public void onClick(InventoryClickEvent event) {
-		if(event.getView().getTitle().equals(PageApplePay.NAME)) {
+		if(event.getView().getTitle().equals(MenuApplePay.NAME)) {
 			if(event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR) {
 				if(event.getCurrentItem().isSimilar(ItemShop.itemQuit())) {
 					quit((Player) event.getWhoClicked());

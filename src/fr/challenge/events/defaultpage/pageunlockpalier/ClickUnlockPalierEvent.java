@@ -9,8 +9,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import fr.challenge.main.ChallengeMain;
 import fr.challenge.utils.Challenger;
 import fr.challenge.utils.ItemShop;
-import fr.challenge.utils.defaultpage.PageUnlockPalier;
 import fr.challenge.utils.events.PalierUnlockEvent;
+import fr.challenge.utils.menu.MenuUnlockPalier;
 import fr.challenge.utils.pass.Page;
 import fr.challenge.utils.pass.Palier;
 import humine.main.MainShop;
@@ -20,7 +20,7 @@ public class ClickUnlockPalierEvent implements Listener {
 
 	@EventHandler
 	public void onClick(InventoryClickEvent event) {
-		if(event.getView().getTitle().startsWith(PageUnlockPalier.NAME)) {
+		if(event.getView().getTitle().startsWith(MenuUnlockPalier.NAME)) {
 			if(event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR) {
 				Challenger challenger = ChallengeMain.getInstance().getBankChallenger().getChallenger((Player) event.getWhoClicked());
 				Palier palier = getPalier(challenger, event.getView().getTitle());

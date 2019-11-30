@@ -1,5 +1,13 @@
 package fr.challenge.utils.challenges;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
 import fr.challenge.utils.Challenger;
 
 public abstract class AbstractChallenge implements Challenge {
@@ -52,6 +60,24 @@ public abstract class AbstractChallenge implements Challenge {
 	@Override
 	public void setAward(Award award) {
 		this.award = award;
+	}
+	
+	@Override
+	public ItemStack toItemStack() {
+		ItemStack item = new ItemStack(Material.PAPER);
+		ItemMeta meta = item.getItemMeta();
+		ChatColor color = (isFinish()) ? ChatColor.GREEN : ChatColor.YELLOW;
+		
+		meta.setDisplayName(color + getTitle());
+		List<String> lores = new ArrayList<>();
+		lores.add(color + getDescription());
+		lores.add(" ");
+		lores.add(color + "Prix a gagner");
+		lores.add(color + "Token / Exp : " + getAwards().getToken() + " / " + getAwards().getExp());
+		meta.setLore(lores);
+		
+		item.setItemMeta(meta);
+		return item;
 	}
 	
 	@Override

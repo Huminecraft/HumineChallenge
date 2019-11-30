@@ -1,4 +1,4 @@
-package fr.challenge.utils.events;
+package fr.challenge.utils.events.ihm;
 
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;

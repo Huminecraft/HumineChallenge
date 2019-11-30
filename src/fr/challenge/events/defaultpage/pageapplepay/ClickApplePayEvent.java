@@ -9,8 +9,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import fr.challenge.main.ChallengeMain;
 import fr.challenge.utils.Challenger;
 import fr.challenge.utils.ItemShop;
-import fr.challenge.utils.defaultpage.PageApplePay;
 import fr.challenge.utils.events.PalierUnlockEvent;
+import fr.challenge.utils.menu.MenuApplePay;
 import fr.challenge.utils.pass.Page;
 import fr.challenge.utils.pass.Palier;
 import humine.main.MainShop;
@@ -20,10 +20,10 @@ public class ClickApplePayEvent implements Listener {
 	
 	@EventHandler
 	public void onClick(InventoryClickEvent event) {
-		if(event.getView().getTitle().equals(PageApplePay.NAME)) {
+		if(event.getView().getTitle().equals(MenuApplePay.NAME)) {
 			if(event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR) {
 				Challenger challenger = ChallengeMain.getInstance().getBankChallenger().getChallenger((Player) event.getWhoClicked());
-				if(event.getCurrentItem().isSimilar(ItemShop.applePay(challenger, PageApplePay.PRIZE))) {
+				if(event.getCurrentItem().isSimilar(ItemShop.applePay(challenger, MenuApplePay.PRIZE))) {
 					if(!challenger.hasPremium()) {
 						buy(challenger);
 					}
@@ -35,7 +35,7 @@ public class ClickApplePayEvent implements Listener {
 
 	private void buy(Challenger challenger) {
 		Shopper shopper = MainShop.getShopperManager().getShopper(challenger.getPlayer());
-		if(shopper.getHumis().getAmount() >= PageApplePay.PRIZE) {
+		if(shopper.getHumis().getAmount() >= MenuApplePay.PRIZE) {
 			challenger.getChallengePass().closeShop();
 			ChallengeMain.sendMessage(challenger.getPlayer(), "Vous avez acheter le HuminePass, Bienvenue dans l'elite !");
 			challenger.setPremium(true);

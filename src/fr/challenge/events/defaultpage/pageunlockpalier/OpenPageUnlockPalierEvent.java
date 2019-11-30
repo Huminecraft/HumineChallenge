@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 
 import fr.challenge.main.ChallengeMain;
 import fr.challenge.utils.Challenger;
-import fr.challenge.utils.defaultpage.PageUnlockPalier;
+import fr.challenge.utils.menu.MenuUnlockPalier;
 import fr.challenge.utils.pass.ChallengePass;
 import fr.challenge.utils.pass.Page;
 import fr.challenge.utils.pass.Palier;
@@ -29,16 +29,16 @@ public class OpenPageUnlockPalierEvent implements Listener {
 							if(palier[0] != null) {
 								if(palier[0].isUnlock()) {
 									if(!palier[1].isUnlock()) {
-										PageUnlockPalier.openShop(challenger, palier[1], true, true);
+										MenuUnlockPalier.openMenu(challenger, palier[1], true, true);
 										return;
 									}
 								}
 							}
-							PageUnlockPalier.openShop(challenger, palier[1], false, true);
+							MenuUnlockPalier.openMenu(challenger, palier[1], false, true);
 						}
 						else {
 							if(palier[0] != null && palier[0].isUnlock() && !palier[1].isUnlock())
-								PageUnlockPalier.openShop(challenger, palier[1], true, false);
+								MenuUnlockPalier.openMenu(challenger, palier[1], true, false);
 						}
 					}
 				}

@@ -1,4 +1,4 @@
-package fr.challenge.utils.defaultpage;
+package fr.challenge.utils.menu;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -18,7 +18,7 @@ import fr.challenge.utils.challenges.Challenge;
  * 
  * @author Miza
  */
-public abstract class PageHebo {
+public abstract class MenuChangeHebdoChallenge {
 
 	public static final String NAME = "HEBDO MENU";
 	public static final int SIZE = (9 * 6);
@@ -30,7 +30,7 @@ public abstract class PageHebo {
 	 * 
 	 * @param challenger la cible
 	 */
-	public static void openShop(Challenger challenger) {
+	public static void openMenu(Challenger challenger) {
 		inv = Bukkit.createInventory(null, SIZE, NAME);
 		inv.setItem(SIZE - 9, ItemShop.itemQuit());
 		inv.setItem(SIZE - 1, ItemShop.itemQuit());

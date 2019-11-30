@@ -1,4 +1,4 @@
-package fr.challenge.utils.events;
+package fr.challenge.utils.events.ihm;
 
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 
 import fr.challenge.utils.Challenger;
 
-public class ClickItemMenuAccueilEvent extends Event implements Cancellable{
+public class ClickItemMenuHebdoEvent extends Event implements Cancellable{
 
 	private static final HandlerList handlers = new HandlerList();
 	
@@ -19,7 +19,7 @@ public class ClickItemMenuAccueilEvent extends Event implements Cancellable{
 	private ItemStack item;
 	private boolean cancel;
 	
-	public ClickItemMenuAccueilEvent(Inventory inv, InventoryView view, Challenger challenger, ItemStack item) {
+	public ClickItemMenuHebdoEvent(Inventory inv, InventoryView view, Challenger challenger, ItemStack item) {
 		this.inv = inv;
 		this.view = view;
 		this.challenger = challenger;

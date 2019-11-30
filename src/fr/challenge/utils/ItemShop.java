@@ -100,6 +100,15 @@ public abstract class ItemShop extends humine.utils.ItemShop{
 		return item;
 	}
 	
+	public static ItemStack changeHebdoItem() {
+		ItemStack item = new ItemStack(Material.ENCHANTED_BOOK);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName(ChatColor.AQUA + "Change de Defis Hebdomadaires");
+		item.setItemMeta(meta);
+		
+		return item;
+	}
+	
 	public static ItemStack survivalPassItem() {
 		ItemStack item = new ItemStack(Material.APPLE);
 		ItemMeta meta = item.getItemMeta();

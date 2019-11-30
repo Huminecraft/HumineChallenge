@@ -5,13 +5,14 @@ import org.bukkit.event.Listener;
 
 import fr.challenge.utils.ItemShop;
 import fr.challenge.utils.events.ihm.ClickItemMenuAccueilEvent;
+import fr.challenge.utils.menu.MenuDailyChallenge;
 
-public class ClickSurvivalPassEvent implements Listener{
+public class ClickDailyEvent implements Listener{
 
 	@EventHandler
 	public void onClick(ClickItemMenuAccueilEvent event) {
-		if(event.getItem().isSimilar(ItemShop.survivalPassItem())) {
-			event.getChallenger().getChallengePass().openShop();
+		if(event.getItem().isSimilar(ItemShop.dailyItem())) {
+			MenuDailyChallenge.openMenu(event.getChallenger());
 		}
 	}
 }

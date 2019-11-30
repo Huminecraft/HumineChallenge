@@ -1,5 +1,11 @@
 package fr.challenge.utils.challenges;
 
+import java.util.List;
+
+import org.bukkit.ChatColor;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
 import fr.challenge.utils.Challenger;
 
 public abstract class ChallengeCount extends AbstractChallenge{
@@ -44,5 +50,19 @@ public abstract class ChallengeCount extends AbstractChallenge{
 	
 	public void setCurrentAmount(int currentAmount) {
 		this.currentAmount = currentAmount;
+	}
+	
+	@Override
+	public ItemStack toItemStack() {
+		ItemStack item = super.toItemStack();
+		ChatColor color = (isFinish()) ? ChatColor.GREEN : ChatColor.YELLOW;
+		
+		ItemMeta meta = item.getItemMeta();
+		List<String> lores = meta.getLore();
+		lores.add(" ");
+		lores.add(color + "Etat : " + getCurrentAmount() + " / " + getAmount());
+		
+		item.setItemMeta(meta);
+		return item;
 	}
 }

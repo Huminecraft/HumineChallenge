@@ -13,16 +13,16 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import fr.challenge.main.ChallengeMain;
 import fr.challenge.utils.Challenger;
 import fr.challenge.utils.challenges.Challenge;
-import fr.challenge.utils.defaultpage.PageHebo;
 import fr.challenge.utils.files.LoadSystem;
 import fr.challenge.utils.files.SaveSystem;
+import fr.challenge.utils.menu.MenuChangeHebdoChallenge;
 
 public class ClickHebdoItemEvent implements Listener
 {
 
 	@EventHandler
 	public void onClick(InventoryClickEvent event) {
-		if(event.getView().getTitle().equals(PageHebo.NAME)) {
+		if(event.getView().getTitle().equals(MenuChangeHebdoChallenge.NAME)) {
 			if(event.getCurrentItem() != null && event.getCurrentItem().getType() == Material.BOOK && event.getCurrentItem().getItemMeta().getDisplayName().contains("Semaine")) {
 				int week = Integer.parseInt(event.getCurrentItem().getItemMeta().getDisplayName().split(" ")[1]);
 				Challenger challenger = ChallengeMain.getInstance().getBankChallenger().getChallenger((Player) event.getWhoClicked());

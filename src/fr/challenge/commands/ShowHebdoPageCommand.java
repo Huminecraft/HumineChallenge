@@ -7,7 +7,8 @@ import org.bukkit.entity.Player;
 
 import fr.challenge.main.ChallengeMain;
 import fr.challenge.utils.Challenger;
-import fr.challenge.utils.defaultpage.PageHebo;
+import fr.challenge.utils.menu.MenuApplePay;
+import fr.challenge.utils.menu.MenuChangeHebdoChallenge;
 
 public class ShowHebdoPageCommand implements CommandExecutor
 {
@@ -30,10 +31,11 @@ public class ShowHebdoPageCommand implements CommandExecutor
 		
 		if(!challenger.hasPremium()) {
 			ChallengeMain.sendMessage(player, "Vous devez etre membre HuminePass");
+			MenuApplePay.openMenu(challenger);
 			return false;
 		}
 		
-		PageHebo.openShop(challenger);
+		MenuChangeHebdoChallenge.openMenu(challenger);
 		return true;
 	}
 }

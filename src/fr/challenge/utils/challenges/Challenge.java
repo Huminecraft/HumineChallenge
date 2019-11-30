@@ -2,6 +2,8 @@ package fr.challenge.utils.challenges;
 
 import java.io.Serializable;
 
+import org.bukkit.inventory.ItemStack;
+
 import fr.challenge.utils.Challenger;
 
 /**
@@ -79,7 +81,10 @@ public interface Challenge extends Serializable, Cloneable{
 	 */
 	public void setAward(Award award);
 
-	Object clone() throws CloneNotSupportedException;
+	public Object clone() throws CloneNotSupportedException;
+	
+	public ItemStack toItemStack();
+	
 //	/**
 //	 * Permet de cloner le challenge tout en conservant les meme donnees
 //	 * 
