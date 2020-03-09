@@ -22,6 +22,7 @@ import fr.challenge.commands.HebdoChallengeLoadCommand;
 import fr.challenge.commands.PalierLoadCommand;
 import fr.challenge.commands.ShowChallengePassCommand;
 import fr.challenge.commands.ShowHebdoPageCommand;
+import fr.challenge.commands.ShowMenuAccueil;
 import fr.challenge.commands.ShowTokenCommand;
 import fr.challenge.commands.TokenAddCommand;
 import fr.challenge.commands.TokenRemoveCommand;
@@ -364,6 +365,8 @@ public class ChallengeMain extends JavaPlugin{
 		this.getCommand("hebdochallenge").setExecutor(new ShowHedboChallengeCommand());
 		this.getCommand("addtoken").setExecutor(new TokenAddCommand());
 		this.getCommand("removetoken").setExecutor(new TokenRemoveCommand());
+		
+		this.getCommand("challenge").setExecutor(new ShowMenuAccueil());
 	}
 	
 	public static void sendMessage(CommandSender sender, String message) {
